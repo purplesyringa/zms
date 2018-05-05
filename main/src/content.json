@@ -11,6 +11,10 @@
   "data/users/content.json": {
    "signers": [],
    "signers_required": 1
+  },
+  "data/authors/content.json": {
+   "signers": [],
+   "signers_required": 1
   }
  },
  "inner_path": "content.json",
