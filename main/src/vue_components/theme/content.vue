@@ -1,17 +1,9 @@
 <template>
 	<div class="content-container">
 		<div class="content">
-			<div class="post">
-				<div class="post-title">Welcome to ZMS!</div>
-				<div class="post-description">This is the first release of ZMS, Zero Management System. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod massa in fermentum viverra. Nulla facilisi. Fusce sit amet accumsan velit. Maecenas orci erat, bibendum accumsan risus at, malesuada suscipit velit. Duis enim mi, laoreet ac accumsan vel, dignissim in lacus. Sed accumsan congue lacus, eget tincidunt magna malesuada ut. Suspendisse pulvinar leo ut nisl auctor luctus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vivamus condimentum bibendum arcu ut rutrum. Fusce quis purus sit amet ex dapibus lobortis. Vestibulum convallis id velit vel gravida. Maecenas id nibh urna.</div>
-			</div>
-			<div class="post">
-				<div class="post-title">Welcome to ZMS!</div>
-				<div class="post-description">This is the first release of ZMS, Zero Management System. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod massa in fermentum viverra. Nulla facilisi. Fusce sit amet accumsan velit. Maecenas orci erat, bibendum accumsan risus at, malesuada suscipit velit. Duis enim mi, laoreet ac accumsan vel, dignissim in lacus. Sed accumsan congue lacus, eget tincidunt magna malesuada ut. Suspendisse pulvinar leo ut nisl auctor luctus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vivamus condimentum bibendum arcu ut rutrum. Fusce quis purus sit amet ex dapibus lobortis. Vestibulum convallis id velit vel gravida. Maecenas id nibh urna.</div>
-			</div>
-			<div class="post">
-				<div class="post-title">Welcome to ZMS!</div>
-				<div class="post-description">This is the first release of ZMS, Zero Management System. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod massa in fermentum viverra. Nulla facilisi. Fusce sit amet accumsan velit. Maecenas orci erat, bibendum accumsan risus at, malesuada suscipit velit. Duis enim mi, laoreet ac accumsan vel, dignissim in lacus. Sed accumsan congue lacus, eget tincidunt magna malesuada ut. Suspendisse pulvinar leo ut nisl auctor luctus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vivamus condimentum bibendum arcu ut rutrum. Fusce quis purus sit amet ex dapibus lobortis. Vestibulum convallis id velit vel gravida. Maecenas id nibh urna.</div>
+			<div class="post" v-for="post in posts">
+				<div class="post-title">{{post.title}}</div>
+				<div class="post-description">{{post.cut}}</div>
 			</div>
 		</div>
 	</div>
@@ -45,8 +37,15 @@
 </style>
 
 <script language="text/javascript">
+	import Posts from "../../libs/posts.js";
+
 	export default {
 		props: [],
-		name: "content"
+		name: "content",
+		asyncComputed: {
+			async posts() {
+				return await Posts.getList();
+			}
+		}
 	};
 </script>
