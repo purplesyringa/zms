@@ -6,11 +6,13 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = {
 	context: path.resolve(__dirname, "./src"),
-	entry: ["babel-polyfill", "./main.js"],
+	entry: {
+		main: ["babel-polyfill", "./main.js"]
+	},
 	output: {
 		path: path.resolve(__dirname, "./dist"),
 		publicPath: "./",
-		filename: "build.js"
+		filename: "[name].js"
 	},
 	module: {
 		rules: [
@@ -38,18 +40,48 @@ module.exports = {
 					{
 						loader: "babel-loader",
 						options: {
-							presets: ["env"]
+							presets: ["env"],
+							plugins: [
+								[
+									"babel-plugin-transform-builtin-extend", {
+										globals: ["Error", "Array"]
+									}
+								],
+								"transform-class-properties"
+							]
 						}
 					}
 				],
 				exclude: /node_modules/
 			},
 			{
-				test: /\.(gif|jpe?g|svg|png)$/,
+				test: /\.js$/,
+				use: [
+					{
+						loader: "babel-loader",
+						options: {
+							presets: ["env", "flow"],
+							plugins: [
+								"transform-class-properties"
+							]
+						}
+					}
+				],
+				include: /node_modules.*katex/
+			},
+			{
+				test: /\.(gif|jpe?g|png)$/,
 				loader: "file-loader"
 			},
 			{
-				test: /\.(ttf|otf|eot|svg|woff2?)$/,
+				test: /\.svg$/,
+				loader: "url-loader",
+				options: {
+					mimetype: "image/svg+xml"
+				}
+			},
+			{
+				test: /\.(ttf|otf|eot|woff2?)$/,
 				loader: "file-loader?name=fonts/[name].[ext]"
 			}
 		]
@@ -67,6 +99,18 @@ module.exports = {
 			{
 				from: "./dbschema.json",
 				to: "./dbschema.json"
+			}
+		]),
+		new CopyWebpackPlugin([
+			{
+				from: "./content.json",
+				to: "./content.json"
+			}
+		]),
+		new CopyWebpackPlugin([
+			{
+				from: "./data",
+				to: "./data"
 			}
 		])
 	]
