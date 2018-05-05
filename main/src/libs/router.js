@@ -1,8 +1,9 @@
 module.exports = class Router {
 	constructor(zeroPage) {
 		this.routes = [];
-		this.currentRoute = [];
+		this.currentRoute = "";
 		this.currentParams = {};
+		this.currentHash = "";
 		this.zeroPage = zeroPage;
 
 		this.check("");
@@ -19,8 +20,8 @@ module.exports = class Router {
 		return path.toString().replace(/\/$/, "").replace(/^\//, "");
 	}
 
-	add(path, controller) {
-		this.routes.push({path, controller});
+	add(route) {
+		this.routes.push(route);
 	}
 	remove(arg) {
 		let index = this.routes.findIndex(route => route.controller == arg || route.path == arg);
@@ -38,8 +39,8 @@ module.exports = class Router {
 						"^" +
 						route.path
 							.replace(/:([^\/]+)/g, "([^\/]*)")
-							.replace(/\*/g, '(?:.*)') +
-						"(?:\/|$)"
+							.replace(/\*/g, '(?:[^/]*)') +
+						"$"
 					)
 				);
 
@@ -54,6 +55,7 @@ module.exports = class Router {
 
 				this.currentParams = routeParams;
 				this.currentRoute = route.path;
+				this.currentHash = hash;
 
 				route.controller(routeParams);
 			}
@@ -64,15 +66,8 @@ module.exports = class Router {
 		this.check(this.currentRoute);
 	}
 
-	listenForBack(cmd, message) {
-		if(cmd == "wrapperPopState") {
-			if(message.params.state) {
-				if(!message.params.state.url) {
-					message.params.state.url = message.params.href.replace(/.*\?/, "");
-				}
-				this.navigate(message.params.state.url.replace(/^\//, ""), false);
-			}
-		}
+	listenForBack(params) {
+		this.navigate(params.href.replace(/.*\?/, "").replace(/^\//, ""), false);
 	}
 
 	navigate(path, doPush=true) {
