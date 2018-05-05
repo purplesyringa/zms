@@ -1,14 +1,17 @@
 {
-	"db_name": "0press",
-	"db_file": "data/0press.db",
+	"db_name": "zms",
+	"db_file": "data/zms.db",
 	"version": 2,
 	"maps": {
-		"data/users/.+/content.json": {
+		"data/(users|authors)/.+/content.json": {
 			"to_json_table": ["cert_user_id"],
 			"file_name": "data.json"
 		},
 		"data/users/.+/data.json": {
 			"to_table": []
+		},
+		"data/authors/.+/data.json": {
+			"to_table": ["posts"]
 		}
 	},
 	"tables": {
@@ -19,6 +22,17 @@
 				["directory", "TEXT"],
 				["file_name", "TEXT"],
 				["cert_user_id", "TEXT"]
+			],
+			"indexes": ["CREATE UNIQUE INDEX path ON json(directory, site, file_name)"],
+			"schema_changed": 4
+		},
+		"posts": {
+			"cols": [
+				["id", "INTEGER"],
+				["title", "TEXT"],
+				["content", "TEXT"],
+				["cut", "TEXT"],
+				["json_id", "INTEGER"]
 			],
 			"indexes": ["CREATE UNIQUE INDEX path ON json(directory, site, file_name)"],
 			"schema_changed": 4
