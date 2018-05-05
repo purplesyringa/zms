@@ -1,7 +1,10 @@
 <template>
 	<div class="header-container">
 		<div class="header">
-			<div class="title">{{siteInfo.content.title}}</div>
+			<div class="title">
+				{{siteInfo.content.title}}
+				<icon name="cog" scale="2" class="cog" v-if="siteInfo.privatekey" />
+			</div>
 			<div class="description">{{siteInfo.content.description}}</div>
 		</div>
 	</div>
@@ -30,6 +33,17 @@
 		font-family: Verdana, Arial, sans-serif
 		font-size: 24px
 		color: rgba(255, 255, 255, 0.8)
+
+	.cog
+		display: inline-block
+		vertical-align: top
+		margin-top: 24px
+
+		color: rgba(255, 255, 255, 0.4)
+
+	.cog:hover
+		color: rgba(255, 127, 127, 0.6)
+		cursor: pointer
 </style>
 
 <script language="text/javascript">
@@ -41,7 +55,8 @@
 				siteInfo: {
 					content: {
 						title: "",
-						description: ""
+						description: "",
+						privatekey: false
 					}
 				}
 			};
