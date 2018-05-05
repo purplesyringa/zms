@@ -1,8 +1,8 @@
 <template>
 	<div class="header-container">
 		<div class="header">
-			<div class="title">ZMS</div>
-			<div class="description">Zero Management System</div>
+			<div class="title">{{siteInfo.content.title}}</div>
+			<div class="description">{{siteInfo.content.description}}</div>
 		</div>
 	</div>
 </template>
@@ -35,6 +35,28 @@
 <script language="text/javascript">
 	export default {
 		props: [],
-		name: "header"
+		name: "header",
+		data() {
+			return {
+				siteInfo: {
+					content: {
+						title: "",
+						description: ""
+					}
+				}
+			};
+		},
+
+		mounted() {
+			this.$eventBus.$on("setSiteInfo", this.setSiteInfo);
+		},
+		destroyed() {
+			this.$eventBus.$off("setSiteInfo", this.setSiteInfo);
+		},
+		methods: {
+			setSiteInfo(siteInfo) {
+				this.siteInfo = siteInfo;
+			}
+		}
 	};
 </script>
