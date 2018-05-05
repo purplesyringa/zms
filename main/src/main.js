@@ -5,6 +5,10 @@ import Vue from "vue/dist/vue.min.js";
 import AsyncComputed from "vue-async-computed";
 Vue.use(AsyncComputed);
 
+import Icon from "vue-awesome";
+Vue.component("icon", Icon);
+
+
 Vue.prototype.$eventBus = new Vue();
 
 import root from "./vue_components/root.vue";
