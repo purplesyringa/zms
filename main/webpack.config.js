@@ -56,11 +56,11 @@ module.exports = {
 	},
 	plugins: [
 		new HtmlWebpackPlugin({
-			title: "ZeroWikipedia",
+			title: "0press",
 			template: "./index.html",
 			seo: {
-				keywords: "wikipedia",
-				description: "Wikipedia for ZeroNet with auto-import"
+				keywords: "0press,cms",
+				description: "CMS for ZeroNet!"
 			}
 		}),
 		new CopyWebpackPlugin([
