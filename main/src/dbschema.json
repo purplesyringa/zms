@@ -3,14 +3,14 @@
 	"db_file": "data/zms.db",
 	"version": 2,
 	"maps": {
-		"data/(users|authors)/.+/content.json": {
+		"(users|authors)/.+/content.json": {
 			"to_json_table": ["cert_user_id"],
 			"file_name": "data.json"
 		},
-		"data/users/.+/data.json": {
+		"users/.+/data.json": {
 			"to_table": []
 		},
-		"data/authors/.+/data.json": {
+		"authors/.+/data.json": {
 			"to_table": ["posts"]
 		}
 	},
@@ -18,13 +18,12 @@
 		"json": {
 			"cols": [
 				["json_id", "INTEGER PRIMARY KEY AUTOINCREMENT"],
-				["site", "TEXT"],
 				["directory", "TEXT"],
 				["file_name", "TEXT"],
 				["cert_user_id", "TEXT"]
 			],
-			"indexes": ["CREATE UNIQUE INDEX path ON json(directory, site, file_name)"],
-			"schema_changed": 4
+			"indexes": ["CREATE UNIQUE INDEX path ON json(directory, file_name)"],
+			"schema_changed": 5
 		},
 		"posts": {
 			"cols": [
@@ -34,8 +33,8 @@
 				["cut", "TEXT"],
 				["json_id", "INTEGER"]
 			],
-			"indexes": ["CREATE UNIQUE INDEX path ON json(directory, site, file_name)"],
-			"schema_changed": 4
+			"indexes": [],
+			"schema_changed": 1
 		}
 	}
 }
