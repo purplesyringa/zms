@@ -2,10 +2,24 @@
 	<div class="new-post">
 		<div class="header">New post</div>
 
-		<input type="text" class="input" placeholder="Title">
-		<textarea class="input" placeholder="What's on your mind?"></textarea>
+		<input
+			type="text"
+			:class="{input: true, error: title === 'Please, fill in title'}"
+			placeholder="Title"
+			v-model="title"
+		>
+		<textarea
+			:class="{input: true, small: true, error: cut === 'Please, fill in introduction'}"
+			placeholder="Introduction (shown before [Read more] button)"
+			v-model="cut"
+		></textarea>
+		<textarea
+			:class="{input: true, error: content === 'Please, type something'}"
+			placeholder="What's on your mind?"
+			v-model="content"
+		></textarea>
 
-		<input type="submit" class="submit" value="Publish">
+		<input type="submit" class="submit" value="Publish" @click="publish">
 	</div>
 </template>
 
@@ -34,6 +48,12 @@
 	textarea.input
 		height: 200px
 		resize: vertical
+	textarea.input.small
+		height: 100px
+		resize: none
+
+	.input.error
+		color: #803
 
 
 	.submit
@@ -53,7 +73,39 @@
 </style>
 
 <script type="text/javascript">
+	import Posts from "../../libs/posts.js";
+
 	export default {
-		name: "admin-new-post"
+		name: "admin-new-post",
+		data() {
+			return {
+				title: "",
+				content: "",
+				cut: ""
+			};
+		},
+		methods: {
+			async publish() {
+				let error = false;
+				if(!this.title || this.title === "Please, fill in title") {
+					this.title = "Please, fill in title";
+					error = true;
+				}
+				if(!this.cut || this.cut === "Please, fill in introduction") {
+					this.cut = "Please, fill in introduction";
+					error = true;
+				}
+				if(!this.content || this.content === "Please, type something") {
+					this.content = "Please, type something";
+					error = true;
+				}
+				if(error) {
+					return;
+				}
+
+				let url = await Posts.publish(this.title, this.content, this.cut);
+				this.$router.navigate(url);
+			}
+		}
 	};
 </script>
