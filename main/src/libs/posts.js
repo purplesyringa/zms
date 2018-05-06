@@ -1,7 +1,7 @@
 import {zeroAuth, zeroDB} from "../route.js";
 
 class Posts {
-	async getList() {
+	async getList(where="") {
 		let rows = await zeroDB.query(`
 			SELECT
 				posts.*,
@@ -10,6 +10,8 @@ class Posts {
 
 			FROM posts
 			LEFT JOIN json ON (json.json_id = posts.json_id)
+
+			${where}
 
 			ORDER BY posts.date DESC
 		`);
@@ -33,7 +35,7 @@ class Posts {
 		// I know this is unsecure, but it doesn't influence anything,
 		// so let's leave it as-is.
 		let posts = await this.getList(`
-			WHERE post.id = ${postId} AND json.directory LIKE "${prefix}%"
+			WHERE id = ${postId} AND json.directory LIKE "authors/${prefix}%"
 		`);
 
 		return posts[0] || null;
@@ -41,7 +43,6 @@ class Posts {
 
 
 	async publish(title, content, cut) {
-		console.log(title, content, cut);
 		const auth = await zeroAuth.requestAuth();
 
 		let row = await zeroDB.insertRow(
