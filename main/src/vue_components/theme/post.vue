@@ -88,6 +88,13 @@
 		methods: {
 			setSiteInfo(siteInfo) {
 				this.siteInfo = siteInfo;
+			},
+
+			async remove() {
+				let post = await Posts.get(this.$router.currentParams.id);
+				await Posts.remove(post);
+
+				this.$router.navigate("");
 			}
 		},
 

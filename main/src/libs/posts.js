@@ -58,6 +58,16 @@ class Posts {
 		return posts[0] || null;
 	}
 
+	async remove(oldPost) {
+		await zeroAuth.requestAuth();
+		await zeroDB.removeRow(
+			`data/${oldPost.directory}/data.json`,
+			`data/${oldPost.directory}/content.json`,
+			"posts",
+			post => post.id === oldPost.id
+		);
+	}
+
 
 	async publish(title, content, cut) {
 		const auth = await zeroAuth.requestAuth();
@@ -83,7 +93,6 @@ class Posts {
 	}
 	async update(id, newPost) {
 		let postId = parseInt(id.split("-")[1]);
-		console.log(postId);
 
 		await zeroAuth.requestAuth();
 		await zeroDB.changeRow(
