@@ -19,7 +19,7 @@
 					{{user.role}}
 
 					<div class="icons">
-						<span class="icon" @click="$router.navigate(`admin/users/change/${user.id}`)">
+						<span class="icon" @click="$router.navigate(`admin/users/change-role/${user.id}`)">
 							<icon name="edit" />
 							Change
 						</span>

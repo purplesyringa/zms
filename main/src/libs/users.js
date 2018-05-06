@@ -70,6 +70,98 @@ class Users {
 		return "user";
 	}
 
+	async setRoleByAddress(address, newRole) {
+		let oldRole = await this.getRoleByAddress(address);
+		if(oldRole === newRole) {
+			// Nothing to change
+			return;
+		}
+
+		const ROLES = ["admin", "moderator", "author", "user"];
+
+		// First, clean out old roles
+		if(oldRole === "banned") {
+			await this._removeRoleByAddress(address, "banned");
+		} else {
+			for(let role of ROLES.slice(ROLES.indexOf(oldRole))) {
+				await this._removeRoleByAddress(address, role);
+			}
+		}
+
+		// Now, add new roles
+		if(newRole === "banned") {
+			await this._addRoleByAddress(address, "banned");
+		} else {
+			for(let role of ROLES.slice(ROLES.indexOf(newRole))) {
+				await this._addRoleByAddress(address, role);
+			}
+		}
+	}
+	async _removeRoleByAddress(address, role) {
+		if(role === "admin") {
+			// Seriously?
+			return;
+		} else if(role === "moderator") {
+			// Remove from data/authors/content.json and data/users/content.json signers
+			let content = JSON.parse(await zeroFS.readFile("content.json"));
+
+			let signers = content.includes["data/authors/content.json"].signers;
+			signers.splice(signers.indexOf(address), 1);
+
+			signers = content.includes["data/users/content.json"].signers;
+			signers.splice(signers.indexOf(address), 1);
+
+			await zeroFS.writeFile("content.json", JSON.stringify(content, null, 1));
+		} else if(role === "author") {
+			// Remove from data/authors/content.json
+			let content = JSON.parse(await zeroFS.readFile("data/authors/content.json"));
+			delete content.user_contents.permissions[address];
+			await zeroFS.writeFile("data/authors/content.json", JSON.stringify(content, null, 1));
+		} else if(role === "user") {
+			// Hm?..
+			return;
+		} else if(role === "banned") {
+			// That standard bad@zeroid.bit
+			const content = JSON.parse(await zeroFS.readFile("data/users/content.json"));
+			delete content.user_contents.permissions[address];
+			await zeroFS.writeFile("data/users/content.json", JSON.stringify(content, null, 1));
+		}
+	}
+	async _addRoleByAddress(address, role) {
+		if(role === "admin") {
+			// Oh, you are so brave <3
+			return;
+		} else if(role === "moderator") {
+			// Add to data/authors/content.json and data/users/content.json signers
+			let content = JSON.parse(await zeroFS.readFile("content.json"));
+
+			let signers = content.includes["data/authors/content.json"].signers;
+			signers.push(address);
+
+			signers = content.includes["data/users/content.json"].signers;
+			signers.push(address);
+
+			await zeroFS.writeFile("content.json", JSON.stringify(content, null, 1));
+		} else if(role === "author") {
+			// Add to data/authors/content.json
+			let content = JSON.parse(await zeroFS.readFile("data/authors/content.json"));
+			content.user_contents.permissions[address] = {
+				files_allowed: "data.json",
+				max_size: 1000000000
+			};
+			await zeroFS.writeFile("data/authors/content.json", JSON.stringify(content, null, 1));
+		} else if(role === "user") {
+			// Hm?..
+			return;
+		} else if(role === "banned") {
+			// That standard bad@zeroid.bit
+			const content = JSON.parse(await zeroFS.readFile("data/users/content.json"));
+			content.user_contents.permissions[address] = false;
+			await zeroFS.writeFile("data/users/content.json", JSON.stringify(content, null, 1));
+		}
+	}
+
+
 	async hasRoleByAddress(address, role) {
 		let arr = ["banned", "user", "author", "moderator", "admin"];
 

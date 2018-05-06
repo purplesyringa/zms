@@ -25,12 +25,14 @@
 	import AdminNewPost from "./new-post.vue";
 	import AdminEditPost from "./edit-post.vue";
 	import AdminUsers from "./users.vue";
+	import AdminChangeRole from "./change-role.vue";
 	import AdminSettings from "./settings.vue";
 	const views = {
 		posts: AdminPosts,
 		"new-post": AdminNewPost,
 		"edit-post": AdminEditPost,
 		users: AdminUsers,
+		"change-role": AdminChangeRole,
 		settings: AdminSettings
 	};
 
