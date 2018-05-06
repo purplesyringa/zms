@@ -15,15 +15,17 @@
 	import AdminSidebar from "./sidebar.vue";
 
 	import AdminPosts from "./posts.vue";
+	import AdminNewPost from "./new-post.vue";
 	const views = {
-		posts: AdminPosts
+		posts: AdminPosts,
+		"new-post": AdminNewPost
 	};
 
 	export default {
 		name: "admin-root",
 		data() {
 			return {
-				currentTab: AdminSidebar
+				currentTab: null
 			};
 		},
 
@@ -36,7 +38,13 @@
 
 		methods: {
 			navigated() {
-				this.currentTab = views[this.$router.currentParams.page || "dashboard"];
+				if(!this.$router.currentParams.page) {
+					this.currentTab = views.dashboard;
+				} else if(!this.$router.currentParams.subpage) {
+					this.currentTab = views[this.$router.currentParams.page];
+				} else {
+					this.currentTab = views[this.$router.currentParams.subpage];
+				}
 			}
 		},
 

@@ -32,6 +32,7 @@
 		display: block
 		width: 20%
 		height: 100%
+		float: left
 
 		background-color: $sidebar-color
 
