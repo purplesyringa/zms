@@ -26,17 +26,24 @@ class Users {
 		const authors = await this.getAuthors();
 		const banned = await this.getBanned();
 
-		let all = [];
-		admins.forEach(id => all.push({id, role: "admin"}));
-		moderators.forEach(id => all.push({id, role: "moderator"}));
-		authors.forEach(id => all.push({id, role: "author"}));
-		banned.forEach(id => all.push({id, role: "banned"}));
+		let all = {};
+		banned.forEach(id => all[id] = "banned");
+		authors.forEach(id => all[id] = "author");
+		moderators.forEach(id => all[id] = "moderator");
+		admins.forEach(id => all[id] = "admin");
 
-		for await(let user of all) {
+		let allArr = [];
+		for await(let id of Object.keys(all)) {
+			let user = {id, role: all[id]};
 			user.certUserId = await this.addressToCertUserId(user.id);
 			user.user = user.certUserId.replace(/@.*/, "");
+			user.roleId = ["admin", "moderator", "author", "user", "banned"].indexOf(user.role);
+			allArr.push(user);
 		}
-		return all;
+
+		allArr.sort((a, b) => a.roleId - b.roleId);
+
+		return allArr;
 	}
 
 
