@@ -4,17 +4,17 @@
 
 		<input
 			type="text"
-			:class="{input: true, error: title === 'Please, fill in title'}"
+			:class="{input: true, error: post.title === 'Please, fill in title'}"
 			placeholder="Title"
 			v-model="post.title"
 		>
 		<textarea
-			:class="{input: true, small: true, error: cut === 'Please, fill in introduction'}"
+			:class="{input: true, small: true, error: post.cut === 'Please, fill in introduction'}"
 			placeholder="Introduction (shown before [Read more] button)"
 			v-model="post.cut"
 		></textarea>
 		<textarea
-			:class="{input: true, error: content === 'Please, type something'}"
+			:class="{input: true, error: post.content === 'Please, type something'}"
 			placeholder="What's on your mind?"
 			v-model="post.content"
 		></textarea>
