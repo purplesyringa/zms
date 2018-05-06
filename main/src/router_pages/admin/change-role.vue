@@ -8,13 +8,14 @@
 				<th class="column-role">Role</th>
 				<th class="column-description">Description</th>
 			</tr>
-			<tr v-for="role in roles" @click="use(role.role)">
+			<tr v-for="role in roles" @click="use(role.role)" :class="{'role-static': role.static}">
 				<td class="column-use">
 					<icon v-if="currentRole === role.role" name="check" />
 				</td>
 				<td class="column-role">
 					{{role.name}}
 					<i v-if="role.default">(default)</i>
+					<i v-if="role.static">(auto-granted)</i>
 				</td>
 				<td class="column-description">
 					{{role.description}}
@@ -73,6 +74,9 @@
 		width: 25%
 	.column-description
 		width: 75%
+
+	tr.role-static
+		background-color: #DDD
 
 	.icons
 		float: right
