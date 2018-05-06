@@ -3,7 +3,7 @@
 		<div class="header">
 			<div class="title">
 				{{siteInfo.content.title}}
-				<icon name="cog" scale="2" class="cog" v-if="siteInfo.privatekey" />
+				<icon name="cog" scale="2" class="cog" v-if="siteInfo.privatekey" @click.native="$router.navigate('admin')" />
 			</div>
 			<div class="description">{{siteInfo.content.description}}</div>
 		</div>
