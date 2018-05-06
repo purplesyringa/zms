@@ -26,6 +26,22 @@
 					</div>
 				</td>
 			</tr>
+			<tr>
+				<td class="column-name">
+					<i>New user</i>
+				</td>
+				<td class="column-id column-input-id">
+					<input type="text" placeholder="Fill in user ID" :class="{'input-id': true, 'input-error': newId === 'Please, fill in user ID'}" required v-model="newId">
+				</td>
+				<td class="column-role">
+					<div class="icons">
+						<span class="icon" @click="next">
+							<icon name="caret-square-right" />
+							Next
+						</span>
+					</div>
+				</td>
+			</tr>
 		</table>
 	</div>
 </template>
@@ -78,6 +94,22 @@
 	.column-role
 		width: 25%
 
+	.column-input-id
+		padding: 0
+		height: 0
+	.input-id
+		width: 100%
+		height: 100%
+		border: none
+		background: transparent
+		padding: 8px
+		font: inherit
+	.input-id:invalid
+		font-style: italic
+	.input-error
+		color: #803
+
+
 	.icons
 		float: right
 	.icon
@@ -92,9 +124,26 @@
 	export default {
 		name: "admin-users",
 
+		data() {
+			return {
+				newId: ""
+			};
+		},
+
 		asyncComputed: {
 			async users() {
 				return await Users.getAllRules();
+			}
+		},
+
+		methods: {
+			next() {
+				if(!this.newId || this.newId === "Please, fill in user ID") {
+					this.newId = "Please, fill in user ID";
+					return;
+				}
+
+				this.$router.navigate(`admin/users/change-role/${this.newId}`);
 			}
 		}
 	};
