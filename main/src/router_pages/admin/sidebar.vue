@@ -67,6 +67,8 @@
 
 				this.currentOpened = heading;
 				heading.opened = true;
+
+				this.$router.navigate("admin/" + heading.name.toLowerCase());
 			}
 		}
 	};
