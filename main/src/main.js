@@ -38,5 +38,7 @@ zeroPage.on("setSiteInfo", msg => {
 });
 
 app.$eventBus.$on("needSiteInfo", async () => {
-	app.$eventBus.$emit("setSiteInfo", currentSiteInfo);
+	if(currentSiteInfo) {
+		app.$eventBus.$emit("setSiteInfo", currentSiteInfo);
+	}
 });
