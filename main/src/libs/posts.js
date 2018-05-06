@@ -7,6 +7,8 @@ class Posts {
 
 			FROM posts
 			LEFT JOIN json ON (json.json_id = posts.json_id)
+
+			ORDER BY posts.date DESC
 		`);
 
 		return rows.map(row => {
