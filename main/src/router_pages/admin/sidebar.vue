@@ -1,8 +1,9 @@
 <template>
 	<div class="sidebar">
-		<div class="heading"><icon name="pencil-alt" />Posts</div>
-		<div class="heading"><icon name="users" />Users</div>
-		<div class="heading"><icon name="cog" />Settings</div>
+		<div class="heading" v-for="heading in headings">
+			<icon :name="heading[1]" />
+			{{heading[0]}}
+		</div>
 	</div>
 </template>
 
@@ -30,13 +31,22 @@
 
 
 	.fa-icon
-		margin-right: 12px
+		margin-right: 8px
 		margin-bottom: -2px
 		color: rgba(255, 255, 255, 0.8)
 </style>
 
 <script type="text/javascript">
 	export default {
-		name: "admin-sidebar"
+		name: "admin-sidebar",
+		data() {
+			return {
+				headings: [
+					["Posts", "pencil-alt"],
+					["Users", "users"],
+					["Settings", "cog"]
+				]
+			};
+		}
 	};
 </script>
