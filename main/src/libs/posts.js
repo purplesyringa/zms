@@ -37,7 +37,7 @@ class Posts {
 
 			let id = this.shortenAddress(row.address) + "-" + row.id;
 			row.url = `posts/${id}`;
-			row.editUrl = `admin/posts/edit/${id}`;
+			row.editUrl = `admin/posts/edit-post/${id}`;
 
 			row.user = row.cert_user_id.replace(/@.*/, "");
 			row.userUrl = "users/" + this.shortenAddress(row.address);
@@ -79,6 +79,19 @@ class Posts {
 		);
 
 		let id = this.shortenAddress(auth.address) + "-" + row.id;
+		return `posts/${id}`;
+	}
+	async update(id, newPost) {
+		let postId = parseInt(id.split("-")[1]);
+		console.log(postId);
+
+		await zeroAuth.requestAuth();
+		await zeroDB.changeRow(
+			`data/${newPost.directory}/data.json`,
+			`data/${newPost.directory}/content.json`,
+			"posts",
+			post => post.id === postId ? newPost : post
+		);
 		return `posts/${id}`;
 	}
 

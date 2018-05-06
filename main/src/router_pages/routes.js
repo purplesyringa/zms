@@ -43,5 +43,12 @@ export default vue => [
 			vue.currentView = AdminRoot;
 			return false;
 		}
+	},
+	{
+		path: "admin/:page/:subpage/:arg",
+		controller: () => {
+			vue.currentView = AdminRoot;
+			return false;
+		}
 	}
 ];

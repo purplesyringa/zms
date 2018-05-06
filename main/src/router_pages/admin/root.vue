@@ -23,9 +23,11 @@
 
 	import AdminPosts from "./posts.vue";
 	import AdminNewPost from "./new-post.vue";
+	import AdminEditPost from "./edit-post.vue";
 	const views = {
 		posts: AdminPosts,
-		"new-post": AdminNewPost
+		"new-post": AdminNewPost,
+		"edit-post": AdminEditPost
 	};
 
 	export default {
