@@ -28,7 +28,8 @@ class Posts {
 			{
 				title,
 				content,
-				cut
+				cut,
+				date: Date.now()
 			},
 			{
 				column: "id",

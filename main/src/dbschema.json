@@ -31,10 +31,11 @@
 				["title", "TEXT"],
 				["content", "TEXT"],
 				["cut", "TEXT"],
+				["date", "INTEGER"],
 				["json_id", "INTEGER"]
 			],
 			"indexes": [],
-			"schema_changed": 1
+			"schema_changed": 2
 		}
 	}
 }
