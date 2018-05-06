@@ -3,7 +3,7 @@
 		<!-- headings -->
 		<component v-for="heading in headings" :key="heading.name">
 			<div
-				:class="{heading: true, 'heading-opened': heading.opened}"
+				:class="{heading: true, 'heading-opened': looksLike(current, heading.name)}"
 				@click="open(heading)"
 			>
 				<icon :name="heading.icon" />
@@ -11,11 +11,11 @@
 			</div>
 
 			<!-- subitems -->
-			<component v-if="heading.opened">
+			<component v-if="looksLike(current, heading.name)">
 				<div
 					v-for="subitem in heading.sub"
 
-					:class="{'sub-heading': true, 'sub-heading-opened': subitem.opened}"
+					:class="{'sub-heading': true, 'sub-heading-opened': looksLike(currentSubitem, subitem.name)}"
 					@click="openSubitem(heading, subitem)"
 				>
 					{{subitem.name}}
@@ -82,67 +82,57 @@
 					{
 						name: "Posts",
 						icon: "pencil-alt",
-						opened: false,
 						sub: [
 							{
-								name: "New post",
-								opened: false
+								name: "New post"
 							},
 							{
-								name: "New article",
-								opened: false
+								name: "New article"
 							}
 						]
 					},
 					{
 						name: "Users",
 						icon: "users",
-						opened: false,
 						sub: []
 					},
 					{
 						name: "Settings",
 						icon: "cog",
-						opened: false,
 						sub: []
 					},
 				],
-				currentOpened: null,
-				currentOpenedSubitem: null
+				current: "",
+				currentSubitem: ""
 			};
 		},
+
+		mounted() {
+			this.$eventBus.$on("navigate", this.navigated);
+			this.navigated();
+		},
+		destroyed() {
+			this.$eventBus.$off("navigate", this.navigated);
+		},
+
 		methods: {
 			open(heading) {
-				if(this.currentOpened) {
-					this.currentOpened.opened = false;
-				}
-				if(this.currentOpenedSubitem) {
-					this.currentOpenedSubitem.opened = false;
-				}
-
-				this.currentOpened = heading;
-				heading.opened = true;
-
 				this.$router.navigate("admin/" + heading.name.toLowerCase());
 			},
 			openSubitem(heading, subitem) {
-				if(this.currentOpened) {
-					this.currentOpened.opened = false;
-				}
-				if(this.currentOpenedSubitem) {
-					this.currentOpenedSubitem.opened = false;
-				}
-
-				this.currentOpened = heading;
-				this.currentOpenedSubitem = subitem;
-				heading.opened = true;
-				subitem.opened = true;
-
 				this.$router.navigate("admin/" + this.toUrl(heading.name) + "/" + this.toUrl(subitem.name));
 			},
 
 			toUrl(text) {
 				return text.toLowerCase().replace(/\s/, "-");
+			},
+			looksLike(a, b) {
+				return this.toUrl(a) === this.toUrl(b);
+			},
+
+			navigated() {
+				this.current = this.$router.currentParams.page || "dashboard";
+				this.currentSubitem = this.$router.currentParams.subpage || "";
 			}
 		}
 	};

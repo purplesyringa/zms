@@ -38,6 +38,7 @@
 
 		mounted() {
 			this.$eventBus.$on("navigate", this.navigated);
+			this.navigated();
 		},
 		destroyed() {
 			this.$eventBus.$off("navigate", this.navigated);
