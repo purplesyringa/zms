@@ -204,7 +204,7 @@ class Users {
 		} catch(e) {}
 
 		// Unknown
-		return address;
+		return address.substr(0, 20) + "...";
 	}
 };
 
