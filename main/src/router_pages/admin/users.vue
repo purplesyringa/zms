@@ -17,6 +17,13 @@
 				</td>
 				<td class="column-role">
 					{{user.role}}
+
+					<div class="icons">
+						<span class="icon" @click="$router.navigate(`admin/users/change/${user.id}`)">
+							<icon name="edit" />
+							Change
+						</span>
+					</div>
 				</td>
 			</tr>
 		</table>
