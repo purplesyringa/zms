@@ -8,7 +8,7 @@
 				<th class="column-author">Author</th>
 				<th class="column-date">Date</th>
 			</tr>
-			<tr v-for="post in posts">
+			<tr v-for="post in posts" v-if="!post.deleted">
 				<td class="column-title">
 					{{post.title}}
 
@@ -16,6 +16,11 @@
 						<span class="icon" @click="$router.navigate(post.editUrl)">
 							<icon name="edit" />
 							Edit
+						</span>
+
+						<span class="icon" @click="remove(post)">
+							<icon name="trash" />
+							Delete
 						</span>
 
 						<span class="icon" @click="$router.navigate(post.url)">
@@ -99,7 +104,18 @@
 
 		asyncComputed: {
 			async posts() {
-				return await Posts.getList("");
+				let posts = await Posts.getList("");
+				posts.forEach(post => {
+					post.deleted = false;
+				});
+				return posts;
+			}
+		},
+
+		methods: {
+			async remove(post) {
+				await Posts.remove(post);
+				post.deleted = true;
 			}
 		}
 	};
