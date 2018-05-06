@@ -87,6 +87,7 @@
 		},
 		mounted() {
 			this.$eventBus.$on("setSiteInfo", this.setSiteInfo);
+			this.$eventBus.$emit("needSiteInfo");
 		},
 		destroyed() {
 			this.$eventBus.$off("setSiteInfo", this.setSiteInfo);

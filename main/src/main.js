@@ -33,3 +33,8 @@ Vue.prototype.$zeroPage = zeroPage;
 zeroPage.on("setSiteInfo", msg => {
 	app.$eventBus.$emit("setSiteInfo", msg.params);
 });
+
+app.$eventBus.$on("needSiteInfo", async () => {
+	let info = await zeroPage.cmd("siteInfo");
+	app.$eventBus.$emit("setSiteInfo", info);
+});
