@@ -181,6 +181,13 @@ class Users {
 
 
 	async addressToCertUserId(address) {
+		// Maybe admin?
+		const siteInfo = await zeroPage.getSiteInfo();
+		if(siteInfo.address === address) {
+			return "zms-admin@zms";
+		}
+
+
 		// First, check json table
 		let res = await zeroDB.query(`
 			SELECT * FROM json WHERE directory LIKE "%/${address}"
@@ -193,7 +200,6 @@ class Users {
 
 		// Ask ZeroID CORS permission
 		let permission = "Cors:1iD5ZQJMNXu43w1qLB8sfdHVKppVMduGz";
-		let siteInfo = await zeroPage.getSiteInfo();
 		if(siteInfo.settings.permissions.indexOf(permission) === -1) {
 			await zeroPage.cmd("wrapperPermissionAdd", [permission]);
 		}
