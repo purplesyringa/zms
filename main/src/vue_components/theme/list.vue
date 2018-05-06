@@ -102,8 +102,7 @@
 
 <script language="text/javascript">
 	import Posts from "../../libs/posts.js";
-
-	const PAGE = 5;
+	import Settings from "../../libs/settings.js";
 
 	export default {
 		props: [],
@@ -131,6 +130,8 @@
 
 		asyncComputed: {
 			async pageCount() {
+				const PAGE = await Settings.get("posts_per_page", 10);
+
 				let all = await Posts.getCount();
 				return Math.ceil(all / PAGE);
 			},
@@ -145,6 +146,7 @@
 				page = parseInt(page);
 				page--;
 
+				const PAGE = await Settings.get("posts_per_page", 10);
 				return await Posts.getList("", page * PAGE, PAGE);
 			}
 		}
