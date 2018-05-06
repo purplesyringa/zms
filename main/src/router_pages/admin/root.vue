@@ -24,10 +24,12 @@
 	import AdminPosts from "./posts.vue";
 	import AdminNewPost from "./new-post.vue";
 	import AdminEditPost from "./edit-post.vue";
+	import AdminSettings from "./settings.vue";
 	const views = {
 		posts: AdminPosts,
 		"new-post": AdminNewPost,
-		"edit-post": AdminEditPost
+		"edit-post": AdminEditPost,
+		settings: AdminSettings
 	};
 
 	export default {
