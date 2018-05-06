@@ -26,15 +26,17 @@ route(app);
 
 Vue.prototype.$zeroPage = zeroPage;
 
+let currentSiteInfo;
 (async function() {
 	const siteInfo = await zeroPage.getSiteInfo();
+	currentSiteInfo = siteInfo;
 	app.$eventBus.$emit("setSiteInfo", siteInfo);
 })();
 zeroPage.on("setSiteInfo", msg => {
+	currentSiteInfo = msg.params;
 	app.$eventBus.$emit("setSiteInfo", msg.params);
 });
 
 app.$eventBus.$on("needSiteInfo", async () => {
-	let info = await zeroPage.cmd("siteInfo");
-	app.$eventBus.$emit("setSiteInfo", info);
+	app.$eventBus.$emit("setSiteInfo", currentSiteInfo);
 });
