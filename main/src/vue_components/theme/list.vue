@@ -63,12 +63,6 @@
 		font-size: 16px
 		color: #222
 
-	a
-		color: lighten(#803, 10%)
-	a:hover
-		text-decoration: underline
-		cursor: pointer
-
 
 	.new-post
 		display: block

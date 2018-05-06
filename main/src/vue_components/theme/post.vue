@@ -39,12 +39,6 @@
 		font-family: Verdana, Arial, sans-serif
 		font-size: 16px
 		color: #222
-
-	a
-		color: lighten(#803, 10%)
-	a:hover
-		text-decoration: underline
-		cursor: pointer
 </style>
 
 <script language="text/javascript">
