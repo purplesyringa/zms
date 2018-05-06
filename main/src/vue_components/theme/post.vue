@@ -1,6 +1,13 @@
 <template>
 	<div class="content-container">
 		<div class="content">
+			<!-- Edit post -->
+			<div class="edit-post" v-if="siteInfo.privatekey">
+				<icon name="edit" />
+				<a @click="$router.navigate(post.editUrl)">Edit post</a>
+			</div>
+
+
 			<div class="post-title">{{post.title}}</div>
 
 			<div class="post-info">
@@ -39,6 +46,14 @@
 		font-family: Verdana, Arial, sans-serif
 		font-size: 16px
 		color: #222
+
+
+	.edit-post
+		display: block
+		margin: 32px 0
+
+		font-family: Verdana, Arial, sans-serif
+		font-size: 16px
 </style>
 
 <script language="text/javascript">
@@ -47,6 +62,26 @@
 	export default {
 		props: [],
 		name: "post",
+
+		data() {
+			return {
+				siteInfo: {
+					privatekey: false
+				}
+			};
+		},
+		mounted() {
+			this.$eventBus.$on("setSiteInfo", this.setSiteInfo);
+			this.$eventBus.$emit("needSiteInfo");
+		},
+		destroyed() {
+			this.$eventBus.$off("setSiteInfo", this.setSiteInfo);
+		},
+		methods: {
+			setSiteInfo(siteInfo) {
+				this.siteInfo = siteInfo;
+			}
+		},
 
 		asyncComputed: {
 			post: {
