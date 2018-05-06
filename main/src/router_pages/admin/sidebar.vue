@@ -1,5 +1,14 @@
 <template>
 	<div class="sidebar">
+		<!-- Back to content -->
+		<div
+			class="heading"
+			@click="$router.navigate()"
+		>
+			<icon name="caret-square-left" />
+			Back to content
+		</div>
+
 		<!-- headings -->
 		<component v-for="heading in headings" :key="heading.name">
 			<div
