@@ -4,6 +4,11 @@
 	</div>
 </template>
 
+<style lang="sass" scoped>
+	.current-view
+		height: 100%
+</style>
+
 <script language="text/javascript">
 	export default {
 		props: [],
