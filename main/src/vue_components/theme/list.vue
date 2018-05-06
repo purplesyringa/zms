@@ -76,7 +76,7 @@
 
 	export default {
 		props: [],
-		name: "content",
+		name: "list",
 
 		data() {
 			return {

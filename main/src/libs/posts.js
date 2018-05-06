@@ -27,6 +27,19 @@ class Posts {
 		});
 	}
 
+	async get(id) {
+		let [prefix, postId] = id.split("-");
+
+		// I know this is unsecure, but it doesn't influence anything,
+		// so let's leave it as-is.
+		let posts = await this.getList(`
+			WHERE post.id = ${postId} AND json.directory LIKE "${prefix}%"
+		`);
+
+		return posts[0] || null;
+	}
+
+
 	async publish(title, content, cut) {
 		console.log(title, content, cut);
 		const auth = await zeroAuth.requestAuth();
