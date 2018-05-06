@@ -10,6 +10,13 @@ export default vue => [
 		}
 	},
 	{
+		path: "page/:page",
+		controller: () => {
+			vue.currentView = Home;
+		}
+	},
+
+	{
 		path: "posts/:id",
 		controller: () => {
 			vue.currentView = Post;

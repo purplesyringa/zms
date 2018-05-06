@@ -22,6 +22,13 @@
 					<a @click="$router.navigate(post.url)">Read more</a>
 				</div>
 			</div>
+
+			<!-- Pagination -->
+			<div class="pagination">
+				<div v-for="page in pageCount" :class="{page: true, 'page-current': currentPage === page}" @click="$router.navigate(`page/${page}`)">
+					{{page}}
+				</div>
+			</div>
 		</div>
 	</div>
 </template>
@@ -69,10 +76,34 @@
 
 		font-family: Verdana, Arial, sans-serif
 		font-size: 16px
+
+
+	// Pagination
+	.pagination
+		font-size: 0
+		margin-bottom: 16px
+	.page
+		display: inline-block
+		margin-right: 8px
+		padding: 4px 8px
+
+		font-family: Verdana, Arial, sans-serif
+		font-size: 16px
+		color: #FFF
+		background-color: #222
+	.page:hover
+		background-color: #333
+		cursor: pointer
+	.page-current
+		background-color: #803
+	.page-current:hover
+		background-color: lighten(#803, 10%)
 </style>
 
 <script language="text/javascript">
 	import Posts from "../../libs/posts.js";
+
+	const PAGE = 5;
 
 	export default {
 		props: [],
@@ -99,8 +130,22 @@
 		},
 
 		asyncComputed: {
+			async pageCount() {
+				let all = await Posts.getCount();
+				return Math.ceil(all / PAGE);
+			},
+
+			async currentPage() {
+				let page = this.$router.currentParams.page || "1";
+				return parseInt(page);
+			},
+
 			async posts() {
-				return await Posts.getList();
+				let page = this.$router.currentParams.page || "1";
+				page = parseInt(page);
+				page--;
+
+				return await Posts.getList("", page * PAGE, PAGE);
 			}
 		}
 	};

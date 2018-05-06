@@ -1,7 +1,21 @@
 import {zeroAuth, zeroDB} from "../route.js";
 
 class Posts {
-	async getList(where="") {
+	async getCount(where="") {
+		return (await zeroDB.query(`
+			SELECT
+				posts.*,
+				json.directory AS directory,
+				json.cert_user_id AS cert_user_id
+
+			FROM posts
+			LEFT JOIN json ON (json.json_id = posts.json_id)
+
+			${where}
+		`)).length;
+	}
+
+	async getList(where="", offset=0, limit=10000000) {
 		let rows = await zeroDB.query(`
 			SELECT
 				posts.*,
@@ -14,6 +28,8 @@ class Posts {
 			${where}
 
 			ORDER BY posts.date DESC
+
+			LIMIT ${offset}, ${limit}
 		`);
 
 		return rows.map(row => {
