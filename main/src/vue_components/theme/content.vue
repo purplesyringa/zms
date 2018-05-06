@@ -2,7 +2,10 @@
 	<div class="content-container">
 		<div class="content">
 			<div class="post" v-for="post in posts">
-				<div class="post-title">{{post.title}}</div>
+				<div class="post-title">
+					<a @click="$router.navigate(post.url)">{{post.title}}</a>
+				</div>
+
 				<div class="post-info">
 					On {{(new Date(post.date)).toLocaleString()}}
 					by <a @click="$router.navigate(post.userUrl)">{{post.user}}</a>
@@ -36,7 +39,6 @@
 	.post-title
 		font-family: Verdana, Arial, sans-serif
 		font-size: 32px
-		color: #000
 
 	.post-info
 		font-family: Verdana, Arial, sans-serif
