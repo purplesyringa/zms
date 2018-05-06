@@ -1,6 +1,10 @@
 <template>
 	<div class="change-role">
-		<div class="header">Change role</div>
+		<div class="header">
+			Change role
+			<icon name="chevron-right" />
+			{{user}}
+		</div>
 
 		<table>
 			<tr>
