@@ -4,7 +4,12 @@
 			<div class="post" v-for="post in posts">
 				<div class="post-title">{{post.title}}</div>
 				<div class="post-description">
+					{{(new Date(post.date)).toLocaleString()}}
+					by <a @click="$router.navigate(post.userUrl)">{{post.user}}</a>
+					<br>
+
 					{{post.cut}}
+
 					<a @click="$router.navigate(post.url)">Read more</a>
 				</div>
 			</div>

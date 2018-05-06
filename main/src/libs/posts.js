@@ -3,7 +3,10 @@ import {zeroAuth, zeroDB} from "../route.js";
 class Posts {
 	async getList() {
 		let rows = await zeroDB.query(`
-			SELECT posts.*, json.directory AS directory
+			SELECT
+				posts.*,
+				json.directory AS directory,
+				json.cert_user_id AS cert_user_id
 
 			FROM posts
 			LEFT JOIN json ON (json.json_id = posts.json_id)
@@ -13,8 +16,13 @@ class Posts {
 
 		return rows.map(row => {
 			row.address = row.directory.replace("authors/", "");
+
 			let id = this.shortenAddress(row.address) + "-" + row.id;
 			row.url = `posts/${id}`;
+
+			row.user = row.cert_user_id.replace(/@.*/, "");
+			row.userUrl = "users/" + this.shortenAddress(row.address);
+
 			return row;
 		});
 	}
