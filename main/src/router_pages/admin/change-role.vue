@@ -93,7 +93,8 @@
 					{
 						role: "admin",
 						name: "Admin",
-						description: "Changes user roles, site settings. Can do anything moderator can do."
+						description: "Changes user roles, site settings. Can do anything moderator can do.",
+						static: true
 					},
 					{
 						role: "moderator",
@@ -123,6 +124,9 @@
 		computed: {
 			id() {
 				return this.$router.currentParams.arg;
+			},
+			currentRoleObject() {
+				return this.roles.find(role => role.role === this.currentRole);
 			}
 		},
 
@@ -137,6 +141,14 @@
 
 		methods: {
 			async use(role) {
+				if(this.currentRoleObject.static) {
+					// Cannot switch from static
+					return;
+				} else if(this.roles.find(role1 => role1.role === role).static) {
+					// Cannot switch to static
+					return;
+				}
+
 				await Users.setRoleByAddress(this.id, role);
 				this.currentRole = role;
 			}
