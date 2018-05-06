@@ -1,8 +1,13 @@
 <template>
 	<div class="sidebar">
-		<div class="heading" v-for="heading in headings">
-			<icon :name="heading[1]" />
-			{{heading[0]}}
+		<div
+			v-for="heading in headings"
+
+			:class="{heading: true, 'heading-opened': heading.opened}"
+			@click="open(heading)"
+		>
+			<icon :name="heading.icon" />
+			{{heading.name}}
 		</div>
 	</div>
 </template>
@@ -29,6 +34,11 @@
 		background-color: rgba(255, 255, 255, 0.1)
 		cursor: pointer
 
+	.heading-opened
+		background-color: #803
+	.heading-opened:hover
+		background-color: lighten(#803, 10%)
+
 
 	.fa-icon
 		margin-right: 8px
@@ -42,11 +52,22 @@
 		data() {
 			return {
 				headings: [
-					["Posts", "pencil-alt"],
-					["Users", "users"],
-					["Settings", "cog"]
-				]
+					{name: "Posts", icon: "pencil-alt", opened: false},
+					{name: "Users", icon: "users", opened: false},
+					{name: "Settings", icon: "cog", opened: false},
+				],
+				currentOpened: null
 			};
+		},
+		methods: {
+			open(heading) {
+				if(this.currentOpened) {
+					this.currentOpened.opened = false;
+				}
+
+				this.currentOpened = heading;
+				heading.opened = true;
+			}
 		}
 	};
 </script>
