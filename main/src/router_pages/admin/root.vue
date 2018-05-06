@@ -2,13 +2,20 @@
 	<div class="root">
 		<admin-sidebar />
 
-		<component :is="currentTab"></component>
+		<div class="tab">
+			<component :is="currentTab"></component>
+		</div>
 	</div>
 </template>
 
 <style lang="sass" scoped>
 	.root
 		height: 100%
+
+	.tab
+		display: block
+		float: left
+		width: 80%
 </style>
 
 <script type="text/javascript">
