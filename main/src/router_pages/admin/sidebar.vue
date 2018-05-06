@@ -48,9 +48,9 @@
 		cursor: pointer
 
 	.heading-opened
-		background-color: #803
+		background-color: $main-color
 	.heading-opened:hover
-		background-color: lighten(#803, 10%)
+		background-color: lighten($main-color, 10%)
 
 
 	// Subheading
@@ -61,9 +61,9 @@
 		cursor: pointer
 
 	.sub-heading-opened
-		background-color: #933
+		background-color: $sub-color
 	.sub-heading-opened:hover
-		background-color: lighten(#933, 10%)
+		background-color: lighten($sub-color, 10%)
 
 
 	.fa-icon
