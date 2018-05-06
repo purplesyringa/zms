@@ -59,6 +59,11 @@
 		background-color: lighten(#EEE, 5%)
 		color: #000
 
+	tr:first-child
+		background-color: #DDD
+	tr:first-child:hover
+		background-color: lighten(#DDD, 3%)
+
 	th, td
 		padding: 8px
 
