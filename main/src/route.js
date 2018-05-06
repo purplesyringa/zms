@@ -31,11 +31,14 @@ export const route = vue => {
 			controller(params) {
 				const oldView = vue.currentView;
 
-				route.controller(params);
-				if(oldView == vue.currentView) {
-					vue.currentView = null;
-					vue.$nextTick(() => vue.currentView = oldView);
+				if(route.controller(params) !== false) {
+					if(oldView == vue.currentView) {
+						vue.currentView = null;
+						vue.$nextTick(() => vue.currentView = oldView);
+					}
 				}
+
+				vue.$eventBus.$emit("navigate");
 			}
 		});
 	});
