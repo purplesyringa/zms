@@ -1,6 +1,12 @@
 <template>
 	<div class="content-container">
 		<div class="content">
+			<!-- New post -->
+			<div class="new-post" v-if="siteInfo.privatekey">
+				<icon name="pencil-alt" />
+				<a @click="$router.navigate('admin/posts/new-post')">New post</a>
+			</div>
+
 			<div class="post" v-for="post in posts">
 				<div class="post-title">
 					<a @click="$router.navigate(post.url)">{{post.title}}</a>
@@ -55,6 +61,14 @@
 	a:hover
 		text-decoration: underline
 		cursor: pointer
+
+
+	.new-post
+		display: block
+		margin: 32px 0
+
+		font-family: Verdana, Arial, sans-serif
+		font-size: 16px
 </style>
 
 <script language="text/javascript">
@@ -63,6 +77,26 @@
 	export default {
 		props: [],
 		name: "content",
+
+		data() {
+			return {
+				siteInfo: {
+					privatekey: false
+				}
+			};
+		},
+		mounted() {
+			this.$eventBus.$on("setSiteInfo", this.setSiteInfo);
+		},
+		destroyed() {
+			this.$eventBus.$off("setSiteInfo", this.setSiteInfo);
+		},
+		methods: {
+			setSiteInfo(siteInfo) {
+				this.siteInfo = siteInfo;
+			}
+		},
+
 		asyncComputed: {
 			async posts() {
 				return await Posts.getList();
