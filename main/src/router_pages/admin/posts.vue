@@ -83,6 +83,7 @@
 	.icon
 		cursor: pointer
 		margin-left: 8px
+		color: lighten(#803, 10%)
 </style>
 
 <script type="text/javascript">
