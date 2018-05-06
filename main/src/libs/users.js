@@ -20,6 +20,20 @@ class Users {
 		return Object.keys(permissions).filter(id => !permissions[id]);
 	}
 
+	async getAllRules() {
+		const admins = await this.getAdmins();
+		const moderators = await this.getModerators();
+		const authors = await this.getAuthors();
+		const banned = await this.getBanned();
+
+		let all = [];
+		admins.forEach(id => all.push({id, role: "admin"}));
+		moderators.forEach(id => all.push({id, role: "moderator"}));
+		authors.forEach(id => all.push({id, role: "author"}));
+		banned.forEach(id => all.push({id, role: "banned"}));
+		return all;
+	}
+
 
 	async getRoleByAddress(address) {
 		const content = JSON.parse(await zeroFS.readFile("content.json"));
