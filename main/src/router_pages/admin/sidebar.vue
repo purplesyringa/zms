@@ -94,9 +94,6 @@
 						sub: [
 							{
 								name: "New post"
-							},
-							{
-								name: "New article"
 							}
 						]
 					},
