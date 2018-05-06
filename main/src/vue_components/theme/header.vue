@@ -1,9 +1,9 @@
 <template>
-	<div class="header-container">
+	<div class="header-container" @click="$router.navigate('')">
 		<div class="header">
 			<div class="title">
 				{{siteInfo.content.title}}
-				<icon name="cog" scale="2" class="cog" v-if="siteInfo.privatekey" @click.native="$router.navigate('admin')" />
+				<icon name="cog" scale="2" class="cog" v-if="siteInfo.privatekey" @click.native.stop="$router.navigate('admin')" />
 			</div>
 			<div class="description">{{siteInfo.content.description}}</div>
 		</div>
@@ -17,6 +17,7 @@
 		display: block
 		background-color: $header-bg
 		padding: 64px 0
+		cursor: pointer
 	.header
 		display: block
 		width: $view-width
