@@ -82,6 +82,7 @@
 		float: right
 	.icon
 		cursor: pointer
+		margin-left: 8px
 </style>
 
 <script type="text/javascript">
