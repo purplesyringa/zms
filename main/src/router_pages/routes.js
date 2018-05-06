@@ -12,6 +12,14 @@ export default vue => [
 		path: "admin",
 		controller: () => {
 			vue.currentView = AdminRoot;
+			return false;
+		}
+	},
+	{
+		path: "admin/:page",
+		controller: () => {
+			vue.currentView = AdminRoot;
+			return false;
 		}
 	}
 ];
