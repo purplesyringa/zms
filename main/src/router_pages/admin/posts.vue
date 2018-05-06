@@ -13,6 +13,11 @@
 					{{post.title}}
 
 					<div class="icons">
+						<span class="icon" @click="$router.navigate(post.editUrl)">
+							<icon name="edit" />
+							Edit
+						</span>
+
 						<span class="icon" @click="$router.navigate(post.url)">
 							<icon name="eye" />
 							View

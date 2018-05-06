@@ -37,6 +37,7 @@ class Posts {
 
 			let id = this.shortenAddress(row.address) + "-" + row.id;
 			row.url = `posts/${id}`;
+			row.editUrl = `admin/posts/edit/${id}`;
 
 			row.user = row.cert_user_id.replace(/@.*/, "");
 			row.userUrl = "users/" + this.shortenAddress(row.address);
