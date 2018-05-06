@@ -6,6 +6,11 @@
 				<icon name="edit" />
 				<a @click="$router.navigate(post.editUrl)">Edit post</a>
 			</div>
+			<!-- Delete post -->
+			<div class="delete-post" v-if="siteInfo.privatekey">
+				<icon name="trash" />
+				<a @click="remove">Delete post</a>
+			</div>
 
 
 			<div class="post-title">{{post.title}}</div>
@@ -48,12 +53,15 @@
 		color: #222
 
 
-	.edit-post
+	.edit-post, .delete-post
 		display: block
-		margin: 32px 0
 
 		font-family: Verdana, Arial, sans-serif
 		font-size: 16px
+	.edit-post
+		margin-top: 32px
+	.delete-post
+		margin-bottom: 32px
 </style>
 
 <script language="text/javascript">
