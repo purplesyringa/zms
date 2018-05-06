@@ -4,10 +4,14 @@
 
 		<table>
 			<tr>
+				<th class="column-name">User name</th>
 				<th class="column-id">ID</th>
 				<th class="column-role">Role</th>
 			</tr>
 			<tr v-for="user in users">
+				<td class="column-name">
+					{{user.user}}
+				</td>
 				<td class="column-id">
 					{{user.id}}
 				</td>
@@ -60,8 +64,10 @@
 		color: #000
 
 
+	.column-user
+		width: 25%
 	.column-id
-		width: 75%
+		width: 50%
 	.column-role
 		width: 25%
 

@@ -1,4 +1,4 @@
-import {zeroAuth, zeroFS} from "../route.js";
+import {zeroPage, zeroAuth, zeroFS, zeroDB, zeroID} from "../route.js";
 
 class Users {
 	async getAdmins() {
@@ -31,6 +31,11 @@ class Users {
 		moderators.forEach(id => all.push({id, role: "moderator"}));
 		authors.forEach(id => all.push({id, role: "author"}));
 		banned.forEach(id => all.push({id, role: "banned"}));
+
+		for await(let user of all) {
+			user.certUserId = await this.addressToCertUserId(user.id);
+			user.user = user.certUserId.replace(/@.*/, "");
+		}
 		return all;
 	}
 
@@ -73,6 +78,34 @@ class Users {
 		role = arr.indexOf(role);
 
 		return currentRole >= role;
+	}
+
+
+	async addressToCertUserId(address) {
+		// First, check json table
+		let res = await zeroDB.query(`
+			SELECT * FROM json WHERE directory LIKE "%/${address}"
+		`);
+		if(res.length) {
+			return res[0].cert_user_id;
+		}
+
+		// Try ZeroID
+
+		// Ask ZeroID CORS permission
+		let permission = "Cors:1iD5ZQJMNXu43w1qLB8sfdHVKppVMduGz";
+		let siteInfo = await zeroPage.getSiteInfo();
+		if(siteInfo.settings.permissions.indexOf(permission) === -1) {
+			await zeroPage.cmd("wrapperPermissionAdd", [permission]);
+		}
+
+		try {
+			let zid = await zeroID.findUserById(address);
+			return zid.name + "@zeroid.bit";
+		} catch(e) {}
+
+		// Unknown
+		return address;
 	}
 };
 

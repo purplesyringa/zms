@@ -10,6 +10,9 @@ const zeroFS = new ZeroFS(zp);
 import ZeroDB from "zero-dev-lib/ZeroDB";
 const zeroDB = new ZeroDB(zp);
 
+import ZeroID from "zero-dev-lib/ZeroID";
+const zeroID = new ZeroID(zp);
+
 import ZeroAuth from "zero-dev-lib/ZeroAuth";
 const zeroAuth = new ZeroAuth(zp);
 zp.auth = zeroAuth;
@@ -45,4 +48,4 @@ export const route = vue => {
 	router.router.check(router.router.getURL());
 };
 
-export {zp as zeroPage, zeroDB, zeroFS, zeroAuth};
+export {zp as zeroPage, zeroDB, zeroFS, zeroAuth, zeroID};
