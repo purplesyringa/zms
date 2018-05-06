@@ -2,9 +2,19 @@ import {zeroAuth, zeroDB} from "../route.js";
 
 class Posts {
 	async getList() {
-		return zeroDB.query(`
-			SELECT * FROM posts
+		let rows = await zeroDB.query(`
+			SELECT posts.*, json.directory AS directory
+
+			FROM posts
+			LEFT JOIN json ON (json.json_id = posts.json_id)
 		`);
+
+		return rows.map(row => {
+			row.address = row.directory.replace("authors/", "");
+			let id = this.shortenAddress(row.address) + "-" + row.id;
+			row.url = `posts/${id}`;
+			return row;
+		});
 	}
 
 	async publish(title, content, cut) {

@@ -3,7 +3,10 @@
 		<div class="content">
 			<div class="post" v-for="post in posts">
 				<div class="post-title">{{post.title}}</div>
-				<div class="post-description">{{post.cut}}</div>
+				<div class="post-description">
+					{{post.cut}}
+					<a @click="$router.navigate(post.url)">Read more</a>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -34,6 +37,12 @@
 		font-family: Verdana, Arial, sans-serif
 		font-size: 16px
 		color: #222
+
+	a
+		color: lighten(#803, 10%)
+	a:hover
+		text-decoration: underline
+		cursor: pointer
 </style>
 
 <script language="text/javascript">
