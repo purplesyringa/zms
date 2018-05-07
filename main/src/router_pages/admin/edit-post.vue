@@ -22,7 +22,7 @@
 			v-model="post.content"
 		/>
 
-		<input type="submit" class="submit" value="Update" @click="update">
+		<theme-button value="Update" @click="update" />
 	</div>
 </template>
 
@@ -38,21 +38,6 @@
 
 	.text-input
 		margin-top: 16px
-
-	.submit
-		display: block
-		width: 100px
-		margin-top: 16px
-		float: right
-
-		font-family: Verdana, Arial, sans-serif
-		font-size: 16px
-		color: #FFF
-
-		background-color: #803
-		padding: 12px
-
-		border: none
 </style>
 
 <script type="text/javascript">

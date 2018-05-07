@@ -5,7 +5,7 @@
 		<named-input class="input" name="Site title" :error="title === 'Please, fill in title'" v-model="title" />
 		<named-input class="input" name="Site description" :error="description === 'Please, fill in description'" v-model="description" />
 
-		<input type="submit" class="submit" value="Update" @click="update">
+		<theme-button value="Update" @click="update" />
 	</div>
 </template>
 
@@ -32,22 +32,6 @@
 
 	.input.error
 		color: #803
-
-
-	.submit
-		display: block
-		width: 100px
-		margin-top: 16px
-		float: right
-
-		font-family: Verdana, Arial, sans-serif
-		font-size: 16px
-		color: #FFF
-
-		background-color: #803
-		padding: 12px
-
-		border: none
 </style>
 
 <script type="text/javascript">

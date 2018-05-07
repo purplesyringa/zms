@@ -15,6 +15,9 @@ Vue.component("named-input", NamedInput);
 import NamedTextArea from "./vue_components/theme/components/named-textarea.vue";
 Vue.component("named-textarea", NamedTextArea);
 
+import ThemeButton from "./vue_components/theme/components/button.vue";
+Vue.component("theme-button", ThemeButton);
+
 
 Vue.prototype.$eventBus = new Vue();
 
