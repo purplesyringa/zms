@@ -10,7 +10,7 @@
 		</div>
 
 		<!-- headings -->
-		<component v-for="heading in headings" :key="heading.name">
+		<component v-for="heading in headings" v-if="heading.when ? heading.when() : true" :key="heading.name">
 			<div
 				:class="{heading: true, 'heading-opened': looksLike(current, heading.name)}"
 				@click="open(heading)"
@@ -110,23 +110,35 @@
 					{
 						name: "Settings",
 						icon: "cog",
+						when: () => this.siteInfo.privatekey,
 						sub: []
 					},
 				],
 				current: "",
-				currentSubitem: ""
+				currentSubitem: "",
+				siteInfo: {
+					privatekey: false
+				}
 			};
 		},
 
 		mounted() {
+			this.$eventBus.$on("setSiteInfo", this.setSiteInfo);
+			this.$eventBus.$emit("needSiteInfo");
+
 			this.$eventBus.$on("navigate", this.navigated);
 			this.navigated();
 		},
 		destroyed() {
+			this.$eventBus.$off("setSiteInfo", this.setSiteInfo);
 			this.$eventBus.$off("navigate", this.navigated);
 		},
 
 		methods: {
+			setSiteInfo(siteInfo) {
+				this.siteInfo = siteInfo;
+			},
+
 			open(heading) {
 				this.$router.navigate("admin/" + heading.name.toLowerCase());
 			},
