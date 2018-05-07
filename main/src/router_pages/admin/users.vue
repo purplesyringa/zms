@@ -1,6 +1,6 @@
 <template>
 	<div class="users">
-		<div class="header">Users</div>
+		<h1>Users</h1>
 
 		<table>
 			<tr>
@@ -47,12 +47,10 @@
 </template>
 
 <style lang="sass" scoped>
+	@import "./global.sass"
+
 	.users
 		padding: 16px
-	.header
-		font-family: Verdana, Arial, sans-serif
-		font-size: 32px
-		color: #222
 
 
 	.column-user

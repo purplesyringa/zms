@@ -1,6 +1,6 @@
 <template>
 	<div class="settings">
-		<div class="header">Settings</div>
+		<h1>Settings</h1>
 
 		<named-input class="text-input" name="Site title" :error="title === 'Please, fill in title'" v-model="title" />
 		<named-input class="text-input" name="Site description" :error="description === 'Please, fill in description'" v-model="description" />
@@ -10,14 +10,10 @@
 </template>
 
 <style lang="sass" scoped>
+	@import "./global.sass"
+
 	.settings
 		padding: 16px
-
-	.header
-		font-family: Verdana, Arial, sans-serif
-		font-size: 32px
-		color: #222
-
 
 	.text-input
 		margin-top: 16px

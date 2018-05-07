@@ -1,6 +1,6 @@
 <template>
 	<div class="posts">
-		<div class="header">Posts</div>
+		<h1>Posts</h1>
 
 		<table>
 			<tr>
@@ -41,12 +41,10 @@
 </template>
 
 <style lang="sass" scoped>
+	@import "./global.sass"
+
 	.posts
 		padding: 16px
-	.header
-		font-family: Verdana, Arial, sans-serif
-		font-size: 32px
-		color: #222
 
 
 	.column-title

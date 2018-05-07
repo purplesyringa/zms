@@ -1,6 +1,6 @@
 <template>
 	<div class="edit-post">
-		<div class="header">Edit post</div>
+		<h1>Edit post</h1>
 
 		<named-input
 			name="Title"
@@ -27,14 +27,10 @@
 </template>
 
 <style lang="sass" scoped>
+	@import "./global.sass"
+
 	.edit-post
 		padding: 16px
-
-	.header
-		font-family: Verdana, Arial, sans-serif
-		font-size: 32px
-		color: #222
-
 
 	.text-input
 		margin-top: 16px

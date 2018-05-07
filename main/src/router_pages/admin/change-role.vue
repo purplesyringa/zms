@@ -1,10 +1,10 @@
 <template>
 	<div class="change-role">
-		<div class="header">
+		<h1>
 			Change role
 			<icon name="chevron-right" />
 			{{user}}
-		</div>
+		</h1>
 
 		<table>
 			<tr>
@@ -30,12 +30,10 @@
 </template>
 
 <style lang="sass" scoped>
+	@import "./global.sass"
+
 	.change-role
 		padding: 16px
-	.header
-		font-family: Verdana, Arial, sans-serif
-		font-size: 32px
-		color: #222
 
 
 	.column-use
