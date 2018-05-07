@@ -2,8 +2,8 @@
 	<div class="settings">
 		<div class="header">Settings</div>
 
-		<named-input class="input" name="Site title" :error="title === 'Please, fill in title'" v-model="title" />
-		<named-input class="input" name="Site description" :error="description === 'Please, fill in description'" v-model="description" />
+		<named-input class="text-input" name="Site title" :error="title === 'Please, fill in title'" v-model="title" />
+		<named-input class="text-input" name="Site description" :error="description === 'Please, fill in description'" v-model="description" />
 
 		<theme-button value="Update" @click="update" />
 	</div>
@@ -19,19 +19,8 @@
 		color: #222
 
 
-
-	.input
+	.text-input
 		margin-top: 16px
-
-	textarea.input
-		height: 200px
-		resize: vertical
-	textarea.input.small
-		height: 100px
-		resize: none
-
-	.input.error
-		color: #803
 </style>
 
 <script type="text/javascript">
