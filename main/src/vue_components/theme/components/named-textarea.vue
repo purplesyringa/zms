@@ -19,6 +19,8 @@
 	textarea
 		display: block
 		width: calc(100% - 26px)
+		height: 200px
+		resize: vertical
 
 		font-family: Verdana, Arial, sans-serif
 		font-size: 16px
