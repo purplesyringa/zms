@@ -19,14 +19,14 @@
 					{{user.role}}
 
 					<div class="icons">
-						<span class="icon" @click="$router.navigate(`admin/users/change-role/${user.id}`)">
+						<span class="icon" @click="$router.navigate(`admin/users/change-role/${user.id}`)" v-if="siteInfo.privatekey">
 							<icon name="edit" />
 							Change
 						</span>
 					</div>
 				</td>
 			</tr>
-			<tr>
+			<tr v-if="siteInfo.privatekey">
 				<td class="column-name">
 					<i>New user</i>
 				</td>
@@ -126,8 +126,19 @@
 
 		data() {
 			return {
-				newId: ""
+				newId: "",
+				siteInfo: {
+					privatekey: false
+				}
 			};
+		},
+
+		mounted() {
+			this.$eventBus.$on("setSiteInfo", this.setSiteInfo);
+			this.$eventBus.$emit("needSiteInfo");
+		},
+		destroyed() {
+			this.$eventBus.$off("setSiteInfo", this.setSiteInfo);
 		},
 
 		asyncComputed: {
@@ -137,6 +148,10 @@
 		},
 
 		methods: {
+			setSiteInfo(siteInfo) {
+				this.siteInfo = siteInfo;
+			},
+
 			next() {
 				if(!this.newId || this.newId === "Please, fill in user ID") {
 					this.newId = "Please, fill in user ID";
