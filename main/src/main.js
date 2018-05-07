@@ -12,6 +12,9 @@ Vue.component("icon", Icon);
 import NamedInput from "./vue_components/theme/components/named-input.vue";
 Vue.component("named-input", NamedInput);
 
+import NamedTextArea from "./vue_components/theme/components/named-textarea.vue";
+Vue.component("named-textarea", NamedTextArea);
+
 
 Vue.prototype.$eventBus = new Vue();
 

@@ -13,11 +13,12 @@
 			placeholder="Introduction (shown before [Read more] button)"
 			v-model="post.cut"
 		></textarea>
-		<textarea
-			:class="{input: true, error: post.content === 'Please, type something'}"
-			placeholder="What's on your mind?"
-			v-model="post.content"
-		></textarea>
+		<named-textarea
+			name="What's on your mind?"
+			class="text-input"
+			:error="content === 'Please, type something'"
+			v-model="content"
+		/>
 
 		<input type="submit" class="submit" value="Update" @click="update">
 	</div>
