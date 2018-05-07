@@ -12,8 +12,14 @@
 		{
 			"name": "footerCol1links",
 			"description": "Footer column 1 links",
-			"type": "string[]",
-			"default": [""]
+			"type": "string[][]",
+			"table": ["Text", "Address"],
+			"default": [
+				["Link 1", "fgdgfdf"],
+				["Link 2", "fgdgfdf"],
+				["Link 3", "fgdgfdf"],
+				["Link 4", "fgdgfdf"]
+			]
 		},
 		{
 			"name": "footerCol2",
@@ -24,8 +30,14 @@
 		{
 			"name": "footerCol2links",
 			"description": "Footer column 2 links",
-			"type": "string[]",
-			"default": [""]
+			"type": "string[][]",
+			"table": ["Text", "Address"],
+			"default": [
+				["Link 1", "fgdgfdf"],
+				["Link 2", "fgdgfdf"],
+				["Link 3", "fgdgfdf"],
+				["Link 4", "fgdgfdf"]
+			]
 		},
 		{
 			"name": "footerCol3",
@@ -36,8 +48,14 @@
 		{
 			"name": "footerCol3links",
 			"description": "Footer column 3 links",
-			"type": "string[]",
-			"default": [""]
+			"type": "string[][]",
+			"table": ["Text", "Address"],
+			"default": [
+				["Link 1", "fgdgfdf"],
+				["Link 2", "fgdgfdf"],
+				["Link 3", "fgdgfdf"],
+				["Link 4", "fgdgfdf"]
+			]
 		}
 	]
 }

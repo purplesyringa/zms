@@ -21,6 +21,20 @@
 				:small="true"
 				:placeholder="setting.default.join('\n')"
 			/>
+
+			<component v-else-if="setting.type === 'string[][]'">
+				<h4>{{setting.description}}</h4>
+
+				<table>
+					<tr>
+						<th v-for="column in setting.table">{{column}}</th>
+					</tr>
+
+					<tr v-for="row in setting.default">
+						<td v-for="cell in row">{{cell}}</td>
+					</tr>
+				</table>
+			</component>
 		</div>
 	</div>
 </template>
