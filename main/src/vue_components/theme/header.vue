@@ -3,7 +3,7 @@
 		<div class="header">
 			<div class="title">
 				{{siteInfo.content.title}}
-				<icon name="cog" scale="2" class="cog" v-if="siteInfo.privatekey" @click.native.stop="$router.navigate('admin')" />
+				<icon name="cog" scale="2" class="cog" v-if="isAuthor || siteInfo.privatekey" @click.native.stop="$router.navigate('admin')" />
 			</div>
 			<div class="description">{{siteInfo.content.description}}</div>
 		</div>
@@ -48,6 +48,9 @@
 </style>
 
 <script language="text/javascript">
+	import {zeroAuth} from "../../route.js";
+	import Users from "../../libs/users.js";
+
 	export default {
 		props: [],
 		name: "header",
@@ -73,6 +76,17 @@
 		methods: {
 			setSiteInfo(siteInfo) {
 				this.siteInfo = siteInfo;
+			}
+		},
+
+		asyncComputed: {
+			async isAuthor() {
+				const auth = zeroAuth.getAuth();
+				if(!auth) {
+					return false;
+				}
+
+				return await Users.hasRoleByAddress(auth.address, "author");
 			}
 		}
 	};
