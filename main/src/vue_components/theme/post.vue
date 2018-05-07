@@ -2,12 +2,12 @@
 	<div class="content-container">
 		<div class="content">
 			<!-- Edit post -->
-			<div class="edit-post" v-if="siteInfo.privatekey">
+			<div class="edit-post" v-if="post.editable">
 				<icon name="edit" />
 				<a @click="$router.navigate(post.editUrl)">Edit post</a>
 			</div>
 			<!-- Delete post -->
-			<div class="delete-post" v-if="siteInfo.privatekey">
+			<div class="delete-post" v-if="post.editable">
 				<icon name="trash" />
 				<a @click="remove">Delete post</a>
 			</div>
