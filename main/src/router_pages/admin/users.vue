@@ -30,8 +30,8 @@
 				<td class="column-name">
 					<i>New user</i>
 				</td>
-				<td class="column-id column-input-id">
-					<input type="text" placeholder="Fill in user ID" :class="{'input-id': true, 'input-error': newId === 'Please, fill in user ID'}" required v-model="newId">
+				<td class="column-id no-padding">
+					<input type="text" placeholder="Fill in user ID" :class="{'input-error': newId === 'Please, fill in user ID'}" required v-model="newId">
 				</td>
 				<td class="column-role">
 					<div class="icons">
@@ -60,18 +60,6 @@
 	.column-role
 		width: 25%
 
-	.column-input-id
-		padding: 0
-		height: 0
-	.input-id
-		width: 100%
-		height: 100%
-		border: none
-		background: transparent
-		padding: 8px
-		font: inherit
-	.input-id:invalid
-		font-style: italic
 	.input-error
 		color: #803
 

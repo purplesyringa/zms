@@ -31,7 +31,9 @@
 					</tr>
 
 					<tr v-for="row in setting.default">
-						<td v-for="cell in row">{{cell}}</td>
+						<td v-for="cell in row" class="no-padding">
+							<input type="text" :value="cell" required>
+						</td>
 					</tr>
 				</table>
 			</component>
