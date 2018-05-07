@@ -25,7 +25,7 @@ Vue.use(router.plugin);
 zp.on("wrapperPopState", res => router.router.listenForBack(res.params));
 
 import Routes from "./router_pages/routes.js";
-export const route = vue => {
+export const route = async vue => {
 	const routes = Routes(vue, zp);
 
 	routes.forEach(route => {
@@ -45,6 +45,8 @@ export const route = vue => {
 			}
 		});
 	});
+
+	await zeroAuth.getAuthAsync(); // Some pages use zeroAuth.getAuth()
 	router.router.check(router.router.getURL());
 };
 

@@ -2,7 +2,7 @@
 	<div class="content-container">
 		<div class="content">
 			<!-- New post -->
-			<div class="new-post" v-if="siteInfo.privatekey">
+			<div class="new-post" v-if="isAuthor">
 				<icon name="pencil-alt" />
 				<a @click="$router.navigate('admin/posts/new-post')">New post</a>
 			</div>
@@ -95,8 +95,10 @@
 </style>
 
 <script language="text/javascript">
+	import {zeroAuth} from "../../route.js";
 	import Posts from "../../libs/posts.js";
 	import Settings from "../../libs/settings.js";
+	import Users from "../../libs/users.js";
 
 	export default {
 		props: [],
@@ -142,6 +144,15 @@
 
 				const PAGE = await Settings.get("posts_per_page", 10);
 				return await Posts.getList("", page * PAGE, PAGE);
+			},
+
+			async isAuthor() {
+				const auth = zeroAuth.getAuth();
+				if(!auth) {
+					return false;
+				}
+
+				return await Users.hasRoleByAddress(auth.address, "author");
 			}
 		}
 	};

@@ -172,7 +172,7 @@ class Users {
 	async hasRoleByAddress(address, role) {
 		let arr = ["banned", "user", "author", "moderator", "admin"];
 
-		let currentRole = this.getRoleByAddress(address);
+		let currentRole = await this.getRoleByAddress(address);
 		currentRole = arr.indexOf(currentRole);
 		role = arr.indexOf(role);
 
