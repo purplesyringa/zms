@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="name">{{name}}</div>
-		<textarea v-model="value" @input="$emit('input', value)" :class="{error}"></textarea>
+		<textarea v-model="value" @input="$emit('input', value)" :class="{error, small}"></textarea>
 	</div>
 </template>
 
@@ -30,6 +30,10 @@
 		padding-top: 40px
 		border: 1px solid #DDD
 
+	.small
+		height: 100px
+		resize: none
+
 	.error
 		color: #803
 </style>
@@ -37,7 +41,7 @@
 <script type="text/javascript">
 	export default {
 		name: "named-input",
-		props: ["name", "value", "error"],
+		props: ["name", "value", "error", "small"],
 		data() {
 			return {
 				name: "",

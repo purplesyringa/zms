@@ -8,16 +8,18 @@
 			:error="post.title === 'Please, fill in title'"
 			v-model="post.title"
 		/>
-		<textarea
-			:class="{input: true, small: true, error: post.cut === 'Please, fill in introduction'}"
-			placeholder="Introduction (shown before [Read more] button)"
+		<named-textarea
+			name="Introduction (shown before [Read more] button)"
+			class="text-input"
+			:small="true"
+			:error="post.cut === 'Please, fill in introduction'"
 			v-model="post.cut"
-		></textarea>
+		/>
 		<named-textarea
 			name="What's on your mind?"
 			class="text-input"
 			:error="content === 'Please, type something'"
-			v-model="content"
+			v-model="post.content"
 		/>
 
 		<input type="submit" class="submit" value="Update" @click="update">
@@ -36,29 +38,6 @@
 
 	.text-input
 		margin-top: 16px
-
-	textarea.input
-		display: block
-		width: calc(100% - 26px)
-		margin-top: 16px
-
-		font-family: Verdana, Arial, sans-serif
-		font-size: 16px
-		color: #222
-
-		padding: 12px
-		border: 1px solid #DDD
-
-	textarea.input
-		height: 200px
-		resize: vertical
-	textarea.input.small
-		height: 100px
-		resize: none
-
-	.input.error
-		color: #803
-
 
 	.submit
 		display: block
