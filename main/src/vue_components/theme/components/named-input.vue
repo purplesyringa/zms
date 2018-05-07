@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="name">{{name}}</div>
-		<input type="text" v-model="value" @input="$emit('input', value)" :class="{error}">
+		<input type="text" v-model="value" :placeholder="placeholder" @input="$emit('input', value)" :class="{error}">
 	</div>
 </template>
 
@@ -35,7 +35,7 @@
 <script type="text/javascript">
 	export default {
 		name: "named-input",
-		props: ["name", "value", "error"],
+		props: ["name", "value", "error", "placeholder"],
 		data() {
 			return {
 				name: "",

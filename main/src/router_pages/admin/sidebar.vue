@@ -111,7 +111,11 @@
 						name: "Settings",
 						icon: "cog",
 						when: () => this.siteInfo.privatekey,
-						sub: []
+						sub: [
+							{
+								name: "Theme settings"
+							}
+						]
 					},
 				],
 				current: "",

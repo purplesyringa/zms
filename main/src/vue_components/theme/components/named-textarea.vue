@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="name">{{name}}</div>
-		<textarea v-model="value" @input="$emit('input', value)" :class="{error, small}"></textarea>
+		<textarea v-model="value" :placeholder="placeholder" @input="$emit('input', value)" :class="{error, small}"></textarea>
 	</div>
 </template>
 
@@ -41,7 +41,7 @@
 <script type="text/javascript">
 	export default {
 		name: "named-input",
-		props: ["name", "value", "error", "small"],
+		props: ["name", "value", "error", "small", "placeholder"],
 		data() {
 			return {
 				name: "",

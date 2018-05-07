@@ -1,0 +1,43 @@
+{
+	"settings": [
+		{
+			"heading": "Footer"
+		},
+		{
+			"name": "footerCol1",
+			"description": "Footer column 1 heading",
+			"type": "string",
+			"default": ""
+		},
+		{
+			"name": "footerCol1links",
+			"description": "Footer column 1 links",
+			"type": "string[]",
+			"default": [""]
+		},
+		{
+			"name": "footerCol2",
+			"description": "Footer column 2 heading",
+			"type": "string",
+			"default": ""
+		},
+		{
+			"name": "footerCol2links",
+			"description": "Footer column 2 links",
+			"type": "string[]",
+			"default": [""]
+		},
+		{
+			"name": "footerCol3",
+			"description": "Footer column 3 heading",
+			"type": "string",
+			"default": ""
+		},
+		{
+			"name": "footerCol3links",
+			"description": "Footer column 3 links",
+			"type": "string[]",
+			"default": [""]
+		}
+	]
+}
