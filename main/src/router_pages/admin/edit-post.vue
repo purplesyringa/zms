@@ -2,12 +2,12 @@
 	<div class="edit-post">
 		<div class="header">Edit post</div>
 
-		<input
-			type="text"
-			:class="{input: true, error: post.title === 'Please, fill in title'}"
-			placeholder="Title"
+		<named-input
+			name="Title"
+			class="text-input"
+			:error="post.title === 'Please, fill in title'"
 			v-model="post.title"
-		>
+		/>
 		<textarea
 			:class="{input: true, small: true, error: post.cut === 'Please, fill in introduction'}"
 			placeholder="Introduction (shown before [Read more] button)"
@@ -33,7 +33,10 @@
 		color: #222
 
 
-	.input
+	.text-input
+		margin-top: 16px
+
+	textarea.input
 		display: block
 		width: calc(100% - 26px)
 		margin-top: 16px
