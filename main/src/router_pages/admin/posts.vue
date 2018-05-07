@@ -49,38 +49,6 @@
 		color: #222
 
 
-	table
-		width: 100%
-		margin-top: 16px
-
-		border-spacing: 0
-		border-collapse: collapse
-
-	tr
-		border: 1px solid #DDD
-		background-color: #EEE
-		color: #666
-	tr:hover
-		background-color: lighten(#EEE, 5%)
-		color: #000
-
-	tr:first-child
-		background-color: #DDD
-	tr:first-child:hover
-		background-color: lighten(#DDD, 3%)
-
-	th, td
-		padding: 8px
-
-		font-family: Verdana, Arial, sans-serif
-		font-size: 16px
-		text-align: left
-		font-weight: normal
-
-	th
-		color: #000
-
-
 	.column-title
 		width: 50%
 	.column-author

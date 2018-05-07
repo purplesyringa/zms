@@ -1,4 +1,5 @@
 import "./sass/main.sass";
+import "./vue_components/theme/table.sass";
 
 import Vue from "vue/dist/vue.min.js";
 
