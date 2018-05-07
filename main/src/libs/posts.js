@@ -1,4 +1,5 @@
 import {zeroAuth, zeroDB} from "../route.js";
+import Users from "./users.js";
 
 class Posts {
 	async getCount(where="") {
@@ -32,7 +33,7 @@ class Posts {
 			LIMIT ${offset}, ${limit}
 		`);
 
-		return rows.map(row => {
+		return Promise.all(rows.map(async row => {
 			row.address = row.directory.replace("authors/", "");
 
 			let id = this.shortenAddress(row.address) + "-" + row.id;
@@ -42,8 +43,10 @@ class Posts {
 			row.user = row.cert_user_id.replace(/@.*/, "");
 			row.userUrl = "users/" + this.shortenAddress(row.address);
 
+			row.editable = await this.isEditable(row);
+
 			return row;
-		});
+		}));
 	}
 
 	async get(id) {
@@ -106,6 +109,26 @@ class Posts {
 
 	shortenAddress(address) {
 		return address.toLowerCase().substr(0, 10);
+	}
+
+	async isEditable(post) {
+		const auth = zeroAuth.getAuth();
+		if(!auth) {
+			return false;
+		}
+
+		let role = await Users.getRoleByAddress(auth.address);
+		if(role === "admin" || role === "moderator") {
+			// Admin and moderator can edit any post
+			return true;
+		}
+
+		if(role === "author" && post.address === auth.address) {
+			// Author can edit his own posts
+			return true;
+		}
+
+		return false;
 	}
 };
 

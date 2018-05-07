@@ -13,12 +13,12 @@
 					{{post.title}}
 
 					<div class="icons">
-						<span class="icon" @click="$router.navigate(post.editUrl)">
+						<span class="icon" @click="$router.navigate(post.editUrl)" v-if="post.editable">
 							<icon name="edit" />
 							Edit
 						</span>
 
-						<span class="icon" @click="remove(post)">
+						<span class="icon" @click="remove(post)" v-if="post.editable">
 							<icon name="trash" />
 							Delete
 						</span>
