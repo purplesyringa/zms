@@ -23,6 +23,7 @@
 			<component v-if="looksLike(current, heading.name)">
 				<div
 					v-for="subitem in heading.sub"
+					v-if="subitem.when ? subitem.when() : true"
 
 					:class="{'sub-heading': true, 'sub-heading-opened': looksLike(currentSubitem, subitem.name)}"
 					@click="openSubitem(heading, subitem)"
@@ -83,6 +84,9 @@
 </style>
 
 <script type="text/javascript">
+	import {zeroAuth} from "../../route.js";
+	import Users from "../../libs/users.js";
+
 	export default {
 		name: "admin-sidebar",
 		data() {
@@ -93,7 +97,8 @@
 						icon: "pencil-alt",
 						sub: [
 							{
-								name: "New post"
+								name: "New post",
+								when: () => this.isAuthor
 							}
 						]
 					},
@@ -139,6 +144,17 @@
 			navigated() {
 				this.current = this.$router.currentParams.page || "dashboard";
 				this.currentSubitem = this.$router.currentParams.subpage || "";
+			}
+		},
+
+		asyncComputed: {
+			async isAuthor() {
+				const auth = zeroAuth.getAuth();
+				if(!auth) {
+					return false;
+				}
+
+				return await Users.hasRoleByAddress(auth.address, "author");
 			}
 		}
 	};
