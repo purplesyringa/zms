@@ -2,19 +2,8 @@
 	<div class="settings">
 		<div class="header">Settings</div>
 
-		<div class="input-name">Site title</div>
-		<input
-			type="text"
-			:class="{input: true, error: title === 'Please, fill in title'}"
-			v-model="title"
-		>
-
-		<div class="input-name">Site description</div>
-		<input
-			type="text"
-			:class="{input: true, error: description === 'Please, fill in description'}"
-			v-model="description"
-		>
+		<named-input class="input" name="Site title" :error="title === 'Please, fill in title'" v-model="title" />
+		<named-input class="input" name="Site description" :error="description === 'Please, fill in description'" v-model="description" />
 
 		<input type="submit" class="submit" value="Update" @click="update">
 	</div>
@@ -30,28 +19,9 @@
 		color: #222
 
 
-	.input-name
-		display: block
-		padding: 12px 14px 6px
-		margin-top: 16px
-		margin-bottom: -36px
-
-		font-family: Verdana, Arial, sans-serif
-		font-size: 16px
-		color: #000
-		font-weight: bold
 
 	.input
-		display: block
-		width: calc(100% - 26px)
-
-		font-family: Verdana, Arial, sans-serif
-		font-size: 16px
-		color: #222
-
-		padding: 12px
-		padding-top: 40px
-		border: 1px solid #DDD
+		margin-top: 16px
 
 	textarea.input
 		height: 200px

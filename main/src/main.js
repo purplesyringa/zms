@@ -9,6 +9,9 @@ Vue.use(AsyncComputed);
 import Icon from "vue-awesome";
 Vue.component("icon", Icon);
 
+import NamedInput from "./vue_components/theme/components/named-input.vue";
+Vue.component("named-input", NamedInput);
+
 
 Vue.prototype.$eventBus = new Vue();
 
