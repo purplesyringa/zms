@@ -35,7 +35,9 @@
 						<td v-for="cell in row" class="no-padding">
 							<input type="text" :value="cell" required>
 						</td>
-						<td class="last-column"></td>
+						<td class="last-column" @click="popValue(setting, row)">
+							<icon name="minus" />
+						</td>
 					</tr>
 
 					<tr>
@@ -83,6 +85,10 @@
 				for(let name of setting.table) {
 					setting.toPush.push("");
 				}
+			},
+
+			popValue(setting, row) {
+				setting.value.splice(setting.value.indexOf(row), 1);
 			}
 		},
 
