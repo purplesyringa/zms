@@ -6,6 +6,9 @@ import Vue from "vue/dist/vue.min.js";
 import AsyncComputed from "vue-async-computed";
 Vue.use(AsyncComputed);
 
+import VueVisible from "vue-visible";
+Vue.use(VueVisible);
+
 import Icon from "vue-awesome";
 Vue.component("icon", Icon);
 
