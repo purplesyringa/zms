@@ -10,7 +10,7 @@
 
 				class="text-input"
 				:name="setting.description"
-				:placeholder="setting.value"
+				v-model="setting.value"
 			/>
 
 			<table v-else-if="setting.type === 'string[]'">
@@ -56,7 +56,7 @@
 				class="text-input"
 				:name="setting.description"
 				:small="true"
-				:placeholder="setting.value.join('\n')"
+				v-model="setting.value"
 			/>
 
 			<component v-else-if="setting.type === 'string[][]'">
@@ -71,8 +71,8 @@
 					</tr>
 
 					<tr v-for="row, i in setting.value">
-						<td v-for="cell in row" class="no-padding">
-							<input type="text" :value="cell" required>
+						<td v-for="cell, j in row" class="no-padding">
+							<input type="text" v-model="row[j]" required>
 						</td>
 						<td class="last-column" @click="popValue(setting, row)">
 							<icon name="minus" />
