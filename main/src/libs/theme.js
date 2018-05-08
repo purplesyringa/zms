@@ -1,5 +1,6 @@
 import {zeroFS, zeroPage} from "../route.js";
 import Settings from "./settings.js";
+import deepcopy from "deepcopy";
 
 class Theme {
 	async getSetting(name) {
@@ -14,12 +15,22 @@ class Theme {
 	}
 
 	async getAllSettings() {
-		const themeJson = this.getManifest();
-		let settings = {};
-		for await(let setting of themeJson.settings) {
-			settings[setting.name] = await this.getSetting(setting.name);
+		const manifest = deepcopy(this.getManifest().settings);
+		const settings = await Settings.getAll();
+
+		for(let name of Object.keys(settings)) {
+			if(!name.startswith("theme.")) {
+				continue;
+			}
+
+			name = name.replace("theme.", "");
+			let setting = manifest.find(setting => setting.name === name);
+			if(setting) {
+				setting.value = name;
+			}
 		}
-		return settings;
+
+		return manifest;
 	}
 
 

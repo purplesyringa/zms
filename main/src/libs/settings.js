@@ -1,6 +1,13 @@
 import {zeroFS, zeroPage} from "../route.js";
 
 class Settings {
+	async getAll() {
+		let content = await zeroFS.readFile("content.json");
+		content = JSON.parse(content);
+
+		return content.settings || {};
+	}
+
 	async get(name, def) {
 		let content = await zeroFS.readFile("content.json");
 		content = JSON.parse(content);
