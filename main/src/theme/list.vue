@@ -95,10 +95,10 @@
 </style>
 
 <script language="text/javascript">
-	import {zeroAuth} from "../../route.js";
-	import Posts from "../../libs/posts.js";
-	import Settings from "../../libs/settings.js";
-	import Users from "../../libs/users.js";
+	import {zeroAuth} from "../route.js";
+	import Posts from "../libs/posts.js";
+	import Settings from "../libs/settings.js";
+	import Users from "../libs/users.js";
 
 	export default {
 		props: [],

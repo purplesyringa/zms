@@ -65,7 +65,7 @@
 </style>
 
 <script language="text/javascript">
-	import Posts from "../../libs/posts.js";
+	import Posts from "../libs/posts.js";
 
 	export default {
 		props: [],

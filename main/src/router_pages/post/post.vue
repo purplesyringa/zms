@@ -23,9 +23,9 @@
 </style>
 
 <script type="text/javascript">
-	import ThemeHeader from "../../vue_components/theme/header.vue";
-	import ThemePost from "../../vue_components/theme/post.vue";
-	import ThemeFooter from "../../vue_components/theme/footer.vue";
+	import ThemeHeader from "../../theme/header.vue";
+	import ThemePost from "../../theme/post.vue";
+	import ThemeFooter from "../../theme/footer.vue";
 
 	export default {
 		name: "home",

@@ -45,7 +45,7 @@ class Theme {
 
 
 	getManifest() {
-		return require("../vue_components/theme/theme.json");
+		return require("../theme/theme.json");
 	}
 };
 

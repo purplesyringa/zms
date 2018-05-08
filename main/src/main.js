@@ -1,5 +1,5 @@
 import "./sass/main.sass";
-import "./vue_components/theme/table.sass";
+import "./theme/table.sass";
 
 import Vue from "vue/dist/vue.min.js";
 
@@ -12,13 +12,13 @@ Vue.use(VueVisible);
 import Icon from "vue-awesome";
 Vue.component("icon", Icon);
 
-import NamedInput from "./vue_components/theme/components/named-input.vue";
+import NamedInput from "./theme/components/named-input.vue";
 Vue.component("named-input", NamedInput);
 
-import NamedTextArea from "./vue_components/theme/components/named-textarea.vue";
+import NamedTextArea from "./theme/components/named-textarea.vue";
 Vue.component("named-textarea", NamedTextArea);
 
-import ThemeButton from "./vue_components/theme/components/button.vue";
+import ThemeButton from "./theme/components/button.vue";
 Vue.component("theme-button", ThemeButton);
 
 

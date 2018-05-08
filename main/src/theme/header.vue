@@ -48,8 +48,8 @@
 </style>
 
 <script language="text/javascript">
-	import {zeroAuth} from "../../route.js";
-	import Users from "../../libs/users.js";
+	import {zeroAuth} from "../route.js";
+	import Users from "../libs/users.js";
 
 	export default {
 		props: [],
