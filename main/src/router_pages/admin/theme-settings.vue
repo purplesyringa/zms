@@ -10,7 +10,7 @@
 
 				class="text-input"
 				:name="setting.description"
-				:placeholder="setting.default"
+				:placeholder="setting.value"
 			/>
 
 			<named-textarea
@@ -19,7 +19,7 @@
 				class="text-input"
 				:name="setting.description"
 				:small="true"
-				:placeholder="setting.default.join('\n')"
+				:placeholder="setting.value.join('\n')"
 			/>
 
 			<component v-else-if="setting.type === 'string[][]'">
@@ -31,7 +31,7 @@
 						<th class="last-column"></th>
 					</tr>
 
-					<tr v-for="row in setting.default">
+					<tr v-for="row in setting.value">
 						<td v-for="cell in row" class="no-padding">
 							<input type="text" :value="cell" required>
 						</td>
