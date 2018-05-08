@@ -13,6 +13,43 @@
 				:placeholder="setting.value"
 			/>
 
+			<table v-else-if="setting.type === 'string[]'">
+				<tr>
+					<th>{{setting.description}}</th>
+					<th class="last-column"></th>
+					<th class="last-column"></th>
+					<th class="last-column"></th>
+				</tr>
+
+				<tr v-for="value, i in setting.value">
+					<td class="no-padding">
+						<input type="text" :value="value" required>
+					</td>
+					<td class="last-column" @click="popPlainValue(setting, i)">
+						<icon name="minus" />
+					</td>
+
+					<th class="last-column" @click="movePlainDown(setting, i)">
+						<icon name="chevron-down" v-visible="i < setting.value.length - 1" />
+					</th>
+
+					<th class="last-column" @click="movePlainUp(setting, i)">
+						<icon name="chevron-up" v-visible="i > 0" />
+					</th>
+				</tr>
+
+				<tr>
+					<td class="no-padding">
+						<input type="text" required v-model="setting.toPush">
+					</td>
+					<td class="last-column" @click="pushPlainValue(setting)">
+						<icon name="check" />
+					</td>
+					<th class="last-column"></th>
+					<th class="last-column"></th>
+				</tr>
+			</table>
+
 			<named-textarea
 				v-else-if="setting.type === 'string[]'"
 
@@ -89,6 +126,7 @@
 		name: "theme-settings",
 
 		methods: {
+			// 2D-table -- string[][]
 			pushValue(setting) {
 				setting.value.push(setting.toPush);
 
@@ -114,6 +152,30 @@
 					setting.value.splice(index, 1);
 					setting.value.splice(index - 1, 0, row);
 				}
+			},
+
+			// 1D-table -- string[]
+			pushPlainValue(setting) {
+				setting.value.push(setting.toPush);
+				setting.toPush = "";
+			},
+			popPlainValue(setting, index) {
+				setting.value.splice(index, 1);
+			},
+
+			movePlainDown(setting, index) {
+				if(index !== setting.value.length - 1) { // Not last row
+					const row = setting.value[index];
+					setting.value.splice(index, 1);
+					setting.value.splice(index + 1, 0, row);
+				}
+			},
+			movePlainUp(setting, index) {
+				if(index !== 0) { // Not first row
+					const row = setting.value[index];
+					setting.value.splice(index, 1);
+					setting.value.splice(index - 1, 0, row);
+				}
 			}
 		},
 
@@ -127,7 +189,9 @@
 							let setting = settings[name];
 							setting.name = name;
 
-							if(setting.type === "string[][]") {
+							if(setting.type === "string[]") {
+								setting.toPush = "";
+							} else if(setting.type === "string[][]") {
 								setting.toPush = [];
 								for(let name of setting.table) {
 									setting.toPush.push("");

@@ -12,13 +12,12 @@
 		{
 			"name": "footerCol1links",
 			"description": "Footer column 1 links",
-			"type": "string[][]",
-			"table": ["Text", "Address"],
+			"type": "string[]",
 			"default": [
-				["Link 1", "fgdgfdf"],
-				["Link 2", "fgdgfdf"],
-				["Link 3", "fgdgfdf"],
-				["Link 4", "fgdgfdf"]
+				"Link 1",
+				"Link 2",
+				"Link 3",
+				"Link 4"
 			]
 		},
 		{
