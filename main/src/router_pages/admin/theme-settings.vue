@@ -29,15 +29,25 @@
 					<tr>
 						<th v-for="column in setting.table">{{column}}</th>
 						<th class="last-column"></th>
+						<th class="last-column"></th>
+						<th class="last-column"></th>
 					</tr>
 
-					<tr v-for="row in setting.value">
+					<tr v-for="row, i in setting.value">
 						<td v-for="cell in row" class="no-padding">
 							<input type="text" :value="cell" required>
 						</td>
 						<td class="last-column" @click="popValue(setting, row)">
 							<icon name="minus" />
 						</td>
+
+						<th class="last-column" @click="moveDown(setting, row)">
+							<icon name="chevron-down" v-visible="i < setting.value.length - 1" />
+						</th>
+
+						<th class="last-column" @click="moveUp(setting, row)">
+							<icon name="chevron-up" v-visible="i > 0" />
+						</th>
 					</tr>
 
 					<tr>
@@ -47,6 +57,8 @@
 						<td class="last-column" @click="pushValue(setting)">
 							<icon name="check" />
 						</td>
+						<th class="last-column"></th>
+						<th class="last-column"></th>
 					</tr>
 				</table>
 			</component>
@@ -64,8 +76,7 @@
 		margin-top: 16px
 
 	.last-column
-		display: inline-block
-		width: 0
+		float: right // TODO: fix this
 
 		cursor: pointer
 		color: lighten(#803, 10%)
@@ -86,9 +97,23 @@
 					setting.toPush.push("");
 				}
 			},
-
 			popValue(setting, row) {
 				setting.value.splice(setting.value.indexOf(row), 1);
+			},
+
+			moveDown(setting, row) {
+				const index = setting.value.indexOf(row);
+				if(index !== setting.value.length - 1) { // Not last row
+					setting.value.splice(index, 1);
+					setting.value.splice(index + 1, 0, row);
+				}
+			},
+			moveUp(setting, row) {
+				const index = setting.value.indexOf(row);
+				if(index !== 0) { // Not first row
+					setting.value.splice(index, 1);
+					setting.value.splice(index - 1, 0, row);
+				}
 			}
 		},
 
