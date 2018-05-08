@@ -15,6 +15,7 @@
 		height: 100%
 		display: flex
 		flex-direction: column
+		overflow: auto
 	.top
 		flex: 1 0 auto
 	.footer

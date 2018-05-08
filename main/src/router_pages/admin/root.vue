@@ -16,6 +16,8 @@
 		display: block
 		float: left
 		width: 80%
+		height: 100%
+		overflow: auto
 </style>
 
 <script type="text/javascript">
