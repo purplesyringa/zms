@@ -18,15 +18,12 @@ class Theme {
 		const manifest = deepcopy(this.getManifest().settings);
 		const settings = await Settings.getAll();
 
-		for(let name of Object.keys(settings)) {
-			if(!name.startswith("theme.")) {
-				continue;
-			}
-
-			name = name.replace("theme.", "");
-			let setting = manifest.find(setting => setting.name === name);
-			if(setting) {
-				setting.value = name;
+		for(let name of Object.keys(manifest)) {
+			let value = settings["theme." + name];
+			if(value !== undefined) {
+				manifest[name].value = value;
+			} else {
+				manifest[name].value = manifest[name].default;
 			}
 		}
 

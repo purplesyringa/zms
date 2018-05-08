@@ -28,11 +28,22 @@
 				<table>
 					<tr>
 						<th v-for="column in setting.table">{{column}}</th>
+						<th class="last-column"></th>
 					</tr>
 
 					<tr v-for="row in setting.default">
 						<td v-for="cell in row" class="no-padding">
 							<input type="text" :value="cell" required>
+						</td>
+						<td class="last-column"></td>
+					</tr>
+
+					<tr>
+						<td v-for="column, id in setting.table" class="no-padding">
+							<input type="text" :placeholder="column" required v-model="setting.toPush[id]">
+						</td>
+						<td class="last-column" @click="pushValue(setting)">
+							<icon name="check" />
 						</td>
 					</tr>
 				</table>
@@ -49,6 +60,13 @@
 
 	.text-input
 		margin-top: 16px
+
+	.last-column
+		display: inline-block
+		width: 0
+
+		cursor: pointer
+		color: lighten(#803, 10%)
 </style>
 
 <script type="text/javascript">
@@ -57,9 +75,37 @@
 	export default {
 		name: "theme-settings",
 
-		computed: {
-			settings() {
-				return Theme.getManifest().settings;
+		methods: {
+			pushValue(setting) {
+				setting.value.push(setting.toPush);
+
+				setting.toPush = [];
+				for(let name of setting.table) {
+					setting.toPush.push("");
+				}
+			}
+		},
+
+		asyncComputed: {
+			settings: {
+				async get() {
+					const settings = await Theme.getAllSettings();
+
+					return Object.keys(settings)
+						.map(name => {
+							let setting = settings[name];
+							setting.name = name;
+
+							if(setting.type === "string[][]") {
+								setting.toPush = [];
+								for(let name of setting.table) {
+									setting.toPush.push("");
+								}
+							}
+							return setting;
+						});
+				},
+				default: []
 			}
 		}
 	};
