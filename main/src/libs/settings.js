@@ -17,6 +17,10 @@ class Settings {
 	}
 
 	async set(name, value) {
+		await this.applyPack({[name]: value});
+	}
+
+	async applyPack(pack) {
 		let content = await zeroFS.readFile("content.json");
 		content = JSON.parse(content);
 
@@ -24,7 +28,7 @@ class Settings {
 			content.settings = {};
 		}
 
-		content.settings[name] = value;
+		Object.assign(content.settings, pack);
 
 		content = JSON.stringify(content, null, 1);
 		await zeroFS.writeFile("content.json", content);

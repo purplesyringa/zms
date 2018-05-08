@@ -100,6 +100,8 @@
 				</table>
 			</component>
 		</div>
+
+		<theme-button value="Update" @click="update" />
 	</div>
 </template>
 
@@ -176,6 +178,34 @@
 					setting.value.splice(index, 1);
 					setting.value.splice(index - 1, 0, row);
 				}
+			},
+
+			// Save
+			async update() {
+				let settingsObj = {};
+
+				for(let setting of this.settings) {
+					if(!setting.name) {
+						continue;
+					}
+
+					if(setting.type === "string[]") {
+						if(setting.toPush) {
+							// Something to push
+							this.pushPlainValue(setting);
+						}
+					} else if(setting.type === "string[][]") {
+						if(setting.toPush.some(value => value)) {
+							// Something to push
+							this.pushValue(setting);
+						}
+					}
+
+					// Now set
+					settingsObj[setting.name] = setting.value;
+				}
+
+				await Theme.applySettings(settingsObj);
 			}
 		},
 
@@ -184,11 +214,8 @@
 				async get() {
 					const settings = await Theme.getAllSettings();
 
-					return Object.keys(settings)
-						.map(name => {
-							let setting = settings[name];
-							setting.name = name;
-
+					return settings
+						.map(setting => {
 							if(setting.type === "string[]") {
 								setting.toPush = "";
 							} else if(setting.type === "string[][]") {

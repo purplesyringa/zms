@@ -18,16 +18,29 @@ class Theme {
 		const manifest = deepcopy(this.getManifest().settings);
 		const settings = await Settings.getAll();
 
-		for(let name of Object.keys(manifest)) {
-			let value = settings["theme." + name];
+		for(let setting of manifest) {
+			if(!setting.name) {
+				continue;
+			}
+
+			let value = settings["theme." + setting.name];
 			if(value !== undefined) {
-				manifest[name].value = value;
+				setting.value = value;
 			} else {
-				manifest[name].value = manifest[name].default;
+				setting.value = setting.default;
 			}
 		}
 
 		return manifest;
+	}
+
+	async applySettings(obj) {
+		let obj2 = {};
+		for(let name of Object.keys(obj)) {
+			obj2["theme." + name] = obj[name];
+		}
+
+		await Settings.applyPack(obj2);
 	}
 
 
