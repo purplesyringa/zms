@@ -9,7 +9,7 @@ Vue.use(AsyncComputed);
 import VueVisible from "vue-visible";
 Vue.use(VueVisible);
 
-import Icon from "vue-awesome";
+import Icon from "vue-awesome/components/Icon.vue";
 Vue.component("icon", Icon);
 
 import NamedInput from "./theme/components/named-input.vue";

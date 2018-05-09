@@ -57,6 +57,27 @@ module.exports = {
 				exclude: /node_modules/
 			},
 			{
+				test: /\.js$/,
+				use: [
+					{
+						loader: "babel-loader",
+						options: {
+							presets: ["env"],
+							plugins: [
+								[
+									"babel-plugin-transform-builtin-extend", {
+										globals: ["Error", "Array"]
+									}
+								],
+								"transform-class-properties",
+								"transform-async-generator-functions"
+							]
+						}
+					}
+				],
+				include: /vue-awesome/
+			},
+			{
 				test: /\.(gif|jpe?g|png)$/,
 				loader: "file-loader"
 			},
@@ -100,6 +121,18 @@ module.exports = {
 				to: "./data"
 			}
 		]),
-		new BundleAnalyzerPlugin()
+		new BundleAnalyzerPlugin(),
+
+		// Move node_modules to separate pack
+		new webpack.optimize.CommonsChunkPlugin({
+			name: "corejs",
+			minChunks: module => /node_modules/.test(module.resource || "")
+		}),
+
+		// Move out core-js
+		new webpack.optimize.CommonsChunkPlugin({
+			name: "vendor",
+			minChunks: module => !/core-js/.test(module.resource || "")
+		})
 	]
 };
