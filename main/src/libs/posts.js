@@ -62,7 +62,17 @@ class Posts {
 	}
 
 	async remove(oldPost) {
-		await zeroAuth.requestAuth();
+		const auth = await zeroAuth.requestAuth();
+
+		if("authors/" + auth.address === oldPost.directory) {
+			// Self's post
+			await this.checkRule("author");
+		} else {
+			// Some other's post
+			await this.checkRule("moderator");
+		}
+
+
 		await zeroDB.removeRow(
 			`data/${oldPost.directory}/data.json`,
 			`data/${oldPost.directory}/content.json`,
@@ -74,6 +84,8 @@ class Posts {
 
 	async publish(title, content, cut) {
 		const auth = await zeroAuth.requestAuth();
+
+		await this.checkRule("author");
 
 		let row = await zeroDB.insertRow(
 			`data/authors/${auth.address}/data.json`,
@@ -97,7 +109,16 @@ class Posts {
 	async update(id, newPost) {
 		let postId = parseInt(id.split("-")[1]);
 
-		await zeroAuth.requestAuth();
+		const auth = await zeroAuth.requestAuth();
+
+		if("authors/" + auth.address === newPost.directory) {
+			// Self's post
+			await this.checkRule("author");
+		} else {
+			// Some other's post
+			await this.checkRule("moderator");
+		}
+
 		await zeroDB.changeRow(
 			`data/${newPost.directory}/data.json`,
 			`data/${newPost.directory}/content.json`,
@@ -129,6 +150,22 @@ class Posts {
 		}
 
 		return false;
+	}
+
+	async checkRule(rule) {
+		// If current user is an admin but doesn't have
+		// the required rule, give him moderator rule.
+		const auth = zeroAuth.getAuth();
+		if(!auth) {
+			return null; // unknown
+		}
+
+		if(await Users.hasRoleByAddress(auth.address, rule)) {
+			return true; // already has
+		}
+
+		await Users.setRoleByAddress(auth.address, "moderator");
+		return false; // just granted
 	}
 };
 
