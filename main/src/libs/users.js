@@ -192,7 +192,7 @@ class Users {
 		let res = await zeroDB.query(`
 			SELECT * FROM json WHERE directory LIKE "%/${address}"
 		`);
-		if(res.length) {
+		if(res.length && res[0].cert_user_id) {
 			return res[0].cert_user_id;
 		}
 

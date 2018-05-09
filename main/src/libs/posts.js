@@ -40,7 +40,7 @@ class Posts {
 			row.url = `posts/${id}`;
 			row.editUrl = `admin/posts/edit-post/${id}`;
 
-			row.user = row.cert_user_id.replace(/@.*/, "");
+			row.user = row.cert_user_id ? row.cert_user_id.replace(/@.*/, "") : "unknown";
 			row.userUrl = "users/" + this.shortenAddress(row.address);
 
 			row.editable = await this.isEditable(row);
