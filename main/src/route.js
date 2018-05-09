@@ -14,7 +14,7 @@ import ZeroID from "zero-dev-lib/ZeroID";
 const zeroID = new ZeroID(zp);
 
 import ZeroAuth from "zero-dev-lib/ZeroAuth";
-const zeroAuth = new ZeroAuth(zp);
+const zeroAuth = new ZeroAuth(zp, ["zeroid.bit", "kaffie.bit"]);
 zp.auth = zeroAuth;
 
 import Vue from "vue/dist/vue.min.js";
