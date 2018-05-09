@@ -19,7 +19,7 @@
 					{{user.role}}
 
 					<div class="icons">
-						<span class="icon" @click="$router.navigate(`admin/users/change-role/${user.id}`)" v-if="siteInfo.settings.own">
+						<span class="icon" @click="$router.navigate(`admin/users/change-role/${user.id}`)" v-if="siteInfo.settings.own || (isModerator && ['author', 'user', 'banned'].indexOf(user.role) > -1)">
 							<icon name="edit" />
 							Change
 						</span>
