@@ -45,7 +45,8 @@
     "vue-style-loader": "^3.0.3",
     "vue-svg-loader": "^0.4.0",
     "vue-template-compiler": "^2.5.13",
-    "webpack": "^3.10.0"
+    "webpack": "^3.10.0",
+    "webpack-bundle-analyzer": "^2.11.1"
   },
   "dependencies": {
     "deepcopy": "^0.6.3",
