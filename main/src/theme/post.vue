@@ -73,25 +73,7 @@
 		props: [],
 		name: "post",
 
-		data() {
-			return {
-				siteInfo: {
-					privatekey: false
-				}
-			};
-		},
-		mounted() {
-			this.$eventBus.$on("setSiteInfo", this.setSiteInfo);
-			this.$eventBus.$emit("needSiteInfo");
-		},
-		destroyed() {
-			this.$eventBus.$off("setSiteInfo", this.setSiteInfo);
-		},
 		methods: {
-			setSiteInfo(siteInfo) {
-				this.siteInfo = siteInfo;
-			},
-
 			async remove() {
 				let post = await Posts.get(this.$router.currentParams.id);
 				await Posts.remove(post);

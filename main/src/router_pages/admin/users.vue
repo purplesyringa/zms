@@ -19,14 +19,14 @@
 					{{user.role}}
 
 					<div class="icons">
-						<span class="icon" @click="$router.navigate(`admin/users/change-role/${user.id}`)" v-if="siteInfo.privatekey">
+						<span class="icon" @click="$router.navigate(`admin/users/change-role/${user.id}`)" v-if="siteInfo.settings.own">
 							<icon name="edit" />
 							Change
 						</span>
 					</div>
 				</td>
 			</tr>
-			<tr v-if="siteInfo.privatekey">
+			<tr v-if="siteInfo.settings.own">
 				<td class="column-name">
 					<i>New user</i>
 				</td>
@@ -84,7 +84,9 @@
 			return {
 				newId: "",
 				siteInfo: {
-					privatekey: false
+					settings: {
+						own: false
+					}
 				}
 			};
 		},

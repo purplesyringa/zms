@@ -2,7 +2,7 @@
 	<div class="content-container">
 		<div class="content">
 			<!-- New post -->
-			<div class="new-post" v-if="isAuthor">
+			<div class="new-post" v-if="isAuthor || siteInfo.settings.own">
 				<icon name="pencil-alt" />
 				<a @click="$router.navigate('admin/posts/new-post')">New post</a>
 			</div>
@@ -108,7 +108,9 @@
 		data() {
 			return {
 				siteInfo: {
-					privatekey: false
+					settings: {
+						own: false
+					}
 				}
 			};
 		},

@@ -3,7 +3,7 @@
 		<div class="header">
 			<div class="title">
 				{{siteInfo.content.title}}
-				<icon name="cog" scale="2" class="cog" v-if="isAuthor || siteInfo.privatekey" @click.native.stop="$router.navigate('admin')" />
+				<icon name="cog" scale="2" class="cog" v-if="isAuthor || siteInfo.settings.own" @click.native.stop="$router.navigate('admin')" />
 			</div>
 			<div class="description">{{siteInfo.content.description}}</div>
 		</div>
@@ -60,8 +60,10 @@
 				siteInfo: {
 					content: {
 						title: "",
-						description: "",
-						privatekey: false
+						description: ""
+					},
+					settings: {
+						own: false
 					}
 				}
 			};

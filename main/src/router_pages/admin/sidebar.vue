@@ -114,7 +114,7 @@
 					{
 						name: "Settings",
 						icon: "cog",
-						when: () => this.siteInfo.privatekey,
+						when: () => this.siteInfo.settings.own,
 						sub: [
 							{
 								name: "Theme settings"
@@ -125,7 +125,9 @@
 				current: "",
 				currentSubitem: "",
 				siteInfo: {
-					privatekey: false
+					settings: {
+						own: false
+					}
 				}
 			};
 		},
