@@ -66,6 +66,8 @@
 
 <script language="text/javascript">
 	import Posts from "../libs/posts.js";
+	import "vue-awesome/icons/edit";
+	import "vue-awesome/icons/trash";
 
 	export default {
 		props: [],

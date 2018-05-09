@@ -52,6 +52,8 @@
 </style>
 
 <script type="text/javascript">
+	import "vue-awesome/icons/chevron-right";
+	import "vue-awesome/icons/check";
 	import Users from "../../libs/users.js";
 
 	export default {

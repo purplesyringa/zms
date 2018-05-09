@@ -64,6 +64,9 @@
 
 <script type="text/javascript">
 	import Posts from "../../libs/posts.js";
+	import "vue-awesome/icons/edit";
+	import "vue-awesome/icons/trash";
+	import "vue-awesome/icons/eye";
 
 	export default {
 		name: "admin-posts",
