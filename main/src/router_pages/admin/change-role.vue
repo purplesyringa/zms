@@ -12,14 +12,14 @@
 				<th class="column-role">Role</th>
 				<th class="column-description">Description</th>
 			</tr>
-			<tr v-for="role in roles" @click="use(role.role)" :class="{'disabled': role.static}">
+			<tr v-for="role in roles" @click="use(role.role)" :class="{'disabled': role.static && role.static()}">
 				<td class="column-use">
 					<icon v-if="currentRole === role.role" name="check" />
 				</td>
 				<td class="column-role">
 					{{role.name}}
 					<i v-if="role.default">(default)</i>
-					<i v-if="role.static">(auto-granted)</i>
+					<i v-if="role.static && role.static()">(auto-granted)</i>
 				</td>
 				<td class="column-description">
 					{{role.description}}
@@ -52,6 +52,7 @@
 </style>
 
 <script type="text/javascript">
+	import {zeroAuth} from "../../route.js";
 	import "vue-awesome/icons/chevron-right";
 	import "vue-awesome/icons/check";
 	import Users from "../../libs/users.js";
@@ -65,12 +66,13 @@
 						role: "admin",
 						name: "Admin",
 						description: "Changes user roles, site settings. Can do anything moderator can do.",
-						static: true
+						static: () => true
 					},
 					{
 						role: "moderator",
 						name: "Moderator",
-						description: "Edits other authors' content. If comments are enabled, can also edit them. Can do anything author can do."
+						description: "Edits other authors' content. If comments are enabled, can also edit them. Can do anything author can do.",
+						static: () => !this.siteInfo.settings.own
 					},
 					{
 						role: "author",
@@ -88,8 +90,40 @@
 						name: "Banned",
 						description: "Can only read blog, not post anything, even comments/votes."
 					}
-				]
+				],
+				siteInfo: {
+					settings: {
+						own: false
+					}
+				}
 			};
+		},
+
+		mounted() {
+			this.$eventBus.$on("setSiteInfo", this.setSiteInfo);
+			this.$eventBus.$emit("needSiteInfo");
+		},
+		destroyed() {
+			this.$eventBus.$off("setSiteInfo", this.setSiteInfo);
+		},
+
+		methods: {
+			setSiteInfo(siteInfo) {
+				this.siteInfo = siteInfo;
+			},
+
+			async use(role) {
+				if(this.currentRoleObject.static) {
+					// Cannot switch from static
+					return;
+				} else if(this.roles.find(role1 => role1.role === role).static) {
+					// Cannot switch to static
+					return;
+				}
+
+				await Users.setRoleByAddress(this.id, role);
+				this.currentRole = role;
+			}
 		},
 
 		computed: {
@@ -107,21 +141,6 @@
 			},
 			async currentRole() {
 				return await Users.getRoleByAddress(this.id);
-			}
-		},
-
-		methods: {
-			async use(role) {
-				if(this.currentRoleObject.static) {
-					// Cannot switch from static
-					return;
-				} else if(this.roles.find(role1 => role1.role === role).static) {
-					// Cannot switch to static
-					return;
-				}
-
-				await Users.setRoleByAddress(this.id, role);
-				this.currentRole = role;
 			}
 		}
 	};

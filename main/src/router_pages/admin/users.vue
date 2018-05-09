@@ -26,7 +26,7 @@
 					</div>
 				</td>
 			</tr>
-			<tr v-if="siteInfo.settings.own">
+			<tr v-if="siteInfo.settings.own || isModerator">
 				<td class="column-name">
 					<i>New user</i>
 				</td>
@@ -73,6 +73,7 @@
 </style>
 
 <script type="text/javascript">
+	import {zeroAuth} from "../../route.js";
 	import Users from "../../libs/users.js";
 	import "vue-awesome/icons/edit";
 	import "vue-awesome/icons/caret-square-right";
@@ -102,6 +103,15 @@
 		asyncComputed: {
 			async users() {
 				return await Users.getAllRules();
+			},
+
+			async isModerator() {
+				const auth = zeroAuth.getAuth();
+				if(!auth) {
+					return false;
+				}
+
+				return await Users.hasRoleByAddress(auth.address, "moderator");
 			}
 		},
 
