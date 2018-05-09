@@ -133,8 +133,14 @@ module.exports = {
 
 		// Move out core-js
 		new webpack.optimize.CommonsChunkPlugin({
-			name: "vendor",
+			name: "vue",
 			minChunks: module => !/core-js/.test(module.resource || "")
+		}),
+
+		// Move out vue
+		new webpack.optimize.CommonsChunkPlugin({
+			name: "vendor",
+			minChunks: module => !/vue\.min\.js/.test(module.resource || "")
 		})
 	]
 };
