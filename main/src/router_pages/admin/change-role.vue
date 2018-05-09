@@ -19,7 +19,10 @@
 				<td class="column-role">
 					{{role.name}}
 					<i v-if="role.default">(default)</i>
-					<i v-if="role.static && role.static()">(auto-granted)</i>
+					<i v-if="role.static && role.static()">
+						<template v-if="role.autoGranted">(auto-granted)</template>
+						<template v-else>(granted by admin)</template>
+					</i>
 				</td>
 				<td class="column-description">
 					{{role.description}}
@@ -66,7 +69,8 @@
 						role: "admin",
 						name: "Admin",
 						description: "Changes user roles, site settings. Can do anything moderator can do.",
-						static: () => true
+						static: () => true,
+						autoGranted: true
 					},
 					{
 						role: "moderator",
