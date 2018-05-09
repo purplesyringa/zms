@@ -13,12 +13,12 @@
 					{{post.title}}
 
 					<div class="icons">
-						<span class="icon" @click="$router.navigate(post.editUrl)" v-if="post.editable">
+						<span class="icon" @click="$router.navigate(post.editUrl)" v-if="post.editable || siteInfo.settings.own">
 							<icon name="edit" />
 							Edit
 						</span>
 
-						<span class="icon" @click="remove(post)" v-if="post.editable">
+						<span class="icon" @click="remove(post)" v-if="post.editable || siteInfo.settings.own">
 							<icon name="trash" />
 							Delete
 						</span>
@@ -70,6 +70,35 @@
 
 	export default {
 		name: "admin-posts",
+		data() {
+			return {
+				siteInfo: {
+					settings: {
+						own: false
+					}
+				}
+			};
+		},
+
+		mounted() {
+			this.$eventBus.$on("setSiteInfo", this.setSiteInfo);
+			this.$eventBus.$emit("needSiteInfo");
+		},
+		destroyed() {
+			this.$eventBus.$off("setSiteInfo", this.setSiteInfo);
+		},
+
+		methods: {
+			setSiteInfo(siteInfo) {
+				this.siteInfo = siteInfo;
+			},
+
+			async remove(post) {
+				await Posts.remove(post);
+				post.deleted = true;
+			}
+		},
+
 
 		asyncComputed: {
 			async posts() {
@@ -78,13 +107,6 @@
 					post.deleted = false;
 				});
 				return posts;
-			}
-		},
-
-		methods: {
-			async remove(post) {
-				await Posts.remove(post);
-				post.deleted = true;
 			}
 		}
 	};

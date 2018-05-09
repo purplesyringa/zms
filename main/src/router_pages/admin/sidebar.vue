@@ -102,7 +102,7 @@
 						sub: [
 							{
 								name: "New post",
-								when: () => this.isAuthor
+								when: () => this.isAuthor || this.siteInfo.settings.own
 							}
 						]
 					},
