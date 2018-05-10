@@ -50,8 +50,11 @@
     "webpack-bundle-analyzer": "^2.11.1"
   },
   "dependencies": {
+    "@babel/standalone": "^7.0.0-beta.46",
     "deepcopy": "^0.6.3",
+    "http-vue-loader": "git+https://github.com/imachug/http-vue-loader.git",
     "node-sass": "^4.7.2",
+    "sass.js": "^0.10.9",
     "vue": "^2.5.13",
     "vue-async-computed": "^3.3.1",
     "vue-awesome": "^3.0.0",

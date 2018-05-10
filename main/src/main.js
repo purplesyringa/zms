@@ -1,5 +1,4 @@
 import "./sass/main.sass";
-import "./theme/table.sass";
 
 import Vue from "vue/dist/vue.min.js";
 
@@ -35,7 +34,11 @@ var app = new Vue({
 });
 
 import {route, zeroPage} from "./route.js";
-route(app);
+
+(async function() {
+	require("./theme/table.sass");
+	route(app);
+})();
 
 Vue.prototype.$zeroPage = zeroPage;
 
@@ -55,3 +58,5 @@ app.$eventBus.$on("needSiteInfo", async () => {
 		app.$eventBus.$emit("setSiteInfo", currentSiteInfo);
 	}
 });
+
+import "./libs/theme-loader/";
