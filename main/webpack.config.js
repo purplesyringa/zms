@@ -11,6 +11,9 @@ module.exports = {
 	entry: {
 		main: ["babel-polyfill", "./main.js"]
 	},
+	node: {
+		fs: "empty"
+	},
 	output: {
 		path: path.resolve(__dirname, "./dist"),
 		publicPath: "./",
@@ -79,7 +82,7 @@ module.exports = {
 						}
 					}
 				],
-				include: /vue-awesome/
+				include: /vue-awesome|http-vue-loader/
 			},
 			{
 				test: /\.(gif|jpe?g|png)$/,
