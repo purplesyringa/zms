@@ -2,23 +2,24 @@
 	<div class="footer-container">
 		<div class="footer">
 			<div class="column">
-				<div class="column-title">Column 1</div>
-				<div class="column-link">Link 1</div>
-				<div class="column-link">Link 2</div>
-				<div class="column-link">Link 3</div>
+				<div class="column-title">{{col1}}</div>
+				<div class="column-link" v-for="link in links1">
+					<a :href="link[1]">{{link[0]}}</a>
+				</div>
 			</div>
+
 			<div class="column">
-				<div class="column-title">Column 2</div>
-				<div class="column-link">Link 1</div>
-				<div class="column-link">Link 2</div>
+				<div class="column-title">{{col2}}</div>
+				<div class="column-link" v-for="link in links2">
+					<a :href="link[1]">{{link[0]}}</a>
+				</div>
 			</div>
+
 			<div class="column">
-				<div class="column-title">Column 3</div>
-				<div class="column-link">Link 1</div>
-				<div class="column-link">Link 2</div>
-				<div class="column-link">Link 3</div>
-				<div class="column-link">Link 4</div>
-				<div class="column-link">Link 5</div>
+				<div class="column-title">{{col3}}</div>
+				<div class="column-link" v-for="link in links3">
+					<a :href="link[1]">{{link[0]}}</a>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -70,8 +71,42 @@
 </style>
 
 <script language="text/javascript">
+	import Settings from "../libs/settings.js";
+
 	export default {
 		props: [],
-		name: "footer"
+		name: "footer",
+
+		asyncComputed: {
+			async col1() {
+				return Settings.get("theme.footerCol1", "");
+			},
+			links1: {
+				async get() {
+					return Settings.get("theme.footerCol1links", []);
+				},
+				default: []
+			},
+
+			async col2() {
+				return Settings.get("theme.footerCol2", "");
+			},
+			links2: {
+				async get() {
+					return Settings.get("theme.footerCol2links", []);
+				},
+				default: []
+			},
+
+			async col3() {
+				return Settings.get("theme.footerCol3", "");
+			},
+			links3: {
+				async get() {
+					return Settings.get("theme.footerCol3links", []);
+				},
+				default: []
+			}
+		}
 	};
 </script>
