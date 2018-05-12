@@ -18,10 +18,12 @@ async function setUpFetch() {
 }
 
 import {configCss} from "./css.js";
+import {configJs} from "./js.js";
 (async function() {
 	await setUpFetch();
 
 	await configCss();
+	await configJs();
 
 	console.log(await httpVueLoader("theme/list.vue"));
 })();
