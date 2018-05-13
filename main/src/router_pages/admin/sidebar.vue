@@ -90,6 +90,7 @@
 	import "vue-awesome/icons/pencil-alt";
 	import "vue-awesome/icons/users";
 	import "vue-awesome/icons/cog";
+	import "vue-awesome/icons/shopping-cart";
 
 	export default {
 		name: "admin-sidebar",
@@ -121,6 +122,11 @@
 							}
 						]
 					},
+					{
+						name: "Store",
+						icon: "shopping-cart",
+						sub: []
+					}
 				],
 				current: "",
 				currentSubitem: "",
