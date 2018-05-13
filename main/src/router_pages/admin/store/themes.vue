@@ -2,13 +2,13 @@
 	<div class="store">
 		<h1>Themes</h1>
 
-		<div class="theme" v-for="i in 10">
-			<img src="/1StoREUtoyQjPCH7BXVqFC4LDLsEJt6gE/data/users/1Cy3ntkN2GN9MH6EaW6eHpi4YoRS2nK5Di/Standard.png">
+		<div class="theme" v-for="theme in themes">
+			<img :src="`cors-1StoREUtoyQjPCH7BXVqFC4LDLsEJt6gE/data/${theme.directory}/${theme.screenshot_name}`">
 			<div class="header">
 				<icon class="icon" name="shopping-cart" />
 				<icon class="icon" name="download" />
 
-				Standard <i>by gitcenter@zeroid.bit</i>
+				{{theme.title}} <i>by {{theme.cert_user_id}}</i>
 			</div>
 		</div>
 	</div>
@@ -67,8 +67,14 @@
 			return {};
 		},
 
-		async mounted() {
-			await Store.mount();
+		asyncComputed: {
+			themes: {
+				async get() {
+					await Store.mount();
+					return await Store.Themes.getAllThemeList();
+				},
+				default: []
+			}
 		}
 	};
 </script>
