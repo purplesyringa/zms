@@ -41,7 +41,7 @@
 </template>
 
 <style lang="sass" scoped>
-	@import "./global.sass"
+	@import "../global.sass"
 
 	.posts
 		padding: 16px
@@ -63,7 +63,7 @@
 </style>
 
 <script type="text/javascript">
-	import Posts from "../../libs/posts.js";
+	import Posts from "../../../libs/posts.js";
 	import "vue-awesome/icons/edit";
 	import "vue-awesome/icons/trash";
 	import "vue-awesome/icons/eye";

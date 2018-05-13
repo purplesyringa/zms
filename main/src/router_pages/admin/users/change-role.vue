@@ -33,7 +33,7 @@
 </template>
 
 <style lang="sass" scoped>
-	@import "./global.sass"
+	@import "../global.sass"
 
 	.change-role
 		padding: 16px
@@ -55,10 +55,10 @@
 </style>
 
 <script type="text/javascript">
-	import {zeroAuth} from "../../route.js";
+	import {zeroAuth} from "../../../route.js";
 	import "vue-awesome/icons/chevron-right";
 	import "vue-awesome/icons/check";
-	import Users from "../../libs/users.js";
+	import Users from "../../../libs/users.js";
 
 	export default {
 		name: "admin-change-role",

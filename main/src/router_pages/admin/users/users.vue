@@ -47,7 +47,7 @@
 </template>
 
 <style lang="sass" scoped>
-	@import "./global.sass"
+	@import "../global.sass"
 
 	.users
 		padding: 16px
@@ -73,8 +73,8 @@
 </style>
 
 <script type="text/javascript">
-	import {zeroAuth} from "../../route.js";
-	import Users from "../../libs/users.js";
+	import {zeroAuth} from "../../../route.js";
+	import Users from "../../../libs/users.js";
 	import "vue-awesome/icons/edit";
 	import "vue-awesome/icons/caret-square-right";
 

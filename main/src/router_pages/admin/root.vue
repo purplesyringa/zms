@@ -23,13 +23,13 @@
 <script type="text/javascript">
 	import AdminSidebar from "./sidebar.vue";
 
-	import AdminPosts from "./posts.vue";
-	import AdminNewPost from "./new-post.vue";
-	import AdminEditPost from "./edit-post.vue";
-	import AdminUsers from "./users.vue";
-	import AdminChangeRole from "./change-role.vue";
-	import AdminSettings from "./settings.vue";
-	import AdminThemeSettings from "./theme-settings.vue";
+	import AdminPosts from "./posts/posts.vue";
+	import AdminNewPost from "./posts/new-post.vue";
+	import AdminEditPost from "./posts/edit-post.vue";
+	import AdminUsers from "./users/users.vue";
+	import AdminChangeRole from "./users/change-role.vue";
+	import AdminSettings from "./settings/settings.vue";
+	import AdminThemeSettings from "./settings/theme-settings.vue";
 	const views = {
 		posts: AdminPosts,
 		"new-post": AdminNewPost,

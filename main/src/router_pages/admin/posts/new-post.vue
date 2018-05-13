@@ -27,7 +27,7 @@
 </template>
 
 <style lang="sass" scoped>
-	@import "./global.sass"
+	@import "../global.sass"
 
 	.new-post
 		padding: 16px
@@ -37,7 +37,7 @@
 </style>
 
 <script type="text/javascript">
-	import Posts from "../../libs/posts.js";
+	import Posts from "../../../libs/posts.js";
 
 	export default {
 		name: "admin-new-post",

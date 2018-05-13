@@ -10,7 +10,7 @@
 </template>
 
 <style lang="sass" scoped>
-	@import "./global.sass"
+	@import "../global.sass"
 
 	.settings
 		padding: 16px
@@ -20,7 +20,7 @@
 </style>
 
 <script type="text/javascript">
-	import Settings from "../../libs/settings.js";
+	import Settings from "../../../libs/settings.js";
 
 	export default {
 		name: "settings",

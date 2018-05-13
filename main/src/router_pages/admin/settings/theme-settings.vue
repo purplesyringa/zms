@@ -106,7 +106,7 @@
 </template>
 
 <style lang="sass" scoped>
-	@import "./global.sass"
+	@import "../global.sass"
 
 	.theme-settings
 		padding: 16px
@@ -122,7 +122,7 @@
 </style>
 
 <script type="text/javascript">
-	import Theme from "../../libs/theme.js";
+	import Theme from "../../../libs/theme.js";
 	import "vue-awesome/icons/minus";
 	import "vue-awesome/icons/chevron-down";
 	import "vue-awesome/icons/chevron-up";
