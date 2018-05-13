@@ -125,7 +125,11 @@
 					{
 						name: "Store",
 						icon: "shopping-cart",
-						sub: []
+						sub: [
+							{
+								name: "Themes"
+							}
+						]
 					}
 				],
 				current: "",

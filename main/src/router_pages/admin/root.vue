@@ -31,6 +31,7 @@
 	import AdminSettings from "./settings/settings.vue";
 	import AdminThemeSettings from "./settings/theme-settings.vue";
 	import AdminStore from "./store/store.vue";
+	import AdminStoreThemes from "./store/themes.vue";
 	const views = {
 		posts: AdminPosts,
 		"new-post": AdminNewPost,
@@ -39,7 +40,8 @@
 		"change-role": AdminChangeRole,
 		settings: AdminSettings,
 		"theme-settings": AdminThemeSettings,
-		store: AdminStore
+		store: AdminStore,
+		"themes": AdminStoreThemes
 	};
 
 	export default {
