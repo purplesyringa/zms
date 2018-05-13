@@ -16,6 +16,9 @@ module.exports = {
 		publicPath: "./",
 		filename: "[name].js"
 	},
+	externals: {
+		ZMSStore: "ZMSStore"
+	},
 	module: {
 		rules: [
 			{
