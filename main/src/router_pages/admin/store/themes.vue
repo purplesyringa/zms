@@ -3,9 +3,9 @@
 		<h1>Themes</h1>
 
 		<div class="theme" v-for="theme in themes">
-			<img :src="`cors-1StoREUtoyQjPCH7BXVqFC4LDLsEJt6gE/data/${theme.directory}/${theme.screenshot_name}`">
+			<div class="image" :style="{backgroundImage: `url(&quot;cors-1StoREUtoyQjPCH7BXVqFC4LDLsEJt6gE/data/${theme.directory}/${theme.screenshot_name}&quot;)`}"></div>
 			<div class="header">
-				<icon class="icon" name="shopping-cart" />
+				<icon class="icon" name="shopping-cart" @click="show(theme)" />
 				<icon class="icon" name="download" />
 
 				{{theme.title}} <i>by {{theme.cert_user_id}}</i>
@@ -38,8 +38,11 @@
 		border-radius: 4px
 		box-shadow: 0 4px 4px #CCC
 
-	.theme img
+	.theme .image
 		width: 100%
+		height: 256px
+		background-position: center
+		background-size: cover
 
 	.header
 		padding: 8px 16px
