@@ -5,7 +5,7 @@
 		<div class="theme" v-for="theme in themes">
 			<div class="image" :style="{backgroundImage: `url(&quot;cors-1StoREUtoyQjPCH7BXVqFC4LDLsEJt6gE/data/${theme.directory}/${theme.screenshot_name}&quot;)`}"></div>
 			<div class="header">
-				<icon class="icon" name="shopping-cart" @click="show(theme)" />
+				<icon class="icon" name="shopping-cart" @click.native="show(theme)" />
 				<icon class="icon" name="download" />
 
 				{{theme.title}} <i>by {{theme.cert_user_id}}</i>
@@ -77,6 +77,12 @@
 					return await Store.Themes.getAllThemeList();
 				},
 				default: []
+			}
+		},
+
+		methods: {
+			show(theme) {
+				top.location.href = `/${Store.ZMS_STORE}/?/${theme.url}`;
 			}
 		}
 	};
