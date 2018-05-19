@@ -1,5 +1,6 @@
 import {zeroAuth, zeroDB, zeroFS, zeroPage} from "../route.js";
 import RemoteZeroDB from "zero-dev-lib/RemoteZeroDB";
+import RemoteZeroFS from "zero-dev-lib/RemoteZeroFS";
 
 class Store {
 	ZMS_STORE = "1StoREUtoyQjPCH7BXVqFC4LDLsEJt6gE";
@@ -14,7 +15,8 @@ class Store {
 		// Save
 		let {Themes} = await System.import("ZMSStore");
 		const remoteZeroDB = new RemoteZeroDB(zeroPage, this.ZMS_STORE);
-		this.Themes = Themes({zeroAuth, zeroDB: remoteZeroDB, zeroFS, zeroPage});
+		const remoteZeroFS = new RemoteZeroFS(zeroPage, this.ZMS_STORE);
+		this.Themes = Themes({zeroAuth, zeroDB: remoteZeroDB, zeroFS: remoteZeroFS, zeroPage});
 	}
 
 	load() {
