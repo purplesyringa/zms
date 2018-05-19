@@ -6,7 +6,7 @@
 			<div class="image" :style="{backgroundImage: `url(&quot;cors-1StoREUtoyQjPCH7BXVqFC4LDLsEJt6gE/data/${theme.directory}/${theme.screenshot_name}&quot;)`}"></div>
 			<div class="header">
 				<icon class="icon" name="shopping-cart" @click.native="show(theme)" />
-				<icon class="icon" name="download" />
+				<icon class="icon" name="download" @click.native="install(theme)" />
 
 				{{theme.title}} <i>by {{theme.cert_user_id}}</i>
 			</div>
@@ -83,6 +83,20 @@
 		methods: {
 			show(theme) {
 				top.location.href = `/${Store.ZMS_STORE}/?/${theme.url}`;
+			},
+
+			async install(theme) {
+				let progress = zeroPage.progress("Loading ZMS Store");
+				await Store.mount();
+
+				progress.setMessage("Installing theme");
+				progress.setPercent(20);
+				await Store.Themes.downloadTheme(theme, zeroFS, (...args) => {
+					progress.setMessage(...args);
+				});
+
+				progress.setMessage("Theme downloaded")
+				progress.setPercent(50);
 			}
 		}
 	};
