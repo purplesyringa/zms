@@ -2,6 +2,10 @@
 # yarn lockfile v1
 
 
+"@babel/standalone@^7.0.0-beta.46":
+  version "7.0.0-beta.49"
+  resolved "https://registry.yarnpkg.com/@babel/standalone/-/standalone-7.0.0-beta.49.tgz#faf87e16d410048c1c375cc0330c893a2a1b345d"
+
 JSONStream@^1.0.3:
   version "1.3.2"
   resolved "https://registry.yarnpkg.com/JSONStream/-/JSONStream-1.3.2.tgz#c102371b6ec3a7cf3b847ca00c20bb0fce4c6dea"
@@ -3569,6 +3573,10 @@ http-signature@~1.2.0:
     jsprim "^1.2.2"
     sshpk "^1.7.0"
 
+"http-vue-loader@git+https://github.com/imachug/http-vue-loader.git":
+  version "1.3.4"
+  resolved "git+https://github.com/imachug/http-vue-loader.git#5663a2f95052031abf3470d2c1b175a03fbb9652"
+
 https-browserify@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/https-browserify/-/https-browserify-1.0.0.tgz#ec06c10e0a34c0f2faf199f7fd7fc78fffd03c73"
@@ -6189,6 +6197,10 @@ sass-loader@^6.0.6:
     lodash.tail "^4.1.1"
     neo-async "^2.5.0"
     pify "^3.0.0"
+
+sass.js@^0.10.9:
+  version "0.10.9"
+  resolved "https://registry.yarnpkg.com/sass.js/-/sass.js-0.10.9.tgz#a5d7d8b9e4b448b58d6ff6cd14c802893cbd288d"
 
 sax@^1.2.4, sax@~1.2.1:
   version "1.2.4"
