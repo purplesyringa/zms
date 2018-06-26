@@ -58,5 +58,3 @@ app.$eventBus.$on("needSiteInfo", async () => {
 		app.$eventBus.$emit("setSiteInfo", currentSiteInfo);
 	}
 });
-
-import "./libs/theme-loader/";

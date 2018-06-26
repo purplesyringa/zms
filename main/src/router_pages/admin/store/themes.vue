@@ -91,12 +91,26 @@
 
 				progress.setMessage("Installing theme");
 				progress.setPercent(20);
-				await Store.Themes.downloadTheme(theme, zeroFS, (...args) => {
+				await Store.Themes.downloadTheme(theme, (...args) => {
 					progress.setMessage(...args);
 				});
 
-				progress.setMessage("Theme downloaded")
+				progress.setMessage("Building theme");
 				progress.setPercent(50);
+
+				let files = await Store.Themes.buildTheme((...args) => {
+					progress.setMessage(...args);
+				});
+
+				progress.setMessage("Saving built theme");
+				progress.setPercent(90);
+
+				await Store.Themes.saveTheme(files, (...args) => {
+					progress.setMessage(...args);
+				});
+
+				progress.setMessage("Done");
+				progress.done();
 			}
 		}
 	};
