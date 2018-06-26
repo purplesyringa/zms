@@ -23,16 +23,7 @@
 </style>
 
 <script type="text/javascript">
-	import ThemeHeader from "../../theme/header.vue";
-	import ThemePost from "../../theme/post.vue";
-	import ThemeFooter from "../../theme/footer.vue";
-
 	export default {
-		name: "home",
-		components: {
-			"theme-header": ThemeHeader,
-			"theme-post": ThemePost,
-			"theme-footer": ThemeFooter
-		}
+		name: "home"
 	};
 </script>

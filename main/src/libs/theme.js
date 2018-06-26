@@ -2,6 +2,18 @@ import {zeroFS, zeroPage} from "../route.js";
 import Settings from "./settings.js";
 import deepcopy from "deepcopy";
 
+
+import Vue from "vue/dist/vue.min.js";
+
+import ThemeHeader from "../theme/header.vue";
+import ThemeList from "../theme/list.vue";
+import ThemePost from "../theme/post.vue";
+import ThemeFooter from "../theme/footer.vue";
+import NamedInput from "../theme/components/named-input.vue";
+import NamedTextArea from "../theme/components/named-textarea.vue";
+import ThemeButton from "../theme/components/button.vue";
+
+
 class Theme {
 	async getSetting(name) {
 		let res = await Settings.get("theme." + name, undefined);
@@ -46,6 +58,22 @@ class Theme {
 
 	getManifest() {
 		return require("../theme/theme.json");
+	}
+
+
+
+	async loadTheme() {
+		console.log("Loading theme");
+
+		Vue.component("theme-header", ThemeHeader);
+		Vue.component("theme-list", ThemeList);
+		Vue.component("theme-post", ThemePost);
+		Vue.component("theme-footer", ThemeFooter);
+		Vue.component("named-input", NamedInput);
+		Vue.component("named-textarea", NamedTextArea);
+		Vue.component("theme-button", ThemeButton);
+
+		require("../theme/table.sass");
 	}
 };
 

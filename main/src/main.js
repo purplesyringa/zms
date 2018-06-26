@@ -11,15 +11,6 @@ Vue.use(VueVisible);
 import Icon from "vue-awesome/components/Icon.vue";
 Vue.component("icon", Icon);
 
-import NamedInput from "./theme/components/named-input.vue";
-Vue.component("named-input", NamedInput);
-
-import NamedTextArea from "./theme/components/named-textarea.vue";
-Vue.component("named-textarea", NamedTextArea);
-
-import ThemeButton from "./theme/components/button.vue";
-Vue.component("theme-button", ThemeButton);
-
 
 Vue.prototype.$eventBus = new Vue();
 
@@ -35,8 +26,9 @@ var app = new Vue({
 
 import {route, zeroPage} from "./route.js";
 
+import Theme from "./libs/theme";
 (async function() {
-	require("./theme/table.sass");
+	await Theme.loadTheme();
 	route(app);
 })();
 
