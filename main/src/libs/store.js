@@ -16,7 +16,7 @@ class Store {
 		let {Themes} = await System.import("ZMSStore");
 		const remoteZeroDB = new RemoteZeroDB(zeroPage, this.ZMS_STORE);
 		const remoteZeroFS = new RemoteZeroFS(zeroPage, this.ZMS_STORE);
-		this.Themes = Themes({zeroAuth, zeroDB: remoteZeroDB, zeroFS: remoteZeroFS, zeroPage});
+		this.Themes = Themes({zeroAuth, zeroDB: remoteZeroDB, zeroFS: remoteZeroFS, zeroPage, blogZeroFS: zeroFS});
 	}
 
 	load() {
