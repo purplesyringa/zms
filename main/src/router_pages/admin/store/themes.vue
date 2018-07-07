@@ -60,8 +60,6 @@
 <script type="text/javascript">
 	import {zeroAuth, zeroDB, zeroFS, zeroPage} from "../../../route.js";
 	import Store from "../../../libs/store.js";
-	import "vue-awesome/icons/shopping-cart";
-	import "vue-awesome/icons/download";
 
 	export default {
 		name: "store-themes",

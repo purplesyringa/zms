@@ -10,6 +10,7 @@ Vue.use(VueVisible);
 
 import Icon from "vue-awesome/components/Icon.vue";
 Vue.component("icon", Icon);
+import "vue-awesome/icons";
 
 
 Vue.prototype.$eventBus = new Vue();

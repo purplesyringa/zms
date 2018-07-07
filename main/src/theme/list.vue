@@ -99,7 +99,6 @@
 	import Posts from "../libs/posts.js";
 	import Settings from "../libs/settings.js";
 	import Users from "../libs/users.js";
-	import "vue-awesome/icons/pencil-alt";
 
 	export default {
 		props: [],

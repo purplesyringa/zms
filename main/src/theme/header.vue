@@ -50,7 +50,6 @@
 <script language="text/javascript">
 	import {zeroAuth} from "../route.js";
 	import Users from "../libs/users.js";
-	import "vue-awesome/icons/cog";
 
 	export default {
 		props: [],

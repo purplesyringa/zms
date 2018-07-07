@@ -75,8 +75,6 @@
 <script type="text/javascript">
 	import {zeroAuth} from "../../../route.js";
 	import Users from "../../../libs/users.js";
-	import "vue-awesome/icons/edit";
-	import "vue-awesome/icons/caret-square-right";
 
 	export default {
 		name: "admin-users",

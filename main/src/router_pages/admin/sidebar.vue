@@ -86,11 +86,6 @@
 <script type="text/javascript">
 	import {zeroAuth} from "../../route.js";
 	import Users from "../../libs/users.js";
-	import "vue-awesome/icons/caret-square-left";
-	import "vue-awesome/icons/pencil-alt";
-	import "vue-awesome/icons/users";
-	import "vue-awesome/icons/cog";
-	import "vue-awesome/icons/shopping-cart";
 
 	export default {
 		name: "admin-sidebar",
