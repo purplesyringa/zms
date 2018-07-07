@@ -9,6 +9,18 @@
 				<icon class="icon" name="download" @click.native="install(theme)" />
 
 				{{theme.title}} <i>by {{theme.cert_user_id}}</i>
+
+				<div :class="['verified', ['unverified', 'not-yet-verified', ''][theme.verified + 1]]">
+					<template v-if="theme.verified == 1">
+						VERIFIED
+					</template>
+					<template v-else-if="theme.verified == -1">
+						DANGEROUS
+					</template>
+					<template v-else>
+						NOT YET VERIFIED
+					</template>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -35,6 +47,8 @@
 		margin-bottom: 24px
 		overflow: hidden
 
+		position: relative
+
 		border-radius: 4px
 		box-shadow: 0 4px 4px #CCC
 
@@ -55,6 +69,29 @@
 		margin-top: 4px
 		margin-left: 16px
 		color: lighten(#803, 10%)
+
+
+	.verified
+		display: inline-block
+		padding: 12px
+		height: 21px
+
+		position: absolute
+		right: 16px
+		top: 16px
+
+		font-size: 16px
+
+		background-color: #080
+		color: #FFF
+
+		border-radius: 4px
+		box-shadow: 0 4px 4px rgba(0, 0, 0, 0.4)
+
+	.not-yet-verified
+		background-color: #880
+	.unverified
+		background-color: #800
 </style>
 
 <script type="text/javascript">
