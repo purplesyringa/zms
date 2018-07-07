@@ -21,14 +21,6 @@ const srcContext = require.context("..", true, /\.js$/);
 const srcContextKeys = srcContext.keys();
 
 
-import ThemeHeader from "../theme/header.vue";
-import ThemeList from "../theme/list.vue";
-import ThemePost from "../theme/post.vue";
-import ThemeFooter from "../theme/footer.vue";
-import NamedInput from "../theme/components/named-input.vue";
-import NamedTextArea from "../theme/components/named-textarea.vue";
-import ThemeButton from "../theme/components/button.vue";
-
 
 class Theme {
 	async getSetting(name) {
