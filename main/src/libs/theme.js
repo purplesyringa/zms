@@ -1,9 +1,23 @@
 import {zeroFS, zeroPage} from "../zero";
 import Settings from "./settings.js";
 import deepcopy from "deepcopy";
-
+import path from "path";
 
 import Vue from "vue/dist/vue.min.js";
+
+
+const COMPONENTS = {
+	"theme-header": "header.vue",
+	"theme-list": "list.vue",
+	"theme-post": "post.vue",
+	"theme-footer": "footer.vue",
+	"named-input": "components/named-input.vue",
+	"named-textarea": "components/named-textarea.vue",
+	"theme-button": "components/button.vue"
+};
+const srcContext = require.context("..", true, /\.js$/);
+const srcContextKeys = srcContext.keys();
+
 
 import ThemeHeader from "../theme/header.vue";
 import ThemeList from "../theme/list.vue";
@@ -65,13 +79,38 @@ class Theme {
 	async loadTheme() {
 		console.log("Loading theme");
 
-		Vue.component("theme-header", ThemeHeader);
-		Vue.component("theme-list", ThemeList);
-		Vue.component("theme-post", ThemePost);
-		Vue.component("theme-footer", ThemeFooter);
-		Vue.component("named-input", NamedInput);
-		Vue.component("named-textarea", NamedTextArea);
-		Vue.component("theme-button", ThemeButton);
+		let files = {};
+		for(let name of await zeroFS.readDirectory("theme/__build", true)) {
+			files[name] = await zeroFS.readFile(`theme/__build/${name}`);
+		}
+
+		for(const name of Object.keys(COMPONENTS)) {
+			const compPath = COMPONENTS[name];
+			const code = files[compPath];
+
+			const func = new Function("require", "module", "exports", code);
+
+			const moduleRequire = reqPath => {
+				const origin = path.dirname(path.resolve("./theme", compPath));
+				const absPath = "." + path.resolve(origin, reqPath);
+
+				if(srcContextKeys.indexOf(absPath) > -1) {
+					return srcContext(absPath);
+				} else {
+					return srcContext(absPath + ".js");
+				}
+			};
+			const moduleExports = {
+				default: {}
+			};
+			const moduleModule = {
+				exports: moduleExports
+			};
+
+			func(moduleRequire, moduleModule, moduleExports);
+
+			Vue.component(name, moduleModule.exports.default);
+		}
 
 		require("../theme/table.sass");
 	}
