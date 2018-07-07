@@ -95,7 +95,7 @@
 </style>
 
 <script language="text/javascript">
-	import {zeroAuth} from "../route.js";
+	import {zeroAuth} from "../zero";
 	import Posts from "../libs/posts.js";
 	import Settings from "../libs/settings.js";
 	import Users from "../libs/users.js";

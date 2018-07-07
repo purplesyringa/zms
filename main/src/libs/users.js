@@ -1,4 +1,4 @@
-import {zeroPage, zeroAuth, zeroFS, zeroDB, zeroID} from "../route.js";
+import {zeroPage, zeroAuth, zeroFS, zeroDB, zeroID} from "../zero";
 
 class Users {
 	async getAdmins() {

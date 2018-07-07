@@ -25,7 +25,8 @@ var app = new Vue({
 	}
 });
 
-import {route, zeroPage} from "./route.js";
+import {route} from "./route.js";
+import {zeroPage} from "./zero";
 
 import Theme from "./libs/theme";
 (async function() {

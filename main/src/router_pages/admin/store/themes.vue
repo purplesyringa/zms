@@ -58,7 +58,7 @@
 </style>
 
 <script type="text/javascript">
-	import {zeroAuth, zeroDB, zeroFS, zeroPage} from "../../../route.js";
+	import {zeroAuth, zeroDB, zeroFS, zeroPage} from "../../../zero";
 	import Store from "../../../libs/store.js";
 
 	export default {

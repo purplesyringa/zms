@@ -1,4 +1,4 @@
-import {zeroAuth, zeroDB, zeroFS, zeroPage} from "../route.js";
+import {zeroAuth, zeroDB, zeroFS, zeroPage} from "../zero";
 import RemoteZeroDB from "zero-dev-lib/RemoteZeroDB";
 import RemoteZeroFS from "zero-dev-lib/RemoteZeroFS";
 

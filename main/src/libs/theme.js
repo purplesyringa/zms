@@ -1,4 +1,4 @@
-import {zeroFS, zeroPage} from "../route.js";
+import {zeroFS, zeroPage} from "../zero";
 import Settings from "./settings.js";
 import deepcopy from "deepcopy";
 
