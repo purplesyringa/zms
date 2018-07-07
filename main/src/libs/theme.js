@@ -2,6 +2,7 @@ import {zeroFS, zeroPage} from "../zero";
 import Settings from "./settings.js";
 import deepcopy from "deepcopy";
 import path from "path";
+import normalizeComponent from "vue-loader/lib/component-normalizer";
 
 import Vue from "vue/dist/vue.min.js";
 
@@ -108,8 +109,43 @@ class Theme {
 			};
 
 			func(moduleRequire, moduleModule, moduleExports);
+			const ex = moduleModule.exports.default;
 
-			Vue.component(name, moduleModule.exports.default);
+			const injectStyle = () => {
+				console.log("inject");
+				/*var content = __webpack_require__(1375);
+				if(typeof content === 'string') content = [[module.i, content, '']];
+				if(content.locals) module.exports = content.locals;
+				// add the styles to the DOM
+				var update = __webpack_require__(8)("3bf82bd2", content, false, {});
+				// Hot Module Replacement
+				if(false) {
+				// When the styles change, update the <style> tags
+				if(!content.locals) {
+				module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-5bfbb8de\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/sass-loader/lib/loader.js?indentedSyntax!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./root.vue", function() {
+				var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-5bfbb8de\",\"scoped\":true,\"hasInlineConfig\":false}!../../../node_modules/sass-loader/lib/loader.js?indentedSyntax!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./root.vue");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+				});
+				}
+				// When the module is disposed, remove the <style> tags
+				module.hot.dispose(function() { update(); });
+				}*/
+			};
+			const Component = normalizeComponent(
+				ex.mExports,
+				{
+					render: ex.render,
+					staticRenderFns: ex.staticRenderFns
+				},
+				false,
+				injectStyle,
+				ex.options.scopeId,
+				null
+			);
+
+			console.log(Component);
+			Vue.component(name, Component.exports);
 		}
 
 		require("../theme/table.sass");
