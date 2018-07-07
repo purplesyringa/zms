@@ -145,8 +145,14 @@ module.exports = {
 
 		// Move out vue
 		new webpack.optimize.CommonsChunkPlugin({
-			name: "vue-awesome-brands",
+			name: "vue-awesome-brands-ak",
 			minChunks: module => !/vue\.min\.js/.test(module.resource || "")
+		}),
+
+		// Move out vue-awesome brands from A to K
+		new webpack.optimize.CommonsChunkPlugin({
+			name: "vue-awesome-brands-lz",
+			minChunks: module => !/vue-awesome.*brands[/\\][a-k].*/.test(module.resource || "")
 		}),
 
 		// Move out vue-awesome brands
