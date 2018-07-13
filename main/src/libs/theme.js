@@ -28,13 +28,13 @@ class Theme {
 			return res;
 		}
 
-		const themeJson = this.getManifest();
+		const themeJson = await this.getManifest();
 		let setting = themeJson.settings.find(setting => setting.name === name);
 		return setting.default;
 	}
 
 	async getAllSettings() {
-		const manifest = deepcopy(this.getManifest().settings);
+		const manifest = deepcopy((await this.getManifest()).settings);
 		const settings = await Settings.getAll();
 
 		for(let setting of manifest) {
@@ -63,7 +63,7 @@ class Theme {
 	}
 
 
-	getManifest() {
+	async getManifest() {
 		return require("../theme/theme.json");
 	}
 
