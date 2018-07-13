@@ -5,8 +5,12 @@
 		<div class="theme" v-for="theme in themes">
 			<div class="image" :style="{backgroundImage: `url(&quot;cors-1StoREUtoyQjPCH7BXVqFC4LDLsEJt6gE/data/${theme.directory}/${theme.screenshot_name}&quot;)`}"></div>
 			<div class="header">
-				<icon class="icon" name="shopping-cart" @click.native="show(theme)" />
-				<icon class="icon" name="download" @click.native="install(theme)" />
+				<span title="Open in ZMS Store">
+					<icon class="icon" name="shopping-cart" @click.native="show(theme)" />
+				</span>
+				<span title="Install">
+					<icon class="icon" name="download" @click.native="install(theme)" />
+				</span>
 
 				{{theme.title}} <i>by {{theme.cert_user_id}}</i>
 			</div>
@@ -55,6 +59,7 @@
 		margin-top: 4px
 		margin-left: 16px
 		color: lighten(#803, 10%)
+		cursor: pointer
 </style>
 
 <script type="text/javascript">
