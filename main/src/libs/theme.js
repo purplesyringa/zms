@@ -18,7 +18,6 @@ const COMPONENTS = {
 	"theme-button": "components/button.vue"
 };
 const srcContext = require.context("..", true, /\.js$/);
-const srcContextKeys = srcContext.keys();
 
 
 
@@ -75,34 +74,15 @@ class Theme {
 
 		let files = {};
 		for(let name of await zeroFS.readDirectory("theme/__build", true)) {
-			files[name] = await zeroFS.readFile(`theme/__build/${name}`);
+			files[`./src/theme/${name}`] = await zeroFS.readFile(`theme/__build/${name}`);
 		}
+
+		const context = new ThemeContext(files, srcContext);
 
 		for(const name of Object.keys(COMPONENTS)) {
 			const compPath = COMPONENTS[name];
-			const code = files[compPath];
 
-			const func = new Function("require", "module", "exports", code);
-
-			const moduleRequire = reqPath => {
-				const origin = path.dirname(path.resolve("./theme", compPath));
-				const absPath = "." + path.resolve(origin, reqPath);
-
-				if(srcContextKeys.indexOf(absPath) > -1) {
-					return srcContext(absPath);
-				} else {
-					return srcContext(absPath + ".js");
-				}
-			};
-			const moduleExports = {
-				default: {}
-			};
-			const moduleModule = {
-				exports: moduleExports
-			};
-
-			func(moduleRequire, moduleModule, moduleExports);
-			const ex = moduleModule.exports.default;
+			const ex = context.require(`./${compPath}`, "./src/theme").default;
 
 			const injectStyle = () => {
 				addStylesClient(ex.options.scopeId, ex.allCss, true, ex.options);
@@ -123,6 +103,52 @@ class Theme {
 		}
 
 		require("../theme/table.sass");
+	}
+};
+
+
+class ThemeContext {
+	constructor(themeFiles, srcContext) {
+		this.themeFiles = themeFiles;
+		this.srcContext = srcContext;
+		this.srcContextKeys = srcContext.keys();
+	}
+
+	require(reqPath, origin) {
+		const absPath = "." + path.resolve(origin, reqPath);
+
+		if(absPath.startsWith("./src/theme/")) {
+			if(!this.themeFiles.hasOwnProperty(absPath)) {
+				throw new TypeError(`require(): ${absPath} cannot be found`);
+			}
+
+			const code = this.themeFiles[absPath];
+			const func = new Function("require", "module", "exports", code);
+
+			const moduleRequire = reqPath => {
+				return this.require(reqPath, path.dirname(absPath));
+			};
+			const moduleExports = {
+				default: {}
+			};
+			const moduleModule = {
+				exports: moduleExports
+			};
+
+			func(moduleRequire, moduleModule, moduleExports);
+			return moduleModule.exports;
+		} else if(absPath.startsWith("./src/")) {
+			const srcPath = absPath.replace("./src/", "./");
+			if(this.srcContextKeys.indexOf(srcPath) > -1) {
+				return this.srcContext(srcPath);
+			} else if(this.srcContextKeys.indexOf(`${srcPath}.js`) > -1) {
+				return this.srcContext(`${srcPath}.js`);
+			} else {
+				throw new TypeError(`require(): ${absPath} cannot be found`);
+			}
+		} else {
+			throw new TypeError(`require(): ${absPath} is not a valid path`);
+		}
 	}
 };
 
