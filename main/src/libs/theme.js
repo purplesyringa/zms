@@ -1,17 +1,24 @@
-import {zeroFS, zeroPage} from "../route.js";
+import {zeroFS, zeroPage} from "../zero";
 import Settings from "./settings.js";
 import deepcopy from "deepcopy";
-
+import path from "path";
+import normalizeComponent from "vue-loader/lib/component-normalizer";
+import addStylesClient from "vue-style-loader/lib/addStylesClient";
 
 import Vue from "vue/dist/vue.min.js";
 
-import ThemeHeader from "../theme/header.vue";
-import ThemeList from "../theme/list.vue";
-import ThemePost from "../theme/post.vue";
-import ThemeFooter from "../theme/footer.vue";
-import NamedInput from "../theme/components/named-input.vue";
-import NamedTextArea from "../theme/components/named-textarea.vue";
-import ThemeButton from "../theme/components/button.vue";
+
+const COMPONENTS = {
+	"theme-header": "header.vue",
+	"theme-list": "list.vue",
+	"theme-post": "post.vue",
+	"theme-footer": "footer.vue",
+	"named-input": "components/named-input.vue",
+	"named-textarea": "components/named-textarea.vue",
+	"theme-button": "components/button.vue"
+};
+const srcContext = require.context("..", true, /\.js$/);
+
 
 
 class Theme {
@@ -21,13 +28,13 @@ class Theme {
 			return res;
 		}
 
-		const themeJson = this.getManifest();
+		const themeJson = await this.getManifest();
 		let setting = themeJson.settings.find(setting => setting.name === name);
 		return setting.default;
 	}
 
 	async getAllSettings() {
-		const manifest = deepcopy(this.getManifest().settings);
+		const manifest = deepcopy((await this.getManifest()).settings);
 		const settings = await Settings.getAll();
 
 		for(let setting of manifest) {
@@ -56,8 +63,11 @@ class Theme {
 	}
 
 
-	getManifest() {
-		return require("../theme/theme.json");
+	async getManifest() {
+		const context = new ThemeContext({
+			"./src/theme/theme.json": await zeroFS.readFile("theme/__build/theme.json")
+		}, srcContext);
+		return context.require("./src/theme/theme.json", "");
 	}
 
 
@@ -65,15 +75,83 @@ class Theme {
 	async loadTheme() {
 		console.log("Loading theme");
 
-		Vue.component("theme-header", ThemeHeader);
-		Vue.component("theme-list", ThemeList);
-		Vue.component("theme-post", ThemePost);
-		Vue.component("theme-footer", ThemeFooter);
-		Vue.component("named-input", NamedInput);
-		Vue.component("named-textarea", NamedTextArea);
-		Vue.component("theme-button", ThemeButton);
+		let files = {};
+		for(let name of await zeroFS.readDirectory("theme/__build", true)) {
+			files[`./src/theme/${name}`] = await zeroFS.readFile(`theme/__build/${name}`);
+		}
 
-		require("../theme/table.sass");
+		const context = new ThemeContext(files, srcContext);
+
+		for(const name of Object.keys(COMPONENTS)) {
+			const compPath = COMPONENTS[name];
+
+			const ex = context.require(`./${compPath}`, "./src/theme").default;
+
+			const injectStyle = () => {
+				addStylesClient(ex.options.scopeId, ex.allCss, true, ex.options);
+			};
+			const Component = normalizeComponent(
+				ex.mExports,
+				{
+					render: ex.render,
+					staticRenderFns: ex.staticRenderFns
+				},
+				false,
+				injectStyle,
+				ex.options.scopeId,
+				null
+			);
+
+			Vue.component(name, Component.exports);
+		}
+
+		context.require("./table.sass", "./src/theme");
+	}
+};
+
+
+class ThemeContext {
+	constructor(themeFiles, srcContext) {
+		this.themeFiles = themeFiles;
+		this.srcContext = srcContext;
+		this.srcContextKeys = srcContext.keys();
+	}
+
+	require(reqPath, origin) {
+		const absPath = "." + path.resolve(origin, reqPath);
+
+		if(absPath.startsWith("./src/theme/")) {
+			if(!this.themeFiles.hasOwnProperty(absPath)) {
+				throw new TypeError(`require(): ${absPath} cannot be found`);
+			}
+
+			const code = this.themeFiles[absPath];
+			const func = new Function("require", "module", "exports", code);
+
+			const moduleRequire = reqPath => {
+				return this.require(reqPath, path.dirname(absPath));
+			};
+			const moduleExports = {
+				default: {}
+			};
+			const moduleModule = {
+				exports: moduleExports
+			};
+
+			func(moduleRequire, moduleModule, moduleExports);
+			return moduleModule.exports;
+		} else if(absPath.startsWith("./src/")) {
+			const srcPath = absPath.replace("./src/", "./");
+			if(this.srcContextKeys.indexOf(srcPath) > -1) {
+				return this.srcContext(srcPath);
+			} else if(this.srcContextKeys.indexOf(`${srcPath}.js`) > -1) {
+				return this.srcContext(`${srcPath}.js`);
+			} else {
+				throw new TypeError(`require(): ${absPath} cannot be found`);
+			}
+		} else {
+			throw new TypeError(`require(): ${absPath} is not a valid path`);
+		}
 	}
 };
 

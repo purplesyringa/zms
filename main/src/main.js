@@ -10,6 +10,7 @@ Vue.use(VueVisible);
 
 import Icon from "vue-awesome/components/Icon.vue";
 Vue.component("icon", Icon);
+import "vue-awesome/icons";
 
 
 Vue.prototype.$eventBus = new Vue();
@@ -24,7 +25,8 @@ var app = new Vue({
 	}
 });
 
-import {route, zeroPage} from "./route.js";
+import {route} from "./route.js";
+import {zeroPage} from "./zero";
 
 import Theme from "./libs/theme";
 (async function() {

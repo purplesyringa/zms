@@ -55,9 +55,7 @@
 </style>
 
 <script type="text/javascript">
-	import {zeroAuth} from "../../../route.js";
-	import "vue-awesome/icons/chevron-right";
-	import "vue-awesome/icons/check";
+	import {zeroAuth} from "../../../zero";
 	import Users from "../../../libs/users.js";
 
 	export default {

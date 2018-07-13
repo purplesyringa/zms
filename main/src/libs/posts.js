@@ -1,4 +1,4 @@
-import {zeroAuth, zeroDB} from "../route.js";
+import {zeroAuth, zeroDB} from "../zero";
 import Users from "./users.js";
 
 class Posts {

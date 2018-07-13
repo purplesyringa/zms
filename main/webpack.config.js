@@ -145,8 +145,38 @@ module.exports = {
 
 		// Move out vue
 		new webpack.optimize.CommonsChunkPlugin({
-			name: "vendor",
+			name: "vue-awesome-brands-ak",
 			minChunks: module => !/vue\.min\.js/.test(module.resource || "")
+		}),
+
+		// Move out vue-awesome brands from A to K
+		new webpack.optimize.CommonsChunkPlugin({
+			name: "vue-awesome-brands-lz",
+			minChunks: module => !/vue-awesome.*brands[/\\][a-k].*/.test(module.resource || "")
+		}),
+
+		// Move out vue-awesome brands
+		new webpack.optimize.CommonsChunkPlugin({
+			name: "vue-awesome-regular",
+			minChunks: module => !/vue-awesome.*brands/.test(module.resource || "")
+		}),
+
+		// Move out vue-awesome regular
+		new webpack.optimize.CommonsChunkPlugin({
+			name: "vue-awesome-ak",
+			minChunks: module => !/vue-awesome.*regular/.test(module.resource || "")
+		}),
+
+		// Move out vue-awesome icons from A to K
+		new webpack.optimize.CommonsChunkPlugin({
+			name: "vue-awesome-lz",
+			minChunks: module => !/vue-awesome[/\\]icons[/\\][a-k].*/.test(module.resource || "")
+		}),
+
+		// Move out vue-awesome
+		new webpack.optimize.CommonsChunkPlugin({
+			name: "vendor",
+			minChunks: module => !/vue-awesome/.test(module.resource || "")
 		})
 	]
 };

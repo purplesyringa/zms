@@ -2,11 +2,19 @@
 	<div class="store">
 		<h1>Themes</h1>
 
+		<div class="loading" v-if="loading">
+			Loading...
+		</div>
+
 		<div class="theme" v-for="theme in themes">
 			<div class="image" :style="{backgroundImage: `url(&quot;cors-1StoREUtoyQjPCH7BXVqFC4LDLsEJt6gE/data/${theme.directory}/${theme.screenshot_name}&quot;)`}"></div>
 			<div class="header">
-				<icon class="icon" name="shopping-cart" @click.native="show(theme)" />
-				<icon class="icon" name="download" @click.native="install(theme)" />
+				<span title="Open in ZMS Store">
+					<icon class="icon" name="shopping-cart" @click.native="show(theme)" />
+				</span>
+				<span title="Install">
+					<icon class="icon" name="download" @click.native="install(theme)" />
+				</span>
 
 				{{theme.title}} <i>by {{theme.cert_user_id}}</i>
 
@@ -40,6 +48,10 @@
 	h1
 		margin-bottom: 16px
 
+	.loading
+		font-family: Verdana, Arial, sans-serif
+		font-size: 24px
+
 	.theme
 		display: inline-block
 		width: calc(33% - 14px)
@@ -69,6 +81,7 @@
 		margin-top: 4px
 		margin-left: 16px
 		color: lighten(#803, 10%)
+		cursor: pointer
 
 
 	.verified
@@ -95,23 +108,28 @@
 </style>
 
 <script type="text/javascript">
-	import {zeroAuth, zeroDB, zeroFS, zeroPage} from "../../../route.js";
+	import {zeroAuth, zeroDB, zeroFS, zeroPage} from "../../../zero";
 	import Store from "../../../libs/store.js";
-	import "vue-awesome/icons/shopping-cart";
-	import "vue-awesome/icons/download";
 
 	export default {
 		name: "store-themes",
 
 		data() {
-			return {};
+			return {
+				loading: true
+			};
 		},
 
 		asyncComputed: {
 			themes: {
 				async get() {
+					this.loading = true;
+
 					await Store.mount();
-					return await Store.Themes.getAllThemeList();
+					const themes = await Store.Themes.getAllThemeList();
+
+					this.loading = false;
+					return themes;
 				},
 				default: []
 			}

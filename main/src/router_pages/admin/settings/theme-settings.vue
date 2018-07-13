@@ -123,10 +123,6 @@
 
 <script type="text/javascript">
 	import Theme from "../../../libs/theme.js";
-	import "vue-awesome/icons/minus";
-	import "vue-awesome/icons/chevron-down";
-	import "vue-awesome/icons/chevron-up";
-	import "vue-awesome/icons/check";
 
 	export default {
 		name: "theme-settings",

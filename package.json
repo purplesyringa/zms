@@ -43,8 +43,6 @@
     "uglifyjs-webpack-plugin": "^1.2.5",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
-    "vue-loader": "^13.7.0",
-    "vue-style-loader": "^3.0.3",
     "vue-svg-loader": "^0.4.0",
     "vue-template-compiler": "^2.5.13",
     "webpack": "^3.10.0",
@@ -53,7 +51,8 @@
   "dependencies": {
     "@babel/standalone": "^7.0.0-beta.46",
     "deepcopy": "^0.6.3",
-    "http-vue-loader": "git+https://github.com/imachug/http-vue-loader.git",
+    "vue-loader": "^13.7.0",
+    "vue-style-loader": "^3.0.3",
     "node-sass": "^4.7.2",
     "sass.js": "^0.10.9",
     "vue": "^2.5.13",
