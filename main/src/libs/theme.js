@@ -102,7 +102,7 @@ class Theme {
 			Vue.component(name, Component.exports);
 		}
 
-		require("../theme/table.sass");
+		context.require("./table.sass", "./src/theme");
 	}
 };
 
