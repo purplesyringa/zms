@@ -64,7 +64,10 @@ class Theme {
 
 
 	async getManifest() {
-		return require("../theme/theme.json");
+		const context = new ThemeContext({
+			"./src/theme/theme.json": await zeroFS.readFile("theme/__build/theme.json")
+		}, srcContext);
+		return context.require("./src/theme/theme.json", "");
 	}
 
 
