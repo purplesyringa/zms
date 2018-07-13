@@ -3,22 +3,22 @@
 		<div class="footer">
 			<div class="column">
 				<div class="column-title">{{col1}}</div>
-				<div class="column-link" v-for="link in links1">
-					<a :href="link[1]">{{link[0]}}</a>
+				<div v-for="link in links1">
+					<a class="column-link" :href="link[1]">{{link[0]}}</a>
 				</div>
 			</div>
 
 			<div class="column">
 				<div class="column-title">{{col2}}</div>
-				<div class="column-link" v-for="link in links2">
-					<a :href="link[1]">{{link[0]}}</a>
+				<div v-for="link in links2">
+					<a class="column-link" :href="link[1]">{{link[0]}}</a>
 				</div>
 			</div>
 
 			<div class="column">
 				<div class="column-title">{{col3}}</div>
-				<div class="column-link" v-for="link in links3">
-					<a :href="link[1]">{{link[0]}}</a>
+				<div v-for="link in links3">
+					<a class="column-link" :href="link[1]">{{link[0]}}</a>
 				</div>
 			</div>
 		</div>
@@ -71,7 +71,7 @@
 </style>
 
 <script language="text/javascript">
-	import Settings from "../libs/settings.js";
+	import Theme from "../libs/theme.js";
 
 	export default {
 		props: [],
@@ -79,31 +79,31 @@
 
 		asyncComputed: {
 			async col1() {
-				return Settings.get("theme.footerCol1", "");
+				return await Theme.getSetting("footerCol1");
 			},
 			links1: {
 				async get() {
-					return Settings.get("theme.footerCol1links", []);
+					return await Theme.getSetting("footerCol1links");
 				},
 				default: []
 			},
 
 			async col2() {
-				return Settings.get("theme.footerCol2", "");
+				return await Theme.getSetting("footerCol2");
 			},
 			links2: {
 				async get() {
-					return Settings.get("theme.footerCol2links", []);
+					return await Theme.getSetting("footerCol2links");
 				},
 				default: []
 			},
 
 			async col3() {
-				return Settings.get("theme.footerCol3", "");
+				return await Theme.getSetting("footerCol3");
 			},
 			links3: {
 				async get() {
-					return Settings.get("theme.footerCol3links", []);
+					return await Theme.getSetting("footerCol3links");
 				},
 				default: []
 			}
