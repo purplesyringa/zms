@@ -2,6 +2,10 @@
 	<div class="store">
 		<h1>Themes</h1>
 
+		<div class="loading" v-if="loading">
+			Loading...
+		</div>
+
 		<div class="theme" v-for="theme in themes">
 			<div class="image" :style="{backgroundImage: `url(&quot;cors-1StoREUtoyQjPCH7BXVqFC4LDLsEJt6gE/data/${theme.directory}/${theme.screenshot_name}&quot;)`}"></div>
 			<div class="header">
@@ -31,6 +35,10 @@
 
 	h1
 		margin-bottom: 16px
+
+	.loading
+		font-family: Verdana, Arial, sans-serif
+		font-size: 24px
 
 	.theme
 		display: inline-block
@@ -70,14 +78,21 @@
 		name: "store-themes",
 
 		data() {
-			return {};
+			return {
+				loading: true
+			};
 		},
 
 		asyncComputed: {
 			themes: {
 				async get() {
+					this.loading = true;
+
 					await Store.mount();
-					return await Store.Themes.getAllThemeList();
+					const themes = await Store.Themes.getAllThemeList();
+
+					this.loading = false;
+					return themes;
 				},
 				default: []
 			}
