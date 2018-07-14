@@ -20,6 +20,9 @@ const COMPONENTS = {
 const srcContext = require.context("..", true, /\.js$/);
 
 
+export class ThemeFileNotFoundError extends Error {
+};
+
 
 class Theme {
 	async getSetting(name) {
@@ -84,6 +87,10 @@ class Theme {
 
 		for(const name of Object.keys(COMPONENTS)) {
 			const compPath = COMPONENTS[name];
+
+			if(!context.has(`./${compPath}`, "./src/theme")) {
+				throw new ThemeFileNotFoundError(compPath);
+			}
 
 			const ex = context.require(`./${compPath}`, "./src/theme").default;
 
@@ -152,6 +159,22 @@ class ThemeContext {
 		} else {
 			throw new TypeError(`require(): ${absPath} is not a valid path`);
 		}
+	}
+
+	has(reqPath, origin) {
+		const absPath = "." + path.resolve(origin, reqPath);
+
+		if(absPath.startsWith("./src/theme/")) {
+			return this.themeFiles.hasOwnProperty(absPath);
+		} else if(absPath.startsWith("./src/")) {
+			const srcPath = absPath.replace("./src/", "./");
+			return (
+				this.srcContextKeys.indexOf(srcPath) > -1 ||
+				this.srcContextKeys.indexOf(`${srcPath}.js`) > -1
+			);
+		}
+
+		return false;
 	}
 };
 
