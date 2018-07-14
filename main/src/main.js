@@ -28,9 +28,21 @@ var app = new Vue({
 import {route} from "./route.js";
 import {zeroPage} from "./zero";
 
-import Theme from "./libs/theme";
+import Theme, {ThemeFileNotFoundError} from "./libs/theme";
 (async function() {
-	await Theme.loadTheme();
+	try {
+		await Theme.loadTheme();
+	} catch(e) {
+		if(e instanceof ThemeFileNotFoundError) {
+			console.log("Theme file not found:", e.message);
+			route(app);
+			app.$router.navigate(`500/theme-file-missing/${btoa(e.message)}`);
+			return;
+		} else {
+			throw e;
+		}
+	}
+
 	route(app);
 })();
 
