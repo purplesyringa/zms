@@ -6,6 +6,23 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
+const BABEL = {
+	loader: "babel-loader",
+	options: {
+		presets: ["env", "stage-0"],
+		plugins: [
+			"syntax-decorators",
+			"transform-decorators-legacy",
+			[
+				"babel-plugin-transform-builtin-extend", {
+					globals: ["Error", "Array"]
+				}
+			],
+			"transform-class-properties"
+		]
+	}
+};
+
 module.exports = {
 	context: path.resolve(__dirname, "./src"),
 	entry: {
@@ -31,6 +48,7 @@ module.exports = {
 					loaders: {
 						scss: "vue-style-loader!css-loader!sass-loader",
 						sass: "vue-style-loader!css-loader!sass-loader?indentedSyntax",
+						js: BABEL
 					}
 				}
 			},
@@ -45,44 +63,16 @@ module.exports = {
 			{
 				test: /\.js$/,
 				use: [
-					{
-						loader: "babel-loader",
-						options: {
-							presets: ["env"],
-							plugins: [
-								[
-									"babel-plugin-transform-builtin-extend", {
-										globals: ["Error", "Array"]
-									}
-								],
-								"transform-class-properties",
-								"transform-async-generator-functions"
-							]
-						}
-					}
+					BABEL
 				],
 				exclude: /node_modules/
 			},
 			{
 				test: /\.js$/,
 				use: [
-					{
-						loader: "babel-loader",
-						options: {
-							presets: ["env"],
-							plugins: [
-								[
-									"babel-plugin-transform-builtin-extend", {
-										globals: ["Error", "Array"]
-									}
-								],
-								"transform-class-properties",
-								"transform-async-generator-functions"
-							]
-						}
-					}
+					BABEL
 				],
-				include: /vue-awesome|http-vue-loader/
+				include: /vue-awesome|http-vue-loader|zero-dev-lib/
 			},
 			{
 				test: /\.(gif|jpe?g|png)$/,
