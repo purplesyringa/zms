@@ -133,6 +133,11 @@ class ThemeContext {
 			}
 
 			const code = this.themeFiles[absPath];
+
+			if(absPath.endsWith(".json")) {
+				return JSON.parse(code);
+			}
+
 			const func = new Function("require", "module", "exports", code);
 
 			const moduleRequire = reqPath => {
