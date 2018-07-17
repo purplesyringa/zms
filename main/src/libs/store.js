@@ -19,10 +19,26 @@ class Store {
 		this.Themes = Themes({zeroAuth, zeroDB: remoteZeroDB, zeroFS: remoteZeroFS, zeroPage, blogZeroFS: zeroFS});
 	}
 
-	load() {
+	async load() {
+		console.log("Loading order of chunks");
+		const chunks = eval(await zeroFS.readFile(`cors-${this.ZMS_STORE}/extern/chunks.js`));
+
+		console.log("Loading entry");
+		await this._loadScript("entry");
+
+		for(const chunk of Array.reverse(chunks)) {
+			const name = Object.keys(chunk)[0];
+			console.log("Loading chunk", name);
+			await this._loadScript(name);
+		}
+
+		console.log("Loaded ZMS Store");
+	}
+
+	_loadScript(name) {
 		return new Promise((resolve, reject) => {
 			let script = document.createElement("script");
-			script.src = `cors-${this.ZMS_STORE}/extern.js`;
+			script.src = `cors-${this.ZMS_STORE}/extern/${name}.js`;
 			script.onload = resolve;
 			script.onerror = reject;
 			document.body.appendChild(script);
