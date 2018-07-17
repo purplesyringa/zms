@@ -18,7 +18,8 @@ const BABEL = {
 					globals: ["Error", "Array"]
 				}
 			],
-			"transform-class-properties"
+			"transform-class-properties",
+			"transform-object-rest-spread"
 		]
 	}
 };
