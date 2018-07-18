@@ -120,7 +120,12 @@ module.exports = {
 			}
 		]),
 		new BundleAnalyzerPlugin(),
-		new UglifyJSPlugin(),
+		// new UglifyJSPlugin(),
+
+		new webpack.ProvidePlugin({
+			$: "jquery",
+			jQuery: "jquery"
+		}),
 
 		// Move node_modules to separate pack
 		new webpack.optimize.CommonsChunkPlugin({

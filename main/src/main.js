@@ -8,8 +8,10 @@ Vue.use(AsyncComputed);
 import VueVisible from "vue-visible";
 Vue.use(VueVisible);
 
-import VueWysiwyg from "vue-wysiwyg";
-import "vue-wysiwyg/dist/vueWysiwyg.css";
+import VueTrumbowyg from "vue-trumbowyg";
+import "trumbowyg/dist/ui/trumbowyg.css";
+Vue.use(VueTrumbowyg);
+
 
 import Icon from "vue-awesome/components/Icon.vue";
 Vue.component("icon", Icon);
@@ -45,11 +47,6 @@ import Theme, {ThemeFileNotFoundError} from "./libs/theme";
 
 	try {
 		await Theme.loadTheme();
-
-		const manifest = await Theme.getManifest();
-		if(manifest.wysiwyg) {
-			Vue.use(VueWysiwyg, manifest.wysiwyg);
-		}
 	} catch(e) {
 		if(e instanceof ThemeFileNotFoundError) {
 			console.log("Theme file not found:", e.message);
