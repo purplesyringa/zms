@@ -33,6 +33,16 @@ import {zeroPage} from "./zero";
 
 import Theme, {ThemeFileNotFoundError} from "./libs/theme";
 (async function() {
+	// Patch XHR
+	const realOpen = XMLHttpRequest.prototype.open;
+	const key = await zeroPage.cmd("wrapperGetAjaxKey");
+	XMLHttpRequest.prototype.open = function(method, url, async) {
+		if(!url.startsWith("data:")) {
+			url += `?ajax_key=${key}`;
+		}
+		return realOpen.call(this, method, url, async);
+	};
+
 	try {
 		await Theme.loadTheme();
 
