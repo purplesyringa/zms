@@ -173,7 +173,7 @@ class Theme {
 					}
 				}
 
-				const newManifest = Object.assign({}, manifest, {
+				const newManifest = Object.assign({}, JSON.parse(await zeroFS.readFile("theme/theme.json")), {
 					_hashes: newHashes,
 					_dependents: Object.assign({}, manifest._dependents, newDependents)
 				});
