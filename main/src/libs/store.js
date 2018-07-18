@@ -5,7 +5,15 @@ import RemoteZeroFS from "zero-dev-lib/RemoteZeroFS";
 class Store {
 	ZMS_STORE = "1StoREUtoyQjPCH7BXVqFC4LDLsEJt6gE";
 
+	constructor() {
+		this.mounted = false;
+	}
+
 	async mount() {
+		if(this.mounted) {
+			return;
+		}
+
 		// Request CORS permission
 		await zeroPage.cmd("corsPermission", [this.ZMS_STORE]);
 
@@ -17,6 +25,8 @@ class Store {
 		const remoteZeroDB = new RemoteZeroDB(zeroPage, this.ZMS_STORE);
 		const remoteZeroFS = new RemoteZeroFS(zeroPage, this.ZMS_STORE);
 		this.Themes = Themes({zeroAuth, zeroDB: remoteZeroDB, zeroFS: remoteZeroFS, zeroPage, blogZeroFS: zeroFS});
+
+		this.mounted = true;
 	}
 
 	async load() {
