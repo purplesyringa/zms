@@ -2,7 +2,7 @@
 	<theme-error>
 		Looks like a file is missing from your blog theme, namely
 		<i>{{file}}</i>. Either add it to <i>theme/</i> directory of your
-		blog or <a @click="$router.navigate('admin/themes')">install a different theme</a>.
+		blog or <a @click="$router.navigate('admin/store/themes')">install a different theme</a>.
 	</theme-error>
 </template>
 
