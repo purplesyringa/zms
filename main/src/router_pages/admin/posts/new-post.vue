@@ -14,12 +14,14 @@
 			:small="true"
 			:error="cut === 'Please, fill in introduction'"
 			v-model="cut"
+			:wysiwyg="true"
 		/>
 		<named-textarea
 			name="What's on your mind?"
 			class="text-input"
 			:error="content === 'Please, type something'"
 			v-model="content"
+			:wysiwyg="true"
 		/>
 
 		<theme-button value="Publish" @click="publish" />
