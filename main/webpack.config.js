@@ -166,8 +166,14 @@ module.exports = {
 
 		// Move out vue-awesome
 		new webpack.optimize.CommonsChunkPlugin({
-			name: "vendor",
+			name: "crypto",
 			minChunks: module => !/vue-awesome/.test(module.resource || "")
+		}),
+
+		// Move out crypto
+		new webpack.optimize.CommonsChunkPlugin({
+			name: "vendor",
+			minChunks: module => !/crypto|sha|elliptic|bn|rand|pbkdf|des|aes|ecies|hash/.test(module.resource || "")
 		})
 	]
 };
