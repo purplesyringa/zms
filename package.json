@@ -71,7 +71,7 @@
     "vue-visible": "^1.0.2",
     "vue-wysiwyg": "^1.7.2",
     "vueify": "^9.4.1",
-    "zero-dev-lib": "^1.0.7"
+    "zero-dev-lib": "^1.0.10"
   },
   "browser": {
     "vue": "vue/dist/vue.common.js"
