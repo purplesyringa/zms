@@ -15,6 +15,7 @@ const COMPONENTS = {
 	"theme-header": "header.vue",
 	"theme-list": "list.vue",
 	"theme-post": "post.vue",
+	"theme-edit-post": "edit-post.vue",
 	"theme-footer": "footer.vue",
 	"named-input": "components/named-input.vue",
 	"named-textarea": "components/named-textarea.vue",
@@ -219,7 +220,7 @@ class Theme {
 			Vue.component(name, Component.exports);
 		}
 
-		context.require("./table.sass", "./src/theme");
+		context.require("./global.sass", "./src/theme");
 	}
 };
 

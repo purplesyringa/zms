@@ -2,27 +2,7 @@
 	<div class="new-post">
 		<h1>New post</h1>
 
-		<named-input
-			name="Title"
-			class="text-input"
-			:error="title === 'Please, fill in title'"
-			v-model="title"
-		/>
-		<named-textarea
-			name="Introduction (shown before [Read more] button)"
-			class="text-input"
-			:small="true"
-			:error="cut === 'Please, fill in introduction'"
-			v-model="cut"
-			:wysiwyg="true"
-		/>
-		<named-textarea
-			name="What's on your mind?"
-			class="text-input"
-			:error="content === 'Please, type something'"
-			v-model="content"
-			:wysiwyg="true"
-		/>
+		<theme-edit-post v-model="post" :showInfo="false" />
 
 		<theme-button value="Publish" @click="publish" />
 	</div>
@@ -33,9 +13,6 @@
 
 	.new-post
 		padding: 16px
-
-	.text-input
-		margin-top: 16px
 </style>
 
 <script type="text/javascript">
@@ -45,31 +22,29 @@
 		name: "admin-new-post",
 		data() {
 			return {
-				title: "",
-				content: "",
-				cut: ""
+				post: {
+					title: "",
+					content: ""
+				}
 			};
 		},
+
 		methods: {
 			async publish() {
 				let error = false;
-				if(!this.title || this.title === "Please, fill in title") {
-					this.title = "Please, fill in title";
+				if(!this.post.title || this.post.title === "Please, fill in title") {
+					this.post.title = "Please, fill in title";
 					error = true;
 				}
-				if(!this.cut || this.cut === "Please, fill in introduction") {
-					this.cut = "Please, fill in introduction";
-					error = true;
-				}
-				if(!this.content || this.content === "Please, type something") {
-					this.content = "Please, type something";
+				if(!this.post.content || this.post.content === "Please, type something") {
+					this.post.content = "Please, type something";
 					error = true;
 				}
 				if(error) {
 					return;
 				}
 
-				let url = await Posts.publish(this.title, this.content, this.cut);
+				let url = await Posts.publish(this.post.title, this.post.content);
 				this.$router.navigate(url);
 			}
 		}

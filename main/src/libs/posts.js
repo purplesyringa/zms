@@ -82,7 +82,7 @@ class Posts {
 	}
 
 
-	async publish(title, content, cut) {
+	async publish(title, content) {
 		const auth = await zeroAuth.requestAuth();
 
 		await this.checkRule("author");
@@ -94,7 +94,7 @@ class Posts {
 			{
 				title,
 				content,
-				cut,
+				cut: this._getCut(content),
 				date: Date.now()
 			},
 			{
@@ -107,6 +107,9 @@ class Posts {
 		return `posts/${id}`;
 	}
 	async update(id, newPost) {
+		newPost.cut = this._getCut(newPost.content);
+
+
 		let postId = parseInt(id.split("-")[1]);
 
 		const auth = await zeroAuth.requestAuth();
@@ -166,6 +169,27 @@ class Posts {
 
 		await Users.setRoleByAddress(auth.address, "moderator");
 		return false; // just granted
+	}
+
+
+	_getCut(content) {
+		let div = document.createElement("div");
+		div.innerHTML = content;
+
+		let cut = div.querySelector("zms-cut");
+		if(!cut) {
+			return content;
+		}
+
+		while(cut !== div) {
+			if(cut.nextSibling) {
+				cut.parentNode.removeChild(cut.nextSibling);
+			} else {
+				cut = cut.parentNode;
+			}
+		}
+
+		return div.innerHTML;
 	}
 };
 
