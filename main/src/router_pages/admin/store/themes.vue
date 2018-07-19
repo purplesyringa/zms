@@ -87,7 +87,7 @@
 	.verified
 		display: inline-block
 		padding: 12px
-		height: 21px
+		height: 45px
 
 		position: absolute
 		right: 16px
