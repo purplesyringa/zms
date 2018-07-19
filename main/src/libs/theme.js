@@ -15,7 +15,8 @@ const COMPONENTS = {
 	"theme-footer": "footer.vue",
 	"named-input": "components/named-input.vue",
 	"named-textarea": "components/named-textarea.vue",
-	"theme-button": "components/button.vue"
+	"theme-button": "components/button.vue",
+	"customizable": "components/customizable.vue"
 };
 
 
