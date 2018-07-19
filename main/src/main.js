@@ -33,25 +33,21 @@ var app = new Vue({
 import {route} from "./route.js";
 import {zeroPage} from "./zero";
 
-import Theme, {ThemeFileNotFoundError} from "./libs/theme";
-(async function() {
-	// Patch XHR
-	const realOpen = XMLHttpRequest.prototype.open;
-	const key = await zeroPage.cmd("wrapperGetAjaxKey");
-	XMLHttpRequest.prototype.open = function(method, url, async) {
-		if(!url.startsWith("data:")) {
-			url += `?ajax_key=${key}`;
-		}
-		return realOpen.call(this, method, url, async);
-	};
+import ZeroHTTPRequest from "./zero-http-request";
+window.XMLHttpRequest = ZeroHTTPRequest;
 
+import Theme, {ThemeFileNotFoundError} from "./libs/theme";
+
+(async function() {
 	try {
 		await Theme.loadTheme();
 	} catch(e) {
 		if(e instanceof ThemeFileNotFoundError) {
 			console.log("Theme file not found:", e.message);
 			route(app);
-			app.$router.navigate(`500/theme-file-missing/${btoa(e.message)}`);
+			setTimeout(() => {
+				app.$router.navigate(`500/theme-file-missing/${btoa(e.message)}`);
+			}, 1000);
 			return;
 		} else {
 			throw e;
