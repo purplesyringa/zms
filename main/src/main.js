@@ -40,6 +40,22 @@ import Theme from "./libs/theme";
 import {FileNotFoundError} from "./libs/require-engine";
 (async function() {
 	try {
+		await Theme.loadPlugins();
+	} catch(e) {
+		if(e instanceof FileNotFoundError) {
+			console.log("Plugin file not found:", e.message);
+			route(app);
+			setTimeout(() => {
+				const plugin = unescape(e.message.replace(/$\.\/src\/plugins\//, "").split("/")[0]);
+				app.$router.navigate(`500/plugin-file-missing/${btoa(plugin)}/${btoa(e.message)}`);
+			}, 1000);
+			return;
+		} else {
+			throw e;
+		}
+	}
+
+	try {
 		await Theme.loadTheme();
 	} catch(e) {
 		if(e instanceof FileNotFoundError) {

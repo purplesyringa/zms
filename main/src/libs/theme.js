@@ -68,7 +68,21 @@ class Theme {
 
 
 
-	async loadTheme(tryBuild=true) {
+
+	async loadPlugins() {
+		await Promise.all(
+			(await zeroFS.readDirectory("plugins", false)).map(async plugin => {
+				await RequireEngine.rebuild(`plugins/${plugin}/`, "plugin.json", (...args) => {
+					return Store.Plugins.rebuildPluginFile(unescape(plugin), ...args);
+				}, async () => {
+					let files = await Store.Plugins.buildPlugin(unescape(plugin), () => {});
+					await Store.Plugins.savePlugin(unescape(plugin), files, () => {});
+				});
+			})
+		);
+	}
+
+	async loadTheme() {
 		await RequireEngine.rebuild("theme/", "theme.json", (...args) => {
 			return Store.Themes.rebuildThemeFile(...args);
 		}, async () => {

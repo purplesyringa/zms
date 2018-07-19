@@ -6,10 +6,6 @@
 	</theme-error>
 </template>
 
-<style lang="sass" scoped>
-	
-</style>
-
 <script type="text/javascript">
 	import ThemeError from "./theme-error.vue";
 
