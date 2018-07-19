@@ -9,6 +9,12 @@ export default class RequireContext {
 		this.files = files;
 		this.srcContext = srcContext;
 		this.srcContextKeys = srcContext.keys();
+
+		this.postHandlers = [];
+	}
+
+	registerPostHandler(regExp, f) {
+		this.postHandlers.push({regExp, f});
 	}
 
 	require(reqPath, origin) {
@@ -38,7 +44,14 @@ export default class RequireContext {
 			};
 
 			func(moduleRequire, moduleModule, moduleExports);
-			return moduleModule.exports;
+
+			let result = moduleModule.exports;
+			for(const {regExp, f} of this.postHandlers) {
+				if(regExp.test(absPath)) {
+					result = f(result);
+				}
+			}
+			return result;
 		} else if(absPath.startsWith("./src/")) {
 			const srcPath = absPath.replace("./src/", "./");
 			if(this.srcContextKeys.indexOf(srcPath) > -1) {

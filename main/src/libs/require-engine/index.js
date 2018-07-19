@@ -1,10 +1,13 @@
-import {zeroFS, zeroPage} from "../zero";
+import {zeroFS, zeroPage} from "../../zero";
 import crypto from "crypto";
 import {Buffer} from "buffer";
 import RequireContext, {FileNotFoundError} from "./require-context";
-import Store from "./store";
+import Store from "../store";
+import vueHandler from "./vue-handler";
 
-const srcContext = require.context("..", true, /\.js$/);
+export {FileNotFoundError} from "./require-context";
+
+const srcContext = require.context("../..", true, /\.js$/);
 
 
 export async function getManifest(prefix, fileName) {
@@ -136,5 +139,9 @@ export async function loadContext(prefix) {
 		files[`./src/${prefix}${name}`] = await zeroFS.readFile(`${prefix}__build/${name}`);
 	}
 
-	return new RequireContext(prefix, files, srcContext);
+	let context = new RequireContext(prefix, files, srcContext);
+
+	context.registerPostHandler(/\.vue$/, vueHandler);
+
+	return context;
 }

@@ -1,8 +1,6 @@
 import {zeroFS} from "../zero";
 import Settings from "./settings.js";
 import deepcopy from "deepcopy";
-import normalizeComponent from "vue-loader/lib/component-normalizer";
-import addStylesClient from "vue-style-loader/lib/addStylesClient";
 import Store from "./store";
 import RequireContext from "./require-context";
 import * as RequireEngine from "./require-engine";
@@ -83,24 +81,7 @@ class Theme {
 		for(const name of Object.keys(COMPONENTS)) {
 			const compPath = COMPONENTS[name];
 
-			const ex = context.require(`./${compPath}`, "./src/theme").default;
-
-			const injectStyle = () => {
-				addStylesClient(ex.options.scopeId, ex.allCss, true, ex.options);
-			};
-			const Component = normalizeComponent(
-				ex.mExports,
-				{
-					render: ex.render,
-					staticRenderFns: ex.staticRenderFns
-				},
-				false,
-				injectStyle,
-				ex.options.scopeId,
-				null
-			);
-
-			Vue.component(name, Component.exports);
+			Vue.component(name, context.require(`./${compPath}`, "./src/theme"));
 		}
 
 		context.require("./global.sass", "./src/theme");
