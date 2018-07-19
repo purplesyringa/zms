@@ -37,7 +37,7 @@ import ZeroHTTPRequest from "./zero-http-request";
 window.XMLHttpRequest = ZeroHTTPRequest;
 
 import Theme from "./libs/theme";
-import {FileNotFoundError} from "./libs/require-engine";
+import {FileNotFoundError} from "./libs/require-context";
 (async function() {
 	try {
 		await Theme.loadTheme();

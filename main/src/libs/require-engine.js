@@ -1,12 +1,10 @@
 import {zeroFS, zeroPage} from "../zero";
 import crypto from "crypto";
 import {Buffer} from "buffer";
-import RequireContext from "./require-context";
+import RequireContext, {FileNotFoundError} from "./require-context";
 import Store from "./store";
 
-
-export class FileNotFoundError extends Error {
-};
+const srcContext = require.context("..", true, /\.js$/);
 
 
 export async function getManifest(prefix, fileName) {
@@ -127,4 +125,16 @@ export async function rebuild(prefix, manifestName, rebuildFile, buildFunction) 
 		});
 		await zeroFS.writeFile(`${prefix}__build/${manifestName}`, JSON.stringify(newManifest, null, "\t"));
 	}
+}
+
+
+export async function loadContext(prefix) {
+	console.log("Loading context for", prefix);
+
+	let files = {};
+	for(let name of await zeroFS.readDirectory(`${prefix}__build`, true)) {
+		files[`./src/${prefix}${name}`] = await zeroFS.readFile(`${prefix}__build/${name}`);
+	}
+
+	return new RequireContext(prefix, files, srcContext);
 }

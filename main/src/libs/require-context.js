@@ -1,5 +1,8 @@
 import path from "path";
 
+export class FileNotFoundError extends Error {
+};
+
 export default class RequireContext {
 	constructor(prefix, files, srcContext) {
 		this.prefix = prefix;
@@ -13,7 +16,7 @@ export default class RequireContext {
 
 		if(absPath.startsWith(`./src/${this.prefix}`)) {
 			if(!this.files.hasOwnProperty(absPath)) {
-				throw new TypeError(`require(): ${absPath} cannot be found`);
+				throw new FileNotFoundError(absPath);
 			}
 
 			const code = this.files[absPath];
@@ -43,10 +46,10 @@ export default class RequireContext {
 			} else if(this.srcContextKeys.indexOf(`${srcPath}.js`) > -1) {
 				return this.srcContext(`${srcPath}.js`);
 			} else {
-				throw new TypeError(`require(): ${absPath} cannot be found`);
+				throw new FileNotFoundError(absPath);
 			}
 		} else {
-			throw new TypeError(`require(): ${absPath} is not a valid path`);
+			throw new FileNotFoundError(absPath);
 		}
 	}
 

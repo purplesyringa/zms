@@ -20,7 +20,6 @@ const COMPONENTS = {
 	"named-textarea": "components/named-textarea.vue",
 	"theme-button": "components/button.vue"
 };
-const srcContext = require.context("..", true, /\.js$/);
 
 
 class Theme {
@@ -79,23 +78,10 @@ class Theme {
 			await Store.Themes.saveTheme(files, () => {});
 		});
 
-
-
-		console.log("Loading theme");
-
-		let files = {};
-		for(let name of await zeroFS.readDirectory("theme/__build", true)) {
-			files[`./src/theme/${name}`] = await zeroFS.readFile(`theme/__build/${name}`);
-		}
-
-		const context = new RequireContext("theme/", files, srcContext);
+		const context = await RequireEngine.loadContext("theme/");
 
 		for(const name of Object.keys(COMPONENTS)) {
 			const compPath = COMPONENTS[name];
-
-			if(!context.has(`./${compPath}`, "./src/theme")) {
-				throw new RequireEngine.FileNotFoundError(compPath);
-			}
 
 			const ex = context.require(`./${compPath}`, "./src/theme").default;
 
