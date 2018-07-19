@@ -24,6 +24,26 @@ const BABEL = {
 	}
 };
 
+let chunks = require("./chunks").map(obj => {
+	const chunk = Object.keys(obj)[0];
+	return {
+		chunk,
+		regexp: obj[chunk]
+	};
+});
+let chunkPlugins = [];
+
+for(let i = 0; i < chunks.length; i++) {
+	const name = (chunks[i + 1] || {chunk: "entry"}).chunk;
+	const regexp = chunks[i].regexp;
+	chunkPlugins.push(
+		new webpack.optimize.CommonsChunkPlugin({
+			name,
+			minChunks: module => !regexp.test(module.resource || "")
+		})
+	);
+}
+
 module.exports = {
 	context: path.resolve(__dirname, "./src"),
 	entry: {
@@ -120,65 +140,11 @@ module.exports = {
 			}
 		]),
 		new BundleAnalyzerPlugin(),
-		// new UglifyJSPlugin(),
+		new UglifyJSPlugin(),
 
 		new webpack.ProvidePlugin({
 			$: "jquery",
 			jQuery: "jquery"
-		}),
-
-		// Move node_modules to separate pack
-		new webpack.optimize.CommonsChunkPlugin({
-			name: "corejs",
-			minChunks: module => /node_modules/.test(module.resource || "")
-		}),
-
-		// Move out core-js
-		new webpack.optimize.CommonsChunkPlugin({
-			name: "vue",
-			minChunks: module => !/core-js/.test(module.resource || "")
-		}),
-
-		// Move out vue
-		new webpack.optimize.CommonsChunkPlugin({
-			name: "vue-awesome-brands-ak",
-			minChunks: module => !/vue\.min\.js/.test(module.resource || "")
-		}),
-
-		// Move out vue-awesome brands from A to K
-		new webpack.optimize.CommonsChunkPlugin({
-			name: "vue-awesome-brands-lz",
-			minChunks: module => !/vue-awesome.*brands[/\\][a-k].*/.test(module.resource || "")
-		}),
-
-		// Move out vue-awesome brands
-		new webpack.optimize.CommonsChunkPlugin({
-			name: "vue-awesome-regular",
-			minChunks: module => !/vue-awesome.*brands/.test(module.resource || "")
-		}),
-
-		// Move out vue-awesome regular
-		new webpack.optimize.CommonsChunkPlugin({
-			name: "vue-awesome-ak",
-			minChunks: module => !/vue-awesome.*regular/.test(module.resource || "")
-		}),
-
-		// Move out vue-awesome icons from A to K
-		new webpack.optimize.CommonsChunkPlugin({
-			name: "vue-awesome-lz",
-			minChunks: module => !/vue-awesome[/\\]icons[/\\][a-k].*/.test(module.resource || "")
-		}),
-
-		// Move out vue-awesome
-		new webpack.optimize.CommonsChunkPlugin({
-			name: "crypto",
-			minChunks: module => !/vue-awesome/.test(module.resource || "")
-		}),
-
-		// Move out crypto
-		new webpack.optimize.CommonsChunkPlugin({
-			name: "vendor",
-			minChunks: module => !/crypto|sha|elliptic|bn|rand|pbkdf|des|aes|ecies|hash/.test(module.resource || "")
 		})
-	]
+	].concat(chunkPlugins)
 };
