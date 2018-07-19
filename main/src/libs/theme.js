@@ -79,9 +79,7 @@ class Theme {
 		const context = await RequireEngine.loadContext("theme/");
 
 		for(const name of Object.keys(COMPONENTS)) {
-			const compPath = COMPONENTS[name];
-
-			Vue.component(name, context.require(`/src/theme/${compPath}`));
+			Vue.component(name, context.require(`/src/theme/${COMPONENTS[name]}`));
 		}
 
 		context.require("/src/theme/global.sass");
