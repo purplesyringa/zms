@@ -117,7 +117,7 @@
 
 
 	.menu
-		height: 16px
+		height: 48px
 		padding: 16px
 
 		font-family: Verdana, Arial, sans-serif
