@@ -168,7 +168,31 @@
 			},
 
 			async install(plugin) {
-				// TODO
+				let progress = zeroPage.progress("Loading ZMS Store");
+				await Store.mount();
+
+				progress.setMessage("Installing plugin");
+				progress.setPercent(20);
+				await Store.Plugins.downloadPlugin(plugin, (...args) => {
+					progress.setMessage(...args);
+				});
+
+				progress.setMessage("Building plugin");
+				progress.setPercent(50);
+
+				let files = await Store.Plugins.buildPlugin(escape(plugin.title), (...args) => {
+					progress.setMessage(...args);
+				});
+
+				progress.setMessage("Saving built plugin");
+				progress.setPercent(90);
+
+				await Store.Plugins.savePlugin(escape(plugin.title), files, (...args) => {
+					progress.setMessage(...args);
+				});
+
+				progress.setMessage("Done");
+				progress.done();
 			}
 		}
 	};
