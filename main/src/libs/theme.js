@@ -79,7 +79,7 @@ class Theme {
 
 
 
-	async loadTheme() {
+	async loadTheme(tryBuild=true) {
 		if((await zeroPage.getSiteInfo()).settings.own) {
 			console.log("Checking theme for file changes");
 
@@ -87,8 +87,19 @@ class Theme {
 			try {
 				manifest = await this.getManifest();
 			} catch(e) {
-				// Malformed manifest
-				return;
+				if(tryBuild) {
+					// Malformed manifest, let's try to rebuild theme completely
+					console.warn("Malformed manifest, build theme");
+
+					await Store.mount();
+
+					let files = await Store.Themes.buildTheme(() => {});
+					await Store.Themes.saveTheme(files, () => {});
+
+					return await this.loadTheme(false);
+				} else {
+					throw new ThemeFileNotFoundError("theme.json");
+				}
 			}
 			const hashes = manifest._hashes;
 			let newHashes = {};
