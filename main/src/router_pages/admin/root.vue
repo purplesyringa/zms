@@ -30,6 +30,7 @@
 	import AdminSettings from "./settings/settings.vue";
 	import AdminThemeSettings from "./settings/theme-settings.vue";
 	import AdminStore from "./store/store.vue";
+	import AdminStorePlugins from "./store/plugins.vue";
 	import AdminStoreThemes from "./store/themes.vue";
 	const views = {
 		posts: AdminPosts,
@@ -39,6 +40,7 @@
 		settings: AdminSettings,
 		"theme-settings": AdminThemeSettings,
 		store: AdminStore,
+		"plugins": AdminStorePlugins,
 		"themes": AdminStoreThemes
 	};
 

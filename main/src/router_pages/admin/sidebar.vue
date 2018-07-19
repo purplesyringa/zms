@@ -122,6 +122,9 @@
 						icon: "shopping-cart",
 						sub: [
 							{
+								name: "Plugins"
+							},
+							{
 								name: "Themes"
 							}
 						]
