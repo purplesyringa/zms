@@ -87,4 +87,14 @@ export default class RequireContext {
 
 		return false;
 	}
+
+	readDirectory(absPath) {
+		let result = {};
+		for(let fileName of Object.keys(this.files)) {
+			if(fileName.startsWith(absPath + "/")) {
+				result[fileName.replace(absPath + "/", "")] = this.require(fileName);
+			}
+		}
+		return result;
+	}
 };
