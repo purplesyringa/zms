@@ -1,12 +1,12 @@
 import {zeroFS, zeroPage} from "../zero";
 import Settings from "./settings.js";
 import deepcopy from "deepcopy";
-import path from "path";
 import crypto from "crypto";
 import {Buffer} from "buffer";
 import normalizeComponent from "vue-loader/lib/component-normalizer";
 import addStylesClient from "vue-style-loader/lib/addStylesClient";
 import Store from "./store";
+import RequireContext from "./require-context";
 
 import Vue from "vue/dist/vue.min.js";
 
@@ -71,7 +71,7 @@ class Theme {
 
 
 	async getManifest() {
-		const context = new ThemeContext({
+		const context = new RequireContext("theme/", {
 			"./src/theme/theme.json": await zeroFS.readFile("theme/__build/theme.json")
 		}, srcContext);
 		return context.require("./src/theme/theme.json", "");
@@ -202,7 +202,7 @@ class Theme {
 			files[`./src/theme/${name}`] = await zeroFS.readFile(`theme/__build/${name}`);
 		}
 
-		const context = new ThemeContext(files, srcContext);
+		const context = new RequireContext("theme/", files, srcContext);
 
 		for(const name of Object.keys(COMPONENTS)) {
 			const compPath = COMPONENTS[name];
@@ -235,71 +235,5 @@ class Theme {
 	}
 };
 
-
-class ThemeContext {
-	constructor(themeFiles, srcContext) {
-		this.themeFiles = themeFiles;
-		this.srcContext = srcContext;
-		this.srcContextKeys = srcContext.keys();
-	}
-
-	require(reqPath, origin) {
-		const absPath = "." + path.resolve(origin, reqPath);
-
-		if(absPath.startsWith("./src/theme/")) {
-			if(!this.themeFiles.hasOwnProperty(absPath)) {
-				throw new TypeError(`require(): ${absPath} cannot be found`);
-			}
-
-			const code = this.themeFiles[absPath];
-
-			if(absPath.endsWith(".json")) {
-				return JSON.parse(code);
-			}
-
-			const func = new Function("require", "module", "exports", code);
-
-			const moduleRequire = reqPath => {
-				return this.require(reqPath, path.dirname(absPath));
-			};
-			const moduleExports = {
-				default: {}
-			};
-			const moduleModule = {
-				exports: moduleExports
-			};
-
-			func(moduleRequire, moduleModule, moduleExports);
-			return moduleModule.exports;
-		} else if(absPath.startsWith("./src/")) {
-			const srcPath = absPath.replace("./src/", "./");
-			if(this.srcContextKeys.indexOf(srcPath) > -1) {
-				return this.srcContext(srcPath);
-			} else if(this.srcContextKeys.indexOf(`${srcPath}.js`) > -1) {
-				return this.srcContext(`${srcPath}.js`);
-			} else {
-				throw new TypeError(`require(): ${absPath} cannot be found`);
-			}
-		} else {
-			throw new TypeError(`require(): ${absPath} is not a valid path`);
-		}
-	}
-
-	has(reqPath, origin) {
-		const absPath = "." + path.resolve(origin, reqPath);
-
-		if(absPath.startsWith("./src/theme/")) {
-			return this.themeFiles.hasOwnProperty(absPath);
-		} else if(absPath.startsWith("./src/")) {
-			const srcPath = absPath.replace("./src/", "./");
-			return (
-				this.srcContextKeys.indexOf(srcPath) > -1 ||
-				this.srcContextKeys.indexOf(`${srcPath}.js`) > -1
-			);
-		}
-
-		return false;
-	}
-};
 
 export default new Theme();
