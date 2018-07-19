@@ -2,7 +2,6 @@ import {zeroFS} from "../zero";
 import Settings from "./settings.js";
 import deepcopy from "deepcopy";
 import Store from "./store";
-import RequireContext from "./require-context";
 import * as RequireEngine from "./require-engine";
 
 import Vue from "vue/dist/vue.min.js";
