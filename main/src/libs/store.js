@@ -21,10 +21,11 @@ class Store {
 		await this.load();
 
 		// Save
-		let {Themes} = await System.import("ZMSStore");
+		let {Themes, Plugins} = await System.import("ZMSStore");
 		const remoteZeroDB = new RemoteZeroDB(zeroPage, this.ZMS_STORE);
 		const remoteZeroFS = new RemoteZeroFS(zeroPage, this.ZMS_STORE);
-		this.Themes = Themes({zeroAuth, zeroDB: remoteZeroDB, zeroFS: remoteZeroFS, zeroPage, blogZeroFS: zeroFS});
+		this.Themes  = Themes ({zeroAuth, zeroDB: remoteZeroDB, zeroFS: remoteZeroFS, zeroPage, blogZeroFS: zeroFS});
+		this.Plugins = Plugins({zeroAuth, zeroDB: remoteZeroDB, zeroFS: remoteZeroFS, zeroPage, blogZeroFS: zeroFS});
 
 		this.mounted = true;
 	}
