@@ -27,7 +27,6 @@
 	import AdminNewPost from "./posts/new-post.vue";
 	import AdminEditPost from "./posts/edit-post.vue";
 	import AdminUsers from "./users/users.vue";
-	import AdminChangeRole from "./users/change-role.vue";
 	import AdminSettings from "./settings/settings.vue";
 	import AdminThemeSettings from "./settings/theme-settings.vue";
 	import AdminStore from "./store/store.vue";
@@ -37,7 +36,6 @@
 		"new-post": AdminNewPost,
 		"edit-post": AdminEditPost,
 		users: AdminUsers,
-		"change-role": AdminChangeRole,
 		settings: AdminSettings,
 		"theme-settings": AdminThemeSettings,
 		store: AdminStore,

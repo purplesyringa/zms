@@ -33,7 +33,7 @@ class Users {
 		admins.forEach(id => all[id] = "admin");
 
 		let allArr = [];
-		for await(let id of Object.keys(all)) {
+		for(let id of Object.keys(all)) {
 			let user = {id, role: all[id]};
 			user.certUserId = await this.addressToCertUserId(user.id);
 			user.user = user.certUserId.replace(/@.*/, "");

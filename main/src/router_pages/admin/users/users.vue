@@ -16,14 +16,19 @@
 					{{user.id}}
 				</td>
 				<td class="column-role">
-					{{user.role}}
-
-					<div class="icons">
-						<span class="icon" @click="$router.navigate(`admin/users/change-role/${user.id}`)" v-if="siteInfo.settings.own || (isModerator && ['author', 'user', 'banned'].indexOf(user.role) > -1)">
-							<icon name="edit" />
-							Change
-						</span>
-					</div>
+					<template v-if="roles.find(role => role.role === user.role).static">
+						{{roles.find(role => role.role === user.role).name}}
+					</template>
+					<select v-else>
+						<option v-for="role in roles" @click="!role.static && use(user, role.role)" :disabled="role.static" :selected="role.role === user.role">
+							{{role.name}}
+							<template v-if="role.default">(default)</template>
+							<template v-if="role.static">
+								<template v-if="role.autoGranted">(auto-granted)</template>
+								<template v-else>(granted by admin)</template>
+							</template>
+						</option>
+					</select>
 				</td>
 			</tr>
 			<tr v-if="siteInfo.settings.own || isModerator">
@@ -75,6 +80,7 @@
 <script type="text/javascript">
 	import {zeroAuth} from "../../../zero";
 	import Users from "../../../libs/users.js";
+	import roles from "./roles";
 
 	export default {
 		name: "admin-users",
@@ -98,6 +104,12 @@
 			this.$eventBus.$off("setSiteInfo", this.setSiteInfo);
 		},
 
+		computed: {
+			roles() {
+				return roles(this.siteInfo);
+			}
+		},
+
 		asyncComputed: {
 			async users() {
 				return await Users.getAllRules();
@@ -118,13 +130,24 @@
 				this.siteInfo = siteInfo;
 			},
 
-			next() {
+			async next() {
 				if(!this.newId || this.newId === "Please, fill in user ID") {
 					this.newId = "Please, fill in user ID";
 					return;
 				}
 
-				this.$router.navigate(`admin/users/change-role/${this.newId}`);
+				let user = {id: this.newId, role: "user"};
+				user.certUserId = await Users.addressToCertUserId(user.id);
+				user.user = user.certUserId.replace(/@.*/, "");
+				user.roleId = ["admin", "moderator", "author", "user", "banned"].indexOf(user.role);
+				this.users.push(user);
+
+				this.newId = "";
+			},
+
+			async use(user, role) {
+				await Users.setRoleByAddress(user.id, role);
+				user.role = role;
 			}
 		}
 	};
