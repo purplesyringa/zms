@@ -81,10 +81,10 @@ class Theme {
 		for(const name of Object.keys(COMPONENTS)) {
 			const compPath = COMPONENTS[name];
 
-			Vue.component(name, context.require(`./${compPath}`, "./src/theme"));
+			Vue.component(name, context.require(`/src/theme/${compPath}`));
 		}
 
-		context.require("./global.sass", "./src/theme");
+		context.require("/src/theme/global.sass");
 	}
 };
 

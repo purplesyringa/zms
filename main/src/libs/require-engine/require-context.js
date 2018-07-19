@@ -17,7 +17,7 @@ export default class RequireContext {
 		this.postHandlers.push({regExp, f});
 	}
 
-	require(reqPath, origin) {
+	require(reqPath, origin="/") {
 		const absPath = "." + path.resolve(origin, reqPath);
 
 		if(absPath.startsWith(`./src/${this.prefix}`)) {
