@@ -31,7 +31,13 @@ export default class RequireContext {
 				return JSON.parse(code);
 			}
 
-			const func = new Function("require", "module", "exports", code);
+			let func;
+			try {
+				func = new Function("require", "module", "exports", code);
+			} catch(e) {
+				console.error("Error at", absPath);
+				throw e;
+			}
 
 			const moduleRequire = reqPath => {
 				return this.require(reqPath, path.dirname(absPath));
