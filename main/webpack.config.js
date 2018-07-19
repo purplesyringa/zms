@@ -93,7 +93,7 @@ module.exports = {
 				use: [
 					BABEL
 				],
-				include: /vue-awesome|http-vue-loader|zero-dev-lib/
+				include: /zero-dev-lib|vue-loader|@babel|http-vue-loader|zero-dev-lib|workerout|unicode|vue-template-es2015-compiler|jsesc|regexpu-core/
 			},
 			{
 				test: /\.(gif|jpe?g|png)$/,
