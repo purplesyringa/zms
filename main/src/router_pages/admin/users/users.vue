@@ -48,6 +48,23 @@
 				</td>
 			</tr>
 		</table>
+
+		<div class="desc">
+			Role description:
+
+			<div v-for="role in roles">
+				<b>
+					{{role.name}}
+					<i v-if="role.default">(default)</i>
+					<i v-if="role.static">
+						<template v-if="role.autoGranted">(auto-granted)</template>
+						<template v-else>(granted by admin)</template>
+					</i>
+				</b>
+				&mdash;
+				{{role.description}}
+			</div>
+		</div>
 	</div>
 </template>
 
@@ -75,6 +92,14 @@
 		cursor: pointer
 		margin-left: 8px
 		color: lighten(#803, 10%)
+
+
+	.desc
+		margin-top: 32px
+		margin-bottom: -8px
+
+		font-family: Verdana, Arial, sans-serif
+		font-size: 16px
 </style>
 
 <script type="text/javascript">
