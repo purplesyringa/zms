@@ -64,6 +64,7 @@
 
 <script type="text/javascript">
 	import Posts from "../../../libs/posts.js";
+	import {zeroPage} from "../../../zero";
 
 	export default {
 		name: "admin-posts",
@@ -91,6 +92,10 @@
 			},
 
 			async remove(post) {
+				if(!await zeroPage.confirm("Are you sure you want to delete this post?", "Delete")) {
+					return;
+				}
+
 				await Posts.remove(post);
 				post.deleted = true;
 			}
