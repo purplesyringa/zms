@@ -36,13 +36,13 @@ import {zeroPage} from "./zero";
 import ZeroHTTPRequest from "./zero-http-request";
 window.XMLHttpRequest = ZeroHTTPRequest;
 
-import Theme, {ThemeFileNotFoundError} from "./libs/theme";
-
+import Theme from "./libs/theme";
+import {FileNotFoundError} from "./libs/require-engine";
 (async function() {
 	try {
 		await Theme.loadTheme();
 	} catch(e) {
-		if(e instanceof ThemeFileNotFoundError) {
+		if(e instanceof FileNotFoundError) {
 			console.log("Theme file not found:", e.message);
 			route(app);
 			setTimeout(() => {
