@@ -1,4 +1,4 @@
-import {zeroFS} from "../zero";
+import {zeroFS, zeroPage} from "../zero";
 import Settings from "./settings.js";
 import deepcopy from "deepcopy";
 import Store from "./store";
@@ -74,12 +74,14 @@ class Theme {
 			(await zeroFS.readDirectory("plugins", false)).map(async plugin => {
 				plugin = unescape(plugin);
 
-				await RequireEngine.rebuild(`plugins/${escape(plugin)}/`, "plugin.json", (...args) => {
-					return Store.Plugins.rebuildPluginFile(plugin, ...args);
-				}, async () => {
-					let files = await Store.Plugins.buildPlugin(plugin, () => {});
-					await Store.Plugins.savePlugin(plugin, files, () => {});
-				});
+				if((await zeroPage.getSiteInfo()).settings.own) {
+					await RequireEngine.rebuild(`plugins/${escape(plugin)}/`, "plugin.json", (...args) => {
+						return Store.Plugins.rebuildPluginFile(plugin, ...args);
+					}, async () => {
+						let files = await Store.Plugins.buildPlugin(plugin, () => {});
+						await Store.Plugins.savePlugin(plugin, files, () => {});
+					});
+				}
 
 				const context = await RequireEngine.loadContext(`plugins/${escape(plugin)}/`);
 
@@ -92,12 +94,14 @@ class Theme {
 	}
 
 	async loadTheme() {
-		await RequireEngine.rebuild("theme/", "theme.json", (...args) => {
-			return Store.Themes.rebuildThemeFile(...args);
-		}, async () => {
-			let files = await Store.Themes.buildTheme(() => {});
-			await Store.Themes.saveTheme(files, () => {});
-		});
+		if((await zeroPage.getSiteInfo()).settings.own) {
+			await RequireEngine.rebuild("theme/", "theme.json", (...args) => {
+				return Store.Themes.rebuildThemeFile(...args);
+			}, async () => {
+				let files = await Store.Themes.buildTheme(() => {});
+				await Store.Themes.saveTheme(files, () => {});
+			});
+		}
 
 		const context = await RequireEngine.loadContext("theme/");
 

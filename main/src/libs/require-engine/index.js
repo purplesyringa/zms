@@ -1,4 +1,4 @@
-import {zeroFS, zeroPage} from "../../zero";
+import {zeroFS} from "../../zero";
 import crypto from "crypto";
 import {Buffer} from "buffer";
 import RequireContext, {FileNotFoundError} from "./require-context";
@@ -15,11 +15,6 @@ export async function getManifest(prefix, fileName) {
 }
 
 export async function rebuild(prefix, manifestName, rebuildFile, buildFunction) {
-	if(!(await zeroPage.getSiteInfo()).settings.own) {
-		return;
-	}
-
-
 	console.log("Checking for file changes");
 
 	let manifest;
@@ -38,59 +33,7 @@ export async function rebuild(prefix, manifestName, rebuildFile, buildFunction) 
 		}
 	}
 
-	const hashes = manifest._hashes || {};
-	manifest._dependents = manifest._dependents || {};
-	let newHashes = {};
-	let changes = [];
-
-	for(const fileName of Object.keys(hashes)) {
-		let content;
-		try {
-			content = await zeroFS.readFile(`${prefix}${fileName}`, "arraybuffer");
-		} catch(e) {
-			console.log(fileName, "deleted");
-			changes.push([
-				fileName,
-				"deleted"
-			]);
-			continue;
-		}
-
-		const newHash = crypto.createHash("md5").update(Buffer.from(content)).digest("hex");
-		const oldHash = hashes[fileName];
-
-		if(newHash != oldHash) {
-			console.log(fileName, "changed");
-			changes.push([
-				fileName,
-				"changed"
-			]);
-			newHashes[fileName] = newHash;
-		} else {
-			newHashes[fileName] = newHash;
-		}
-	}
-
-	for(const fileName of await zeroFS.readDirectory(prefix.replace(/\/$/, ""), true)) {
-		if(
-			fileName.startsWith("__build/") ||
-			fileName.split("/").some(part => part.startsWith("."))
-		) {
-			continue;
-		}
-
-		if(!hashes[fileName]) {
-			console.log(fileName, "added");
-			changes.push([
-				fileName,
-				"added"
-			]);
-
-			const content = await zeroFS.readFile(`${prefix}${fileName}`, "arraybuffer");
-			const newHash = crypto.createHash("md5").update(Buffer.from(content)).digest("hex");
-			newHashes[fileName] = newHash;
-		}
-	}
+	let {changes, newHashes} = await getChanges(manifest, prefix, manifestName);
 
 	if(changes.length) {
 		for(let i = 0; i < changes.length; i++) { // Don't optimize!
@@ -148,4 +91,64 @@ export async function loadContext(prefix) {
 	context.registerPostHandler(/\.vue$/, vueHandler);
 
 	return context;
+}
+
+
+
+export async function getChanges(manifest, prefix, manifestName) {
+	const hashes = manifest._hashes || {};
+	manifest._dependents = manifest._dependents || {};
+	let newHashes = {};
+	let changes = [];
+
+	for(const fileName of Object.keys(hashes)) {
+		let content;
+		try {
+			content = await zeroFS.readFile(`${prefix}${fileName}`, "arraybuffer");
+		} catch(e) {
+			console.log(fileName, "deleted");
+			changes.push([
+				fileName,
+				"deleted"
+			]);
+			continue;
+		}
+
+		const newHash = crypto.createHash("md5").update(Buffer.from(content)).digest("hex");
+		const oldHash = hashes[fileName];
+
+		if(newHash != oldHash) {
+			console.log(fileName, "changed");
+			changes.push([
+				fileName,
+				"changed"
+			]);
+			newHashes[fileName] = newHash;
+		} else {
+			newHashes[fileName] = newHash;
+		}
+	}
+
+	for(const fileName of await zeroFS.readDirectory(prefix.replace(/\/$/, ""), true)) {
+		if(
+			fileName.startsWith("__build/") ||
+			fileName.split("/").some(part => part.startsWith("."))
+		) {
+			continue;
+		}
+
+		if(!hashes[fileName]) {
+			console.log(fileName, "added");
+			changes.push([
+				fileName,
+				"added"
+			]);
+
+			const content = await zeroFS.readFile(`${prefix}${fileName}`, "arraybuffer");
+			const newHash = crypto.createHash("md5").update(Buffer.from(content)).digest("hex");
+			newHashes[fileName] = newHash;
+		}
+	}
+
+	return {changes, newHashes};
 }
