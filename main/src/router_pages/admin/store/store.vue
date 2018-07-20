@@ -15,7 +15,6 @@
 		padding: 16px
 	.text
 		margin-top: 16px
-		font-family: Verdana, Arial, sans-serif
 		font-size: 16px
 </style>
 

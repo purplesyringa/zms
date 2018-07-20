@@ -21,7 +21,6 @@
 
 		width: 60%
 
-		font-family: Verdana, Arial, sans-serif
 		font-size: 32px
 		text-align: center
 </style>

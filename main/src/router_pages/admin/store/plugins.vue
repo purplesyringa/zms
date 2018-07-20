@@ -52,14 +52,12 @@
 		padding-right: 0
 	.text
 		margin-top: 16px
-		font-family: Verdana, Arial, sans-serif
 		font-size: 16px
 
 	h1
 		margin-bottom: 16px
 
 	.loading
-		font-family: Verdana, Arial, sans-serif
 		font-size: 24px
 
 	.plugin
@@ -77,7 +75,6 @@
 	.header
 		padding: 8px 16px
 
-		font-family: Verdana, Arial, sans-serif
 		color: #888
 
 		.title
@@ -88,7 +85,6 @@
 	.description
 		padding: 16px
 
-		font-family: Verdana, Arial, sans-serif
 		font-size: 16px
 
 
@@ -101,7 +97,6 @@
 		right: 16px
 		top: 16px
 
-		font-family: Verdana, Arial, sans-serif
 		font-size: 16px
 
 		background-color: #080
@@ -120,7 +115,6 @@
 		height: 48px
 		padding: 16px
 
-		font-family: Verdana, Arial, sans-serif
 		font-size: 16px
 
 		a

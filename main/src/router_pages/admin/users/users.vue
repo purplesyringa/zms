@@ -98,7 +98,6 @@
 		margin-top: 32px
 		margin-bottom: -8px
 
-		font-family: Verdana, Arial, sans-serif
 		font-size: 16px
 </style>
 

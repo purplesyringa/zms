@@ -42,14 +42,12 @@
 		padding-right: 0
 	.text
 		margin-top: 16px
-		font-family: Verdana, Arial, sans-serif
 		font-size: 16px
 
 	h1
 		margin-bottom: 16px
 
 	.loading
-		font-family: Verdana, Arial, sans-serif
 		font-size: 24px
 
 	.theme
@@ -73,7 +71,6 @@
 	.header
 		padding: 8px 16px
 
-		font-family: Verdana, Arial, sans-serif
 		font-size: 20px
 
 	.icon

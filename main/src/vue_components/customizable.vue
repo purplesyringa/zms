@@ -85,7 +85,6 @@
 			border-radius: 4px
 			cursor: default
 
-			font-family: Verdana, Arial, sans-serif
 			font-size: 16px
 			color: #000
 

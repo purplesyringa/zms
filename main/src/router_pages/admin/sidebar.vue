@@ -51,7 +51,6 @@
 		display: block
 		padding: 8px 16px
 
-		font-family: Verdana, Arial, sans-serif
 		fotn-size: 16px
 		color: #FFF
 	.heading:hover
