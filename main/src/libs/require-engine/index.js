@@ -71,7 +71,10 @@ export async function rebuild(prefix, manifestName, rebuildFile, buildFunction) 
 	}
 
 	for(const fileName of await zeroFS.readDirectory(prefix.replace(/\/$/, ""), true)) {
-		if(fileName.startsWith("__build/")) {
+		if(
+			fileName.startsWith("__build/") ||
+			fileName.split("/").some(part => part.startsWith("."))
+		) {
 			continue;
 		}
 
