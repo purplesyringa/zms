@@ -38,7 +38,8 @@ export async function rebuild(prefix, manifestName, rebuildFile, buildFunction) 
 		}
 	}
 
-	const hashes = manifest._hashes;
+	const hashes = manifest._hashes || {};
+	manifest._dependents = manifest._dependents || {};
 	let newHashes = {};
 	let changes = [];
 
