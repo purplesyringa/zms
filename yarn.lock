@@ -4540,6 +4540,10 @@ lexical-scope@^1.2.0:
   dependencies:
     astw "^2.0.0"
 
+limit-concurrency-decorator@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/limit-concurrency-decorator/-/limit-concurrency-decorator-0.4.0.tgz#d79c4e97b6ef547df2d905cc3acaabbae1bfeed6"
+
 load-json-file@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/load-json-file/-/load-json-file-1.1.0.tgz#956905708d58b4bab4c2261b04f59f31c99374c0"
