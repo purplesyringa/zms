@@ -18,6 +18,21 @@ Vue.component("icon", Icon);
 import "vue-awesome/icons";
 
 
+const $global = new Vue({
+	data: {
+		customizableManaged: false
+	}
+});
+Vue.use({
+	install() {
+		Object.defineProperty(Vue.prototype, "$global", {
+			get() {
+				return $global
+			}
+		})
+	}
+});
+
 Vue.prototype.$eventBus = new Vue();
 
 import root from "./vue_components/root.vue";
