@@ -4,6 +4,7 @@ import deepcopy from "deepcopy";
 import Store from "./store";
 import Customizable from "./customizable";
 import * as RequireEngine from "./require-engine";
+import limit from "limit-concurrency-decorator";
 
 import Vue from "vue/dist/vue.min.js";
 
@@ -18,6 +19,12 @@ const COMPONENTS = {
 	"named-textarea": "components/named-textarea.vue",
 	"theme-button": "components/button.vue"
 };
+
+
+function getPluginTableName(plugin, tableName) {
+	const escapedPluginName = escape(plugin).replace(/_/g, "5f").replace(/%/g, "_");
+	return `plugin__${escapedPluginName}__${tableName}`;
+}
 
 
 class Theme {
@@ -75,10 +82,16 @@ class Theme {
 		// We update plugins synchronously, and we need context, so it
 		// doesn't make sense to load context twice - hence the if
 		if((await zeroPage.getSiteInfo()).settings.own) {
+			let dbschemaChanged = false;
 			for(const plugin of plugins) {
 				// Rebuild
-				await RequireEngine.rebuild(`plugins/${escape(plugin)}/`, "plugin.json", (...args) => {
-					return Store.Plugins.rebuildPluginFile(plugin, ...args);
+				await RequireEngine.rebuild(`plugins/${escape(plugin)}/`, "plugin.json", async fileName => {
+					if(fileName === "plugin.json") {
+						await this.rebuildPluginJson(plugin);
+						dbschemaChanged = true;
+					}
+
+					return await Store.Plugins.rebuildPluginFile(plugin, fileName);
 				}, async () => {
 					let files = await Store.Plugins.buildPlugin(plugin, () => {});
 					await Store.Plugins.savePlugin(plugin, files, () => {});
@@ -86,6 +99,10 @@ class Theme {
 
 				const context = await RequireEngine.loadContext(`plugins/${escape(plugin)}/`);
 				registerContext(plugin, context);
+			}
+
+			if(dbschemaChanged) {
+				await zeroPage.publish("content.json");
 			}
 		} else {
 			await Promise.all(
@@ -103,6 +120,33 @@ class Theme {
 			}
 		}
 	}
+
+	@limit(1)
+	async rebuildPluginJson(plugin) {
+		const manifest = JSON.parse(await zeroFS.readFile(`plugins/${escape(plugin)}/plugin.json`));
+
+		let dbschema = JSON.parse(await zeroFS.readFile("dbschema.json"));
+
+		// Remove all old tables
+		for(const tableName of Object.keys(dbschema.tables)) {
+			if(tableName.startsWith(getPluginTableName(plugin, ""))) {
+				delete dbschema.tables[tableName];
+			}
+		}
+
+		// Add new tables (if they exist)
+		for(const tableName of Object.keys(manifest.tables || {})) {
+			const escapedTableName = getPluginTableName(plugin, tableName);
+			dbschema.tables[escapedTableName] = Object.assign({}, manifest.tables[tableName], {
+				schema_changed: Date.now()
+			});
+		}
+
+		console.log("Updated dbschema.json");
+
+		await zeroFS.writeFile("dbschema.json", JSON.stringify(dbschema, null, "\t"));
+	}
+
 
 	async loadTheme() {
 		if((await zeroPage.getSiteInfo()).settings.own) {
