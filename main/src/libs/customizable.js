@@ -16,6 +16,9 @@ class Customizable {
 		await Settings.set(`customizable.widgets.${name}`, widgets);
 		return widgets;
 	}
+	async set(name, widgets) {
+		await Settings.set(`customizable.widgets.${name}`, widgets);
+	}
 
 	registerWidget(plugin, widget, fileName) {
 		let scopes = widget.scope;

@@ -10,6 +10,18 @@
 			<div class="popup" @click.stop v-show="popupShown">
 				<icon name="times" class="popup-close" @click.native.stop="closePopup" />
 
+				<template v-if="widgets.length">
+					<b>Current widgets</b><br>
+					<div v-for="widget in widgetNames" class="widget-item">
+						<a title="Remove" @click="removeWidget(widget)">
+							<icon name="minus" />
+						</a>
+
+						<i>{{widget.plugin}}</i> &mdash; {{widget.widgetName}}
+					</div>
+					<br>
+				</template>
+
 				<b>Add a widget</b><br>
 				You'll find more widgets when you <a @click="$router.navigate('admin/store/plugins')">install plugins</a>.<br>
 				<br>
@@ -109,6 +121,9 @@
 	.widget
 		display: inline-block
 		margin-right: 16px
+
+	.widget-item
+		margin: 4px 0
 </style>
 
 <script language="text/javascript">
@@ -178,6 +193,10 @@
 				this.closePopup();
 
 				this.$eventBus.$emit(`repaintCustomizable-${this.name}`, widgets);
+			},
+			async removeWidget(widget) {
+				this.widgetNames.splice(this.widgetNames.indexOf(widget), 1);
+				await Customizable.set(this.name, this.widgetNames);
 			},
 
 			repaint(widgets) {
