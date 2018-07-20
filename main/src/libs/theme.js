@@ -72,28 +72,36 @@ class Theme {
 	async loadPlugins() {
 		const plugins = (await zeroFS.readDirectory("plugins", false)).map(fileName => unescape(fileName));
 
-		// Rebuild
+		// We update plugins synchronously, and we need context, so it
+		// doesn't make sense to load context twice - hence the if
 		if((await zeroPage.getSiteInfo()).settings.own) {
 			for(const plugin of plugins) {
+				// Rebuild
 				await RequireEngine.rebuild(`plugins/${escape(plugin)}/`, "plugin.json", (...args) => {
 					return Store.Plugins.rebuildPluginFile(plugin, ...args);
 				}, async () => {
 					let files = await Store.Plugins.buildPlugin(plugin, () => {});
 					await Store.Plugins.savePlugin(plugin, files, () => {});
 				});
+
+				const context = await RequireEngine.loadContext(`plugins/${escape(plugin)}/`);
+				registerContext(plugin, context);
 			}
+		} else {
+			await Promise.all(
+				plugins.map(async plugin => {
+					const context = await RequireEngine.loadContext(`plugins/${escape(plugin)}/`);
+					registerContext(plugin, context);
+				})
+			);
 		}
 
-		await Promise.all(
-			plugins.map(async plugin => {
-				const context = await RequireEngine.loadContext(`plugins/${escape(plugin)}/`);
-
-				const widgets = context.readDirectory(`./src/plugins/${escape(plugin)}/widgets`);
-				for(const fileName of Object.keys(widgets)) {
-					Customizable.registerWidget(plugin, widgets[fileName], fileName);
-				}
-			})
-		);
+		function registerContext(plugin, context) {
+			const widgets = context.readDirectory(`./src/plugins/${escape(plugin)}/widgets`);
+			for(const fileName of Object.keys(widgets)) {
+				Customizable.registerWidget(plugin, widgets[fileName], fileName);
+			}
+		}
 	}
 
 	async loadTheme() {
