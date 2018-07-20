@@ -54,9 +54,17 @@ import {zeroPage} from "./zero";
 import ZeroHTTPRequest from "./zero-http-request";
 window.XMLHttpRequest = ZeroHTTPRequest;
 
+import * as ConsoleHook from "./console-hook";
+
 import Theme from "./libs/theme";
 import {FileNotFoundError} from "./libs/require-engine";
 (async function() {
+	const own = (await zeroPage.getSiteInfo()).settings.own;
+
+	if(own) {
+		ConsoleHook.install();
+	}
+
 	try {
 		await Theme.loadPlugins();
 	} catch(e) {
@@ -68,8 +76,11 @@ import {FileNotFoundError} from "./libs/require-engine";
 				const plugin = unescape(e.message.replace(/$\.\/src\/plugins\//, "").split("/")[0]);
 				app.$router.navigate(`500/plugin-file-missing/${btoa(plugin)}/${btoa(e.message)}`);
 			}, 1000);
+			ConsoleHook.uninstall();
 			return;
 		} else {
+			console.error(e);
+			ConsoleHook.uninstall();
 			throw e;
 		}
 	}
@@ -84,11 +95,16 @@ import {FileNotFoundError} from "./libs/require-engine";
 			setTimeout(() => {
 				app.$router.navigate(`500/theme-file-missing/${btoa(e.message)}`);
 			}, 1000);
+			ConsoleHook.uninstall();
 			return;
 		} else {
+			console.error(e);
+			ConsoleHook.uninstall();
 			throw e;
 		}
 	}
+
+	ConsoleHook.uninstall();
 
 	route(app);
 })();
