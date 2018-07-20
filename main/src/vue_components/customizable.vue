@@ -1,7 +1,7 @@
 <template>
 	<div class="customizable">
 		<div class="widget" v-for="widget in widgets">
-			<component :is="widget.widget" />
+			<component :is="widget.widget" :post="post" />
 		</div>
 
 		<div class="add" v-if="$global.customizableManaged" @click.stop="showPopup" title="Add widget">
@@ -132,7 +132,7 @@
 	let currentCustomizable = null;
 
 	export default {
-		props: ["scope", "name"],
+		props: ["scope", "name", "post"],
 		name: "customizable",
 		data() {
 			return {
