@@ -2,6 +2,7 @@ import {zeroFS} from "../zero";
 import Settings from "./settings.js";
 import deepcopy from "deepcopy";
 import Store from "./store";
+import Customizable from "./customizable";
 import * as RequireEngine from "./require-engine";
 
 import Vue from "vue/dist/vue.min.js";
@@ -72,12 +73,21 @@ class Theme {
 	async loadPlugins() {
 		await Promise.all(
 			(await zeroFS.readDirectory("plugins", false)).map(async plugin => {
-				await RequireEngine.rebuild(`plugins/${plugin}/`, "plugin.json", (...args) => {
-					return Store.Plugins.rebuildPluginFile(unescape(plugin), ...args);
+				plugin = unescape(plugin);
+
+				await RequireEngine.rebuild(`plugins/${escape(plugin)}/`, "plugin.json", (...args) => {
+					return Store.Plugins.rebuildPluginFile(plugin, ...args);
 				}, async () => {
-					let files = await Store.Plugins.buildPlugin(unescape(plugin), () => {});
-					await Store.Plugins.savePlugin(unescape(plugin), files, () => {});
+					let files = await Store.Plugins.buildPlugin(plugin, () => {});
+					await Store.Plugins.savePlugin(plugin, files, () => {});
 				});
+
+				const context = await RequireEngine.loadContext(`plugins/${escape(plugin)}/`);
+
+				const widgets = context.readDirectory(`./src/plugins/${escape(plugin)}/widgets`);
+				for(const fileName of Object.keys(widgets)) {
+					Customizable.registerWidget(plugin, widgets[fileName], fileName);
+				}
 			})
 		);
 	}
