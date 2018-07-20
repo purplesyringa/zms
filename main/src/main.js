@@ -17,6 +17,9 @@ import Icon from "vue-awesome/components/Icon.vue";
 Vue.component("icon", Icon);
 import "vue-awesome/icons";
 
+import Customizable from "./vue_components/customizable.vue";
+Vue.component("customizable", Customizable);
+
 
 const $global = new Vue({
 	data: {
