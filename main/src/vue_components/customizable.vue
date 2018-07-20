@@ -5,7 +5,7 @@
 		</div>
 
 		<div class="add" v-if="$global.customizableManaged" @click.stop="showPopup" title="Add widget">
-			<icon class="add-icon" name="plus" />
+			<icon class="add-icon" :name="widgets.length ? 'cog' : 'plus'" />
 
 			<div class="popup" @click.stop v-show="popupShown">
 				<icon name="times" class="popup-close" @click.native.stop="closePopup" />
