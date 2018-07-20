@@ -44,6 +44,7 @@ import {FileNotFoundError} from "./libs/require-engine";
 	} catch(e) {
 		if(e instanceof FileNotFoundError) {
 			console.log("Plugin file not found:", e.message);
+			require("./sass/default.sass");
 			route(app);
 			setTimeout(() => {
 				const plugin = unescape(e.message.replace(/$\.\/src\/plugins\//, "").split("/")[0]);
@@ -60,6 +61,7 @@ import {FileNotFoundError} from "./libs/require-engine";
 	} catch(e) {
 		if(e instanceof FileNotFoundError) {
 			console.log("Theme file not found:", e.message);
+			require("./sass/default.sass");
 			route(app);
 			setTimeout(() => {
 				app.$router.navigate(`500/theme-file-missing/${btoa(e.message)}`);
