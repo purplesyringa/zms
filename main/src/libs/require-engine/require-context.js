@@ -18,7 +18,16 @@ export default class RequireContext {
 	}
 
 	require(reqPath, origin="/") {
-		const absPath = "." + path.resolve(origin, reqPath);
+		let absPath;
+		if(
+			!reqPath.startsWith("./") &&
+			!reqPath.startsWith("../") &&
+			!reqPath.startsWith("/")
+		) {
+			absPath = `./src/libs/${reqPath}`;
+		} else {
+			absPath = "." + path.resolve(origin, reqPath);
+		}
 
 		if(absPath.startsWith(`./src/${this.prefix}`)) {
 			if(!this.files.hasOwnProperty(absPath)) {
