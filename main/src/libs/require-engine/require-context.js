@@ -62,8 +62,14 @@ export default class RequireContext {
 
 			let result = moduleModule.exports;
 			for(const {regExp, f} of this.postHandlers) {
-				if(regExp.test(absPath)) {
-					result = f(result);
+				if(typeof regExp === "string") {
+					if(regExp === absPath) {
+						result = f.call(this, result);
+					}
+				} else {
+					if(regExp.test(absPath)) {
+						result = f.call(this, result);
+					}
 				}
 			}
 			return result;
