@@ -13,8 +13,8 @@ export default class RequireContext {
 		this.postHandlers = [];
 	}
 
-	registerPostHandler(regExp, f) {
-		this.postHandlers.push({regExp, f});
+	registerPostHandler(regExp, f, src=false) {
+		this.postHandlers.push({regExp, f, src});
 	}
 
 	require(reqPath, origin="/") {
@@ -75,13 +75,31 @@ export default class RequireContext {
 			return result;
 		} else if(absPath.startsWith("./src/")) {
 			const srcPath = absPath.replace("./src/", "./");
+			let result;
 			if(this.srcContextKeys.indexOf(srcPath) > -1) {
-				return this.srcContext(srcPath);
+				result = this.srcContext(srcPath);
 			} else if(this.srcContextKeys.indexOf(`${srcPath}.js`) > -1) {
-				return this.srcContext(`${srcPath}.js`);
+				result = this.srcContext(`${srcPath}.js`);
 			} else {
 				throw new FileNotFoundError(absPath);
 			}
+
+			for(const {regExp, f, src} of this.postHandlers) {
+				if(!src) {
+					continue;
+				}
+
+				if(typeof regExp === "string") {
+					if(regExp === absPath) {
+						result = f.call(this, result);
+					}
+				} else {
+					if(regExp.test(absPath)) {
+						result = f.call(this, result);
+					}
+				}
+			}
+			return result;
 		} else {
 			throw new FileNotFoundError(absPath);
 		}
