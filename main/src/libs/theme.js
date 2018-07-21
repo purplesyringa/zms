@@ -21,7 +21,7 @@ const COMPONENTS = {
 };
 
 
-function getPluginTableName(plugin, tableName) {
+export function getPluginTableName(plugin, tableName) {
 	const escapedPluginName = escape(plugin).replace(/_/g, "5f").replace(/%/g, "_");
 	return `plugin__${escapedPluginName}__${tableName}`;
 }
