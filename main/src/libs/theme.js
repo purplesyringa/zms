@@ -136,6 +136,19 @@ class Theme {
 				delete dbschema.tables[tableName];
 			}
 		}
+		// Remove all old mappings
+		for(const mappingName of Object.keys(dbschema.maps)) {
+			let mapping = dbschema.maps[mappingName];
+
+			if(mapping.to_table) {
+				mapping.to_table = mapping.to_table.filter(table => {
+					return !(
+						typeof table === "string" &&
+						table.startsWith(getPluginTableName(plugin, ""))
+					);
+				});
+			}
+		}
 
 		// Add new tables (if they exist)
 		for(const tableName of Object.keys(manifest.tables || {})) {
@@ -143,6 +156,25 @@ class Theme {
 			dbschema.tables[escapedTableName] = Object.assign({}, manifest.tables[tableName], {
 				schema_changed: Date.now()
 			});
+		}
+
+		// Add new mappings (if they exist)
+		for(const mappingName of Object.keys(manifest.maps || {})) {
+			const mapping = manifest.maps[mappingName];
+
+			if(!dbschema.maps[mappingName]) {
+				dbschema.maps[mappingName] = {};
+			}
+			let dbschemaMapping = dbschema.maps[mappingName];
+			if(!dbschemaMapping.to_table) {
+				dbschemaMapping.to_table = [];
+			}
+
+
+			for(const tableName of mapping) {
+				const escapedTableName = getPluginTableName(plugin, tableName);
+				dbschemaMapping.to_table.push(escapedTableName);
+			}
 		}
 
 		console.log("Updated dbschema.json");
