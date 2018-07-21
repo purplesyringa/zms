@@ -2,6 +2,11 @@ import {zeroAuth, zeroDB} from "../zero";
 import Users from "./users.js";
 
 class Posts {
+	constructor() {
+		this.defined = [];
+	}
+
+
 	async getCount(where="") {
 		return (await zeroDB.query(`
 			SELECT
@@ -44,6 +49,8 @@ class Posts {
 			row.userUrl = "users/" + this.shortenAddress(row.address);
 
 			row.editable = await this.isEditable(row);
+
+			row = this.defined.reduce((row, f) => f(row), row);
 
 			return row;
 		}));
@@ -190,6 +197,11 @@ class Posts {
 		}
 
 		return div.innerHTML;
+	}
+
+
+	define(f) {
+		this.defined.push(f);
 	}
 };
 
