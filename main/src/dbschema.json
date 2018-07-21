@@ -3,6 +3,12 @@
 	"db_file": "data/zms.db",
 	"version": 2,
 	"maps": {
+		"content.json": {
+			"to_table": []
+		},
+		"authors/content.json": {
+			"to_table": []
+		},
 		"(users|authors)/.+/content.json": {
 			"to_json_table": ["cert_user_id"],
 			"file_name": "data.json"

@@ -26,6 +26,20 @@ export function getPluginTableName(plugin, tableName) {
 	return `plugin__${escapedPluginName}__${tableName}`;
 }
 
+export function getMapOrigin(role) {
+	if(role === "admin") {
+		return "content.json";
+	} else if(role === "moderator") {
+		return "authors/content.json";
+	} else if(role === "author") {
+		return "authors/.+/data.json";
+	} else if(role === "user") {
+		return "users/.+/data.json";
+	} else {
+		throw new Error(`Unknown role: ${role}`);
+	}
+}
+
 
 class Theme {
 	async getSetting(name) {
@@ -157,29 +171,15 @@ class Theme {
 
 		// Add new tables (if they exist)
 		for(const tableName of Object.keys(manifest.tables || {})) {
+			const table = manifest.tables[tableName];
 			const escapedTableName = getPluginTableName(plugin, tableName);
-			dbschema.tables[escapedTableName] = Object.assign({}, manifest.tables[tableName], {
+
+			dbschema.tables[escapedTableName] = Object.assign({}, table, {
 				schema_changed: Date.now()
 			});
-		}
 
-		// Add new mappings (if they exist)
-		for(const mappingName of Object.keys(manifest.maps || {})) {
-			const mapping = manifest.maps[mappingName];
-
-			if(!dbschema.maps[mappingName]) {
-				dbschema.maps[mappingName] = {};
-			}
-			let dbschemaMapping = dbschema.maps[mappingName];
-			if(!dbschemaMapping.to_table) {
-				dbschemaMapping.to_table = [];
-			}
-
-
-			for(const tableName of mapping) {
-				const escapedTableName = getPluginTableName(plugin, tableName);
-				dbschemaMapping.to_table.push(escapedTableName);
-			}
+			const mapOrigin = getMapOrigin(table.role);
+			dbschema.maps[mapOrigin].to_table.push(escapedTableName);
 		}
 
 		console.log("Updated dbschema.json");
