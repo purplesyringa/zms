@@ -121,6 +121,11 @@ class Theme {
 			for(const fileName of Object.keys(widgets)) {
 				Customizable.registerWidget(plugin, widgets[fileName], fileName);
 			}
+
+			const pluginPath = `./src/plugins/${escape(plugin)}/plugin.js`;
+			if(context.has(pluginPath)) {
+				context.require(pluginPath);
+			}
 		}
 	}
 
