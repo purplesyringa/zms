@@ -93,6 +93,9 @@ class Theme {
 
 					return await Store.Plugins.rebuildPluginFile(plugin, fileName);
 				}, async () => {
+					await this.rebuildPluginJson(plugin);
+					dbschemaChanged = true;
+
 					let files = await Store.Plugins.buildPlugin(plugin, () => {});
 					await Store.Plugins.savePlugin(plugin, files, () => {});
 				});
