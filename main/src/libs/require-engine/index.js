@@ -4,6 +4,7 @@ import {Buffer} from "buffer";
 import RequireContext, {FileNotFoundError} from "./require-context";
 import Store from "../store";
 import vueHandler from "./vue-handler";
+import pluginUtilHandler from "./plugin-util-handler";
 
 export {FileNotFoundError} from "./require-context";
 
@@ -89,6 +90,7 @@ export async function loadContext(prefix) {
 	let context = new RequireContext(prefix, files, srcContext);
 
 	context.registerPostHandler(/\.vue$/, vueHandler);
+	context.registerPostHandler("./src/libs/plugin-util", pluginUtilHandler, true);
 
 	return context;
 }
