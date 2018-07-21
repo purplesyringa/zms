@@ -72,7 +72,7 @@ export default class RequireContext {
 		}
 	}
 
-	has(reqPath, origin) {
+	has(reqPath, origin="/") {
 		const absPath = "." + path.resolve(origin, reqPath);
 
 		if(absPath.startsWith(`./src/${this.prefix}`)) {
