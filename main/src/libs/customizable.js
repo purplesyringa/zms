@@ -34,7 +34,11 @@ class Customizable {
 				this.widgets[scope][plugin] = {};
 			}
 
-			this.widgets[scope][plugin][widget.title] = {widget, fileName};
+			this.widgets[scope][plugin][widget.title] = {
+				widget,
+				fileName,
+				id: `${scope}/${plugin}/${widget.title}/${fileName}`
+			};
 		}
 	}
 

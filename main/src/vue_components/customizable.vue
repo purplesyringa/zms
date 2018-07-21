@@ -1,8 +1,8 @@
 <template>
 	<div class="customizable">
-		<div class="widget" v-for="widget in widgets">
+		<component v-for="widget in widgets" :key="widget.name">
 			<component :is="widget.widget" :post="post" />
-		</div>
+		</component>
 
 		<div class="add" v-if="$global.customizableManaged" @click.stop="showPopup" title="Add widget">
 			<icon class="add-icon" :name="widgets.length ? 'cog' : 'plus'" />
