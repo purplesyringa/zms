@@ -50,7 +50,9 @@ class Posts {
 
 			row.editable = await this.isEditable(row);
 
-			row = this.defined.reduce((row, f) => f(row), row);
+			await Promise.all(this.defined.map(async f => {
+				Object.assign(row, await f(row));
+			}));
 
 			return row;
 		}));
