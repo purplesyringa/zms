@@ -1,22 +1,22 @@
 {
 	"db_name": "zms",
-	"db_file": "data/zms.db",
+	"db_file": "zms.db",
 	"version": 2,
 	"maps": {
 		"content.json": {
 			"to_table": []
 		},
-		"authors/content.json": {
+		"data/authors/content.json": {
 			"to_table": []
 		},
-		"(users|authors)/.+/content.json": {
+		"data/(users|authors)/.+/content.json": {
 			"to_json_table": ["cert_user_id"],
 			"file_name": "data.json"
 		},
-		"users/.+/data.json": {
+		"data/users/.+/data.json": {
 			"to_table": []
 		},
-		"authors/.+/data.json": {
+		"data/authors/.+/data.json": {
 			"to_table": ["posts"]
 		}
 	},

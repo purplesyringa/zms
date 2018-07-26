@@ -39,7 +39,7 @@ class Posts {
 		`);
 
 		return Promise.all(rows.map(async row => {
-			row.address = row.directory.replace("authors/", "");
+			row.address = row.directory.replace("data/authors/", "");
 
 			let id = this.shortenAddress(row.address) + "-" + row.id;
 			row.url = `posts/${id}`;
@@ -64,7 +64,7 @@ class Posts {
 		// I know this is unsecure, but it doesn't influence anything,
 		// so let's leave it as-is.
 		let posts = await this.getList(`
-			WHERE id = ${postId} AND json.directory LIKE "authors/${prefix}%"
+			WHERE id = ${postId} AND json.directory LIKE "data/authors/${prefix}%"
 		`);
 
 		return posts[0] || null;
@@ -73,7 +73,7 @@ class Posts {
 	async remove(oldPost) {
 		const auth = await zeroAuth.requestAuth();
 
-		if("authors/" + auth.address === oldPost.directory) {
+		if("data/authors/" + auth.address === oldPost.directory) {
 			// Self's post
 			await this.checkRule("author");
 		} else {
@@ -83,8 +83,8 @@ class Posts {
 
 
 		await zeroDB.removeRow(
-			`data/${oldPost.directory}/data.json`,
-			`data/${oldPost.directory}/content.json`,
+			`${oldPost.directory}/data.json`,
+			`${oldPost.directory}/content.json`,
 			"posts",
 			post => post.id === oldPost.id
 		);
@@ -123,7 +123,7 @@ class Posts {
 
 		const auth = await zeroAuth.requestAuth();
 
-		if("authors/" + auth.address === newPost.directory) {
+		if("data/authors/" + auth.address === newPost.directory) {
 			// Self's post
 			await this.checkRule("author");
 		} else {
@@ -132,8 +132,8 @@ class Posts {
 		}
 
 		await zeroDB.changeRow(
-			`data/${newPost.directory}/data.json`,
-			`data/${newPost.directory}/content.json`,
+			`${newPost.directory}/data.json`,
+			`${newPost.directory}/content.json`,
 			"posts",
 			post => post.id === postId ? newPost : post
 		);

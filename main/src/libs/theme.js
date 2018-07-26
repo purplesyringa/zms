@@ -30,11 +30,11 @@ export function getMapOrigin(role) {
 	if(role === "admin") {
 		return "content.json";
 	} else if(role === "moderator") {
-		return "authors/content.json";
+		return "data/authors/content.json";
 	} else if(role === "author") {
-		return "authors/.+/data.json";
+		return "data/authors/.+/data.json";
 	} else if(role === "user") {
-		return "users/.+/data.json";
+		return "data/users/.+/data.json";
 	} else {
 		throw new Error(`Unknown role: ${role}`);
 	}
