@@ -76,7 +76,7 @@ class Posts {
 
 		const dbschema = await this.getDbschema();
 		const hotreloads = dbschema.zms_hotreloads;
-		for(const tableName of hotreloads.post) {
+		for(const tableName of ["posts"].concat(hotreloads.post)) {
 			HotReload.register(tableName, async () => {
 				HotReload.patchArray(rows, await getRows(), "url");
 			});
