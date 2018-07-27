@@ -1,9 +1,22 @@
-import {zeroAuth, zeroDB} from "../zero";
+import {zeroAuth, zeroDB, zeroFS} from "../zero";
 import Users from "./users.js";
+import HotReload from "./hotreload";
+import limit from "limit-concurrency-decorator";
 
 class Posts {
 	constructor() {
 		this.defined = [];
+		this.dbschema = null;
+	}
+
+	@limit(1)
+	async getDbschema() {
+		if(this.dbschema) {
+			return this.dbschema;
+		}
+
+		this.dbschema = JSON.parse(await zeroFS.readFile("dbschema.json"));
+		return this.dbschema;
 	}
 
 
@@ -22,40 +35,54 @@ class Posts {
 	}
 
 	async getList(where="", offset=0, limit=10000000) {
-		let rows = await zeroDB.query(`
-			SELECT
-				posts.*,
-				json.directory AS directory,
-				json.cert_user_id AS cert_user_id
+		const getRows = async () => {
+			let rows = await zeroDB.query(`
+				SELECT
+					posts.*,
+					json.directory AS directory,
+					json.cert_user_id AS cert_user_id
 
-			FROM posts
-			LEFT JOIN json ON (json.json_id = posts.json_id)
+				FROM posts
+				LEFT JOIN json ON (json.json_id = posts.json_id)
 
-			${where}
+				${where}
 
-			ORDER BY posts.date DESC
+				ORDER BY posts.date DESC
 
-			LIMIT ${offset}, ${limit}
-		`);
+				LIMIT ${offset}, ${limit}
+			`);
 
-		return Promise.all(rows.map(async row => {
-			row.address = row.directory.replace("data/authors/", "");
+			return await Promise.all(rows.map(async row => {
+				row.address = row.directory.replace("data/authors/", "");
 
-			let id = this.shortenAddress(row.address) + "-" + row.id;
-			row.url = `posts/${id}`;
-			row.editUrl = `admin/posts/edit-post/${id}`;
+				let id = this.shortenAddress(row.address) + "-" + row.id;
+				row.url = `posts/${id}`;
+				row.editUrl = `admin/posts/edit-post/${id}`;
 
-			row.user = row.cert_user_id ? row.cert_user_id.replace(/@.*/, "") : "unknown";
-			row.userUrl = "users/" + this.shortenAddress(row.address);
+				row.user = row.cert_user_id ? row.cert_user_id.replace(/@.*/, "") : "unknown";
+				row.userUrl = "users/" + this.shortenAddress(row.address);
 
-			row.editable = await this.isEditable(row);
+				row.editable = await this.isEditable(row);
 
-			await Promise.all(this.defined.map(async f => {
-				Object.assign(row, await f(row));
+				await Promise.all(this.defined.map(async f => {
+					Object.assign(row, await f(row));
+				}));
+
+				return row;
 			}));
+		}
 
-			return row;
-		}));
+		let rows = await getRows();
+
+		const dbschema = await this.getDbschema();
+		const hotreloads = dbschema.zms_hotreloads;
+		for(const tableName of hotreloads.post) {
+			HotReload.register(tableName, async () => {
+				HotReload.patchArray(rows, await getRows(), "url");
+			});
+		}
+
+		return rows;
 	}
 
 	async get(id) {

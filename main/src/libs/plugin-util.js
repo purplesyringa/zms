@@ -1,4 +1,5 @@
 import Posts from "./posts";
+import HotReload from "./hotreload";
 import {zeroPage, zeroFS, zeroDB, zeroAuth} from "../zero";
 import {getPluginTableName, getMapOrigin} from "./theme";
 
@@ -30,7 +31,7 @@ export default plugin => {
 
 			const autoIncrement = manifest.tables[table].autoincrement;
 
-			return await zeroDB.insertRow(
+			row = await zeroDB.insertRow(
 				mapOrigin,
 				mapOrigin.replace("data.json", "content.json"),
 				getPluginTableName(plugin, table),
@@ -40,6 +41,10 @@ export default plugin => {
 					source: `next__${getPluginTableName(plugin, table)}__${autoIncrement}`
 				} : null
 			);
+
+			HotReload.emit(mapOrigin);
+
+			return row;
 		}
 
 		table(tableName) {

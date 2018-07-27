@@ -170,6 +170,10 @@ class Theme {
 		}
 
 		// Add new tables (if they exist)
+		let hotreloads = {
+			post: [],
+			layout: []
+		};
 		for(const tableName of Object.keys(manifest.tables || {})) {
 			const table = manifest.tables[tableName];
 			const escapedTableName = getPluginTableName(plugin, tableName);
@@ -180,7 +184,21 @@ class Theme {
 
 			const mapOrigin = getMapOrigin(table.role);
 			dbschema.maps[mapOrigin].to_table.push(escapedTableName);
+
+			if(table.hotreload) {
+				let hotreload = table.hotreload;
+				if(typeof hotreload === "string") {
+					hotreload = [hotreload];
+				}
+				for(let type of hotreload) {
+					if(!hotreloads[type]) {
+						hotreloads[type] = [];
+					}
+					hotreloads[type].push(escapedTableName);
+				}
+			}
 		}
+		dbschema.zms_hotreloads = hotreloads;
 
 		console.log("Updated dbschema.json");
 

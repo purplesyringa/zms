@@ -43,5 +43,9 @@
 			"indexes": [],
 			"schema_changed": 2
 		}
+	},
+	"zms_hotreloads": {
+		"post": [],
+		"layout": []
 	}
 }
