@@ -139,6 +139,8 @@ class Posts {
 			}
 		);
 
+		HotReload.emit(`data/authors/${auth.address}/data.json`);
+
 		let id = this.shortenAddress(auth.address) + "-" + row.id;
 		return `posts/${id}`;
 	}
@@ -164,6 +166,7 @@ class Posts {
 			"posts",
 			post => post.id === postId ? newPost : post
 		);
+		HotReload.emit(`${newPost.directory}/data.json`);
 		return `posts/${id}`;
 	}
 
