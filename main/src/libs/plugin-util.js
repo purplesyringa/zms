@@ -34,18 +34,60 @@ export default plugin => {
 			}
 
 			const autoIncrement = manifest.tables[table].autoincrement;
+			const keyCol = manifest.tables[table].key_col;
+			const pluginTableName = getPluginTableName(plugin, table);
 
-			row = await zeroDB.insertRow(
-				mapOrigin,
-				mapOrigin.replace("data.json", "content.json"),
-				getPluginTableName(plugin, table),
-				row,
-				autoIncrement ? {
-					column: autoIncrement,
-					source: `next__${getPluginTableName(plugin, table)}__${autoIncrement}`
-				} : null
-			);
 
+			// Insert
+
+			// Parse data file
+			let data;
+			try {
+				data = JSON.parse(await zeroFS.readFile(mapOrigin));
+			} catch(e) {
+				data = {};
+			}
+
+			// Create table if it doesn't exist
+			if(keyCol) {
+				if(!data[pluginTableName]) {
+					data[pluginTableName] = {};
+				}
+			} else {
+				if(!data[pluginTableName]) {
+					data[pluginTableName] = [];
+				}
+			}
+
+			// Auto increment
+			if(autoIncrement) {
+				const source = `next__${getPluginTableName(plugin, table)}__${autoIncrement}`;
+				if(!data[source]) {
+					data[source] = 0;
+				}
+
+				row[autoIncrement] = data[source]++;
+			}
+
+			// Insert
+			if(keyCol) {
+				const key = row[keyCol];
+				let newRow = Object.assign({}, row);
+				delete newRow[keyCol];
+				data[pluginTableName][key] = newRow;
+			} else {
+				data[pluginTableName].push(row);
+			}
+
+			// Write
+			await zeroFS.writeFile(mapOrigin, JSON.stringify(data, null, 4));
+
+			// Sign & publish
+			const contentFile = mapOrigin.replace("data.json", "content.json");
+			await zeroPage.sign(contentFile);
+			zeroPage.cmd("sitePublish", [null, contentFile, false]);
+
+			// Emit hotreload
 			HotReload.emit(mapOrigin);
 
 			return row;
