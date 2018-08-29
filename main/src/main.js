@@ -3,7 +3,9 @@ import "./sass/main.sass";
 import Vue from "vue/dist/vue.min.js";
 
 import AsyncComputed from "vue-async-computed";
-Vue.use(AsyncComputed);
+Vue.use(AsyncComputed, {
+	useRawError: true
+});
 
 import VueVisible from "vue-visible";
 Vue.use(VueVisible);
