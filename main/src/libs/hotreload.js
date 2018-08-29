@@ -121,9 +121,9 @@ class HotReload {
 			for(const map of Object.keys(dbschema.maps)) {
 				// Find maps matching updated file
 				if(new RegExp("^" + map + "$").test(file) && dbschema.maps[map].to_table) {
-					for(const tableName of dbschema.maps[map].to_table) {
+					for(let tableName of dbschema.maps[map].to_table) {
 						if(typeof tableName !== "string") {
-							continue;
+							tableName = tableName.table;
 						}
 
 						if(this.hotreloads[tableName]) {
