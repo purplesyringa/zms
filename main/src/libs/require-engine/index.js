@@ -15,7 +15,7 @@ export async function getManifest(prefix, fileName) {
 	return JSON.parse(await zeroFS.readFile(`${prefix}__build/${fileName}`));
 }
 
-export async function rebuild(prefix, manifestName, rebuildFile, buildFunction) {
+export async function rebuild(prefix, manifestName, rebuildFile, buildFunction, buildCb=null) {
 	console.log("Checking for file changes");
 
 	let manifest;
@@ -26,6 +26,9 @@ export async function rebuild(prefix, manifestName, rebuildFile, buildFunction) 
 			// Malformed manifest, let's try to rebuild completely
 			console.warn("Malformed manifest, build");
 
+			if(buildCb) {
+				buildCb();
+			}
 			await Store.mount();
 			await buildFunction();
 			return await rebuild(prefix, manifestName, rebuildFile, null);
@@ -37,6 +40,10 @@ export async function rebuild(prefix, manifestName, rebuildFile, buildFunction) 
 	let {changes, newHashes} = await getChanges(manifest, prefix, manifestName);
 
 	if(changes.length) {
+		if(buildCb) {
+			buildCb();
+		}
+
 		for(let i = 0; i < changes.length; i++) { // Don't optimize!
 			const [fileName, action] = changes[i];
 			if(manifest._dependents[fileName]) {

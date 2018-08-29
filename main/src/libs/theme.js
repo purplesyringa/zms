@@ -90,7 +90,7 @@ class Theme {
 
 
 
-	async loadPlugins() {
+	async loadPlugins(buildCb=null) {
 		const plugins = (await zeroFS.readDirectory("plugins", false)).map(fileName => unescape(fileName));
 
 		// We update plugins synchronously, and we need context, so it
@@ -112,7 +112,7 @@ class Theme {
 
 					let files = await Store.Plugins.buildPlugin(plugin, () => {});
 					await Store.Plugins.savePlugin(plugin, files, () => {});
-				});
+				}, buildCb);
 
 				const context = await RequireEngine.loadContext(`plugins/${escape(plugin)}/`);
 				registerContext(plugin, context);
@@ -206,14 +206,14 @@ class Theme {
 	}
 
 
-	async loadTheme() {
+	async loadTheme(buildCb=null) {
 		if((await zeroPage.getSiteInfo()).settings.own) {
 			await RequireEngine.rebuild("theme/", "theme.json", (...args) => {
 				return Store.Themes.rebuildThemeFile(...args);
 			}, async () => {
 				let files = await Store.Themes.buildTheme(() => {});
 				await Store.Themes.saveTheme(files, () => {});
-			});
+			}, buildCb);
 		}
 
 		const context = await RequireEngine.loadContext("theme/");

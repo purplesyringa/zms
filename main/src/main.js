@@ -61,45 +61,53 @@ import {FileNotFoundError} from "./libs/require-engine";
 (async function() {
 	const own = (await zeroPage.getSiteInfo()).settings.own;
 
-	if(own) {
-		ConsoleHook.install();
-	}
+	ConsoleHook.install();
 
 	try {
-		await Theme.loadPlugins();
+		await Theme.loadPlugins(() => {
+			if(own) {
+				ConsoleHook.showConsole();
+			}
+		});
 	} catch(e) {
+		ConsoleHook.showConsole();
+
 		if(e instanceof FileNotFoundError) {
 			console.log("Plugin file not found:", e.message);
 			require("./sass/default.sass");
 			route(app);
 			setTimeout(() => {
+				ConsoleHook.uninstall();
 				const plugin = unescape(e.message.replace(/$\.\/src\/plugins\//, "").split("/")[0]);
 				app.$router.navigate(`500/plugin-file-missing/${btoa(plugin)}/${btoa(e.message)}`);
 			}, 1000);
-			ConsoleHook.uninstall();
 			return;
 		} else {
 			console.error(e);
-			ConsoleHook.uninstall();
 			throw e;
 		}
 	}
 
 	try {
-		await Theme.loadTheme();
+		await Theme.loadTheme(() => {
+			if(own) {
+				ConsoleHook.showConsole();
+			}
+		});
 	} catch(e) {
+		ConsoleHook.showConsole();
+
 		if(e instanceof FileNotFoundError) {
 			console.log("Theme file not found:", e.message);
 			require("./sass/default.sass");
 			route(app);
 			setTimeout(() => {
+				ConsoleHook.uninstall();
 				app.$router.navigate(`500/theme-file-missing/${btoa(e.message)}`);
 			}, 1000);
-			ConsoleHook.uninstall();
 			return;
 		} else {
 			console.error(e);
-			ConsoleHook.uninstall();
 			throw e;
 		}
 	}

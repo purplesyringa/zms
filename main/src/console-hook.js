@@ -16,7 +16,8 @@ let pre = null;
 
 export function install() {
 	installed = true;
-	document.body.insertBefore(pre = $(`<pre class="console-hook"></pre>`), document.body.firstChild);
+	pre = $(`<pre class="console-hook" style="display: none"></pre>`);
+	document.body.insertBefore(pre, document.body.firstChild);
 
 	oldConsole = {
 		log: console.log,
@@ -44,6 +45,10 @@ export function install() {
 		show("!", ERROR_COLOR, ...args);
 		oldConsole.error.call(console, ...args);
 	};
+}
+
+export function showConsole() {
+	pre.style.display = "block";
 }
 
 export function uninstall() {
