@@ -72,6 +72,7 @@ class HotReload {
 			} else {
 				// Change property
 				if(typeof oldObj[prop] === "object" && typeof newObj[prop] === "object") {
+					// Property is an object or an array
 					const hotreloader = oldObj[prop]._hotreload || newObj[prop]._hotreload;
 					if(hotreloader) {
 						// This is a hot-reloadable array
@@ -86,8 +87,11 @@ class HotReload {
 						}
 					} else {
 						// This is an object
-						this.patchObject();
+						this.patchObject(oldObj[prop], newObj[prop]);
 					}
+				} else {
+					// Simply change property value
+					oldObj[prop] = newObj[prop];
 				}
 			}
 		}
