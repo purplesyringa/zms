@@ -2,6 +2,7 @@ const      LOG_COLOR = "#3333FF";
 const    DEBUG_COLOR = "#3333FF";
 const     WARN_COLOR = "#FF9933";
 const    ERROR_COLOR = "#FF5050";
+const    TRACE_COLOR = "#FF33FF";
 const   NUMBER_COLOR = "#0066FF";
 const  BOOLEAN_COLOR = "#9966FF";
 const CONSTANT_COLOR = "#A6A6A6";
@@ -23,7 +24,8 @@ export function install() {
 		log: console.log,
 		debug: console.debug,
 		warn: console.warn,
-		error: console.error
+		error: console.error,
+		trace: console.trace
 	};
 
 	console.log = (...args) => {
@@ -44,6 +46,11 @@ export function install() {
 	console.error = (...args) => {
 		show("!", ERROR_COLOR, ...args);
 		oldConsole.error.call(console, ...args);
+	};
+
+	console.trace = (...args) => {
+		show("T", TRACE_COLOR, ...args);
+		oldConsole.trace.call(console, ...args);
 	};
 }
 
