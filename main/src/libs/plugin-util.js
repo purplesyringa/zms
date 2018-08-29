@@ -54,6 +54,15 @@ export default plugin => {
 		table(tableName) {
 			return getPluginTableName(plugin, tableName);
 		}
+
+		async getJsonId(role) {
+			let path = getMapOrigin(role);
+			if(path.indexOf(".+") > -1) {
+				const auth = await zeroAuth.requestAuth();
+				path = path.replace(".+", auth.address);
+			}
+			return zeroDB.getJsonID(path, 2);
+		}
 	};
 
 	const User = new class User {
