@@ -8,6 +8,10 @@ export default plugin => {
 		Posts.define(f);
 	}
 
+	function formatDate(date) {
+		return (new Date(date)).toLocaleString();
+	}
+
 	const DB = new class DB {
 		async query(query, args={}) {
 			return await zeroDB.query(query, args);
@@ -52,5 +56,17 @@ export default plugin => {
 		}
 	};
 
-	return {definePost, DB};
+	const User = new class User {
+		getAddress(directory) {
+			return directory.replace(/^data\/(users|authors)\//, "");
+		}
+		getUserName(certUserId) {
+			return certUserId ? certUserId.replace(/@.*/, "") : "unknown";
+		}
+		getUserUrl(address) {
+			return "users/" + Posts.shortenAddress(address);
+		}
+	};
+
+	return {definePost, formatDate, DB, User};
 };
