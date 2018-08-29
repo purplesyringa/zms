@@ -146,12 +146,13 @@ class Theme {
 	@limit(1)
 	async rebuildPluginJson(plugin) {
 		const manifest = JSON.parse(await zeroFS.readFile(`plugins/${escape(plugin)}/plugin.json`));
+		const pluginPrefix = getPluginTableName(plugin, "");
 
 		let dbschema = JSON.parse(await zeroFS.readFile("dbschema.json"));
 
 		// Remove all old tables
 		for(const tableName of Object.keys(dbschema.tables)) {
-			if(tableName.startsWith(getPluginTableName(plugin, ""))) {
+			if(tableName.startsWith(pluginPrefix)) {
 				delete dbschema.tables[tableName];
 			}
 		}
@@ -161,19 +162,25 @@ class Theme {
 
 			if(mapping.to_table) {
 				mapping.to_table = mapping.to_table.filter(table => {
-					return !(
-						typeof table === "string" &&
-						table.startsWith(getPluginTableName(plugin, ""))
-					);
+					if(typeof table === "string") {
+						return !table.startsWith(pluginPrefix);
+					} else {
+						return !table.table.startsWith(pluginPrefix);
+					}
 				});
 			}
 		}
 
-		// Add new tables (if they exist)
-		let hotreloads = {
+		// Remove old hot-reloads
+		let hotreloads = Object.assign({
 			post: [],
 			layout: []
-		};
+		}, dbschema.zms_hotreloads || {});
+		for(const key of Object.keys(hotreloads)) {
+			hotreloads[key] = hotreloads[key].filter(name => !name.startsWith(pluginPrefix));
+		}
+
+		// Add new tables (if they exist)
 		for(const tableName of Object.keys(manifest.tables || {})) {
 			const table = manifest.tables[tableName];
 			const escapedTableName = getPluginTableName(plugin, tableName);
@@ -183,7 +190,12 @@ class Theme {
 			});
 
 			const mapOrigin = getMapOrigin(table.role);
-			dbschema.maps[mapOrigin].to_table.push(escapedTableName);
+			dbschema.maps[mapOrigin].to_table.push({
+				table: escapedTableName,
+				node: escapedTableName,
+				key_col: table.key_col || undefined,
+				val_col: table.val_col || undefined
+			});
 
 			if(table.hotreload) {
 				let hotreload = table.hotreload;
@@ -198,6 +210,7 @@ class Theme {
 				}
 			}
 		}
+
 		dbschema.zms_hotreloads = hotreloads;
 
 		console.log("Updated dbschema.json");
