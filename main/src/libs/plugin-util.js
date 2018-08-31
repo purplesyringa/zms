@@ -93,6 +93,69 @@ export default plugin => {
 			return row;
 		}
 
+		async remove(table, f) {
+			const manifest = JSON.parse(await zeroFS.readFile(`plugins/${escape(plugin)}/__build/plugin.json`));
+			if(!manifest.tables || !manifest.tables[table]) {
+				throw new Error(`No '${table}' table defined in plugin.json`);
+			}
+
+			let mapOrigin = getMapOrigin(manifest.tables[table].role);
+			if(mapOrigin.indexOf(".+") > -1) {
+				const auth = await zeroAuth.requestAuth();
+				mapOrigin = mapOrigin.replace(".+", auth.address);
+			}
+
+			if(!zeroPage.isSignable(mapOrigin.replace("data.json", "content.json"))) {
+				throw new Error(`Not allowed to sign ${mapOrigin}`);
+			}
+
+			const keyCol = manifest.tables[table].key_col;
+			const pluginTableName = getPluginTableName(plugin, table);
+
+
+			// Remove
+
+			// Parse data file
+			let data;
+			try {
+				data = JSON.parse(await zeroFS.readFile(mapOrigin));
+			} catch(e) {
+				data = {};
+			}
+
+			// If the table doesn't exist, return
+			if(!data[pluginTableName]) {
+				return;
+			}
+
+			// Remove
+			if(keyCol) {
+				for(const key of Object.keys(data[pluginTableName])) {
+					const row = Object.assign({
+						[keyCol]: key
+					}, data[pluginTableName][key]);
+					if(f(row)) {
+						delete data[pluginTableName][key];
+					}
+				}
+			} else {
+				data[pluginTableName] = data[pluginTableName].filter(row => {
+					return !f(row);
+				})
+			}
+
+			// Write
+			await zeroFS.writeFile(mapOrigin, JSON.stringify(data, null, 4));
+
+			// Sign & publish
+			const contentFile = mapOrigin.replace("data.json", "content.json");
+			await zeroPage.sign(contentFile);
+			zeroPage.cmd("sitePublish", [null, contentFile, false]);
+
+			// Emit hotreload
+			HotReload.emit(mapOrigin);
+		}
+
 		table(tableName) {
 			return getPluginTableName(plugin, tableName);
 		}
